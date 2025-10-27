@@ -53,37 +53,16 @@ public class Podcast {
     private PodcastSeason season;
     */
 
+    @Column(name = "podcast_episode_times_listened")
+    private Integer timesListened;
+
     @Column(name = "podcast_episode_is_active")
     private boolean isActive;
 
     public Podcast() {
     }
 /*
-    public Podcast(String title, String url, String description, LocalDate releaseDate, LocalTime length, int nrInSeason, PodcastSeason season, boolean isActive) {
-        this.title = title;
-        this.url = url;
-        this.description = description;
-        this.releaseDate = releaseDate;
-        this.length = length;
-        this.nrInSeason = nrInSeason;
-        this.season = season;
-        this.isActive = isActive;
-    }
-
-    public Podcast(String title, String url, String description, List<Creator> creators, LocalDate releaseDate, List<Genre> genres, LocalTime length, int nrInSeason, PodcastSeason season, boolean isActive) {
-        this.title = title;
-        this.url = url;
-        this.description = description;
-        this.creators = creators;
-        this.releaseDate = releaseDate;
-        this.genres = genres;
-        this.length = length;
-        this.nrInSeason = nrInSeason;
-        this.season = season;
-        this.isActive = isActive;
-    }
-
-    public Podcast(Long id, String title, String url, String description, List<Creator> creators, LocalDate releaseDate, List<Genre> genres, LocalTime length, int nrInSeason, PodcastSeason season, boolean isActive) {
+    public Podcast(Long id, String title, String url, String description, List<Creator> creators, LocalDate releaseDate, List<Genre> genres, LocalTime length, int nrInSeason, PodcastSeason season, Integer timesListened, boolean isActive) {
         this.id = id;
         this.title = title;
         this.url = url;
@@ -94,6 +73,43 @@ public class Podcast {
         this.length = length;
         this.nrInSeason = nrInSeason;
         this.season = season;
+        this.timesListened = timesListened;
+        this.isActive = isActive;
+    }
+
+    public Podcast(String title, String url, String description, LocalDate releaseDate, LocalTime length, Integer timesListened, boolean isActive) {
+        this.title = title;
+        this.url = url;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.length = length;
+        this.timesListened = timesListened;
+        this.isActive = isActive;
+    }
+
+    public Podcast(String title, String url, String description, LocalDate releaseDate, LocalTime length, int nrInSeason, PodcastSeason season, Integer timesListened, boolean isActive) {
+        this.title = title;
+        this.url = url;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.length = length;
+        this.nrInSeason = nrInSeason;
+        this.season = season;
+        this.timesListened = timesListened;
+        this.isActive = isActive;
+    }
+
+    public Podcast(String title, String url, String description, List<Creator> creators, LocalDate releaseDate, List<Genre> genres, LocalTime length, int nrInSeason, PodcastSeason season, Integer timesListened, boolean isActive) {
+        this.title = title;
+        this.url = url;
+        this.description = description;
+        this.creators = creators;
+        this.releaseDate = releaseDate;
+        this.genres = genres;
+        this.length = length;
+        this.nrInSeason = nrInSeason;
+        this.season = season;
+        this.timesListened = timesListened;
         this.isActive = isActive;
     }
 
@@ -177,6 +193,14 @@ public class Podcast {
         this.season = season;
     }
 
+    public Integer getTimesListened() {
+        return timesListened;
+    }
+
+    public void setTimesListened(Integer timesListened) {
+        this.timesListened = timesListened;
+    }
+
     public boolean isActive() {
         return isActive;
     }
@@ -198,6 +222,7 @@ public class Podcast {
                 ", length=" + length +
                 ", nrInSeason=" + nrInSeason +
                 ", season=" + season +
+                ", timesListened=" + timesListened +
                 ", isActive=" + isActive +
                 '}';
     }
