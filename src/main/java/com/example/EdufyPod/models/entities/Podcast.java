@@ -61,7 +61,21 @@ public class Podcast {
 
     public Podcast() {
     }
-/*
+
+    /*
+    public Podcast(Podcast podcast) {
+        this.title = podcast.getTitle();
+        this.url = podcast.getUrl();
+        this.description = podcast.getDescription();
+        this.creators = podcast.getCreators();
+        this.releaseDate = podcast.getReleaseDate();
+        this.genres = podcast.getGenres();
+        this.length = podcast.getLength();
+        this.nrInSeason = podcast.getNrInSeason();
+        this.season = podcast.getSeason();
+        this.timesListened = podcast.getTimesListened();
+        this.isActive = podcast.isActive();
+    }
     public Podcast(Long id, String title, String url, String description, List<Creator> creators, LocalDate releaseDate, List<Genre> genres, LocalTime length, int nrInSeason, PodcastSeason season, Integer timesListened, boolean isActive) {
         this.id = id;
         this.title = title;
