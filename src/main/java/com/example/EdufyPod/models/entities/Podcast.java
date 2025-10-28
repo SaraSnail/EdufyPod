@@ -47,11 +47,11 @@ public class Podcast {
     @Column(name = "podcast_episode_nr_in_season")
     private int nrInSeason;
 
-    /*
+
     @ManyToOne
     @JoinColumn(name = "podcast_episode_podcast_season")
     private PodcastSeason season;
-    */
+
 
     @Column(name = "podcast_episode_times_listened")
     private Integer timesListened;
