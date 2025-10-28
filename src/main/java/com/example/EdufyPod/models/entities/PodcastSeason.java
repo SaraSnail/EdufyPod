@@ -46,6 +46,9 @@ public class PodcastSeason {
     private List<Genre> genres = new ArrayList<>();
     */
 
+    @Column(name = "podcast_season_is_active")
+    private boolean isActive;
+
     public PodcastSeason() {
     }
 
@@ -59,9 +62,10 @@ public class PodcastSeason {
         this.episodeCount = podcastSeason.getEpisodeCount();
         this.creators = podcastSeason.getCreators();
         this.genres = podcastSeason.getGenres();
+        this.isActive = podcastSeason.isActive();
     }
 
-    public PodcastSeason(Long id, String title, String description, String url, LocalDate releaseDate, List<Podcast> podcasts, Integer episodeCount, List<Creator> creators, List<Genre> genres) {
+    public PodcastSeason(Long id, String title, String description, String url, LocalDate releaseDate, List<Podcast> podcasts, Integer episodeCount, List<Creator> creators, List<Genre> genres, boolean isActive) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -71,9 +75,10 @@ public class PodcastSeason {
         this.episodeCount = episodeCount;
         this.creators = creators;
         this.genres = genres;
+        this.isActive = isActive;
     }
 
-    public PodcastSeason(String title, String description, String url, LocalDate releaseDate, List<Podcast> podcasts, Integer episodeCount, List<Creator> creators, List<Genre> genres) {
+    public PodcastSeason(String title, String description, String url, LocalDate releaseDate, List<Podcast> podcasts, Integer episodeCount, List<Creator> creators, List<Genre> genres, boolean isActive) {
         this.title = title;
         this.description = description;
         this.url = url;
@@ -82,15 +87,17 @@ public class PodcastSeason {
         this.episodeCount = episodeCount;
         this.creators = creators;
         this.genres = genres;
+        this.isActive = isActive;
     }
 
-    public PodcastSeason(String title, String description, String url, LocalDate releaseDate, List<Podcast> podcasts, Integer episodeCount) {
+    public PodcastSeason(String title, String description, String url, LocalDate releaseDate, List<Podcast> podcasts, Integer episodeCount, boolean isActive) {
         this.title = title;
         this.description = description;
         this.url = url;
         this.releaseDate = releaseDate;
         this.podcasts = podcasts;
         this.episodeCount = episodeCount;
+        this.isActive = isActive;
     }
 
     public Long getId() {
@@ -165,6 +172,14 @@ public class PodcastSeason {
         this.genres = genres;
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
     @Override
     public String toString() {
         return "PodcastSeason{" +
@@ -175,10 +190,7 @@ public class PodcastSeason {
                 ", releaseDate=" + releaseDate +
                 ", podcasts=" + podcasts +
                 ", episodeCount=" + episodeCount +
-                ", creators=" + creators +
-                ", genres=" + genres +
+                ", isActive=" + isActive +
                 '}';
-    }
-
-     */
+    }*/
 }
