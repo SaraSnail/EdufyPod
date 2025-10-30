@@ -36,20 +36,25 @@ public class PodcastSeason {
     private Integer episodeCount;
 
     //ED-118-SA
+    //ED-119-SA: had connected it wrong
     @ElementCollection
     @CollectionTable(
-            name = "creator_podcast_season",
-            joinColumns = @JoinColumn(name = "creator_id")
+            name = "podcast_season_creator",
+            joinColumns = @JoinColumn(name = "podcast_season_id")
     )
-    @Column(name = "podcast_season_creators_id", nullable = false)
+    @Column(name = "creator_id", nullable = false)
     private List<Long> creatorsIds = new ArrayList<>();
 
-    /*
-    @OneToMany(mappedBy = "")
-    @JoinColumn(name = "podcast_season_genres")
-    private List<Genre> genres = new ArrayList<>();
-    */
+    //ED-119-SA
+    @ElementCollection
+    @CollectionTable(
+            name = "podcast_season_genre",
+            joinColumns = @JoinColumn(name = "podcast_season_id")
+    )
+    @Column(name = "genre_id", nullable = false)
+    private List<Long> genresIds = new ArrayList<>();
 
+    //ED-117-SA
     @Column(name = "podcast_season_is_active")
     private boolean isActive;
 
@@ -65,11 +70,11 @@ public class PodcastSeason {
         this.releaseDate = podcastSeason.getReleaseDate();
         this.episodeCount = podcastSeason.getEpisodeCount();
         this.creatorsIds = podcastSeason.getCreatorsIds();
-        //this.genres = podcastSeason.getGenres();
+        this.genresIds = podcastSeason.getGenresIds();
         this.isActive = podcastSeason.isActive();
     }
 
-    public PodcastSeason(Long id, String title, String description, String url, LocalDate releaseDate, List<Podcast> podcasts, Integer episodeCount, List<Long> creatorsIds, boolean isActive) {
+    public PodcastSeason(Long id, String title, String description, String url, LocalDate releaseDate, List<Podcast> podcasts, Integer episodeCount, List<Long> creatorsIds, List<Long> genresIds, boolean isActive) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -78,7 +83,7 @@ public class PodcastSeason {
         this.podcasts = podcasts;
         this.episodeCount = episodeCount;
         this.creatorsIds = creatorsIds;
-        //this.genres = genres;
+        this.genresIds = genresIds;
         this.isActive = isActive;
     }
 
@@ -147,14 +152,13 @@ public class PodcastSeason {
         this.creatorsIds = creatorsIds;
     }
 
-    /*
-    public List<Genre> getGenres() {
-        return genres;
+    public List<Long> getGenresIds() {
+        return genresIds;
     }
 
-    public void setGenres(List<Genre> genres) {
-        this.genres = genres;
-    }*/
+    public void setGenresIds(List<Long> genresIds) {
+        this.genresIds = genresIds;
+    }
 
     public boolean isActive() {
         return isActive;
@@ -175,7 +179,7 @@ public class PodcastSeason {
                 ", podcasts=" + podcasts +
                 ", episodeCount=" + episodeCount +
                 ", creatorsIds=" + creatorsIds +
-                //genre
+                ", genresIds=" + genresIds +
                 ", isActive=" + isActive +
                 '}';
     }
