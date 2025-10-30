@@ -29,7 +29,6 @@ public class PodcastSeason {
     private LocalDate releaseDate;
 
     @OneToMany(mappedBy = "season")
-    @JoinColumn(name = "podcast_season_episodes")
     private List<Podcast> podcasts = new ArrayList<>();
 
     @Column(name = "podcast_season_episode_count")
