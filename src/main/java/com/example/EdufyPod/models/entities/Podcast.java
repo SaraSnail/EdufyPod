@@ -1,5 +1,6 @@
 package com.example.EdufyPod.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -65,6 +66,7 @@ public class Podcast {
     @Column(name = "podcast_episode_times_listened")
     private Integer timesListened;
 
+    @JsonProperty("isActive")//ED-76-SA
     @Column(name = "podcast_episode_is_active")
     private boolean isActive;
 
