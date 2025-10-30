@@ -20,7 +20,7 @@ public class Podcast {
     @Column(name = "podcast_episode_title", nullable = false, length = 50)
     private String title;
 
-    @Column(name = "podcast_episode_url", nullable = false)
+    @Column(name = "podcast_episode_url", nullable = false, unique = true)
     private String url;
 
     @Column(name = "podcast_episode_description", nullable = false)

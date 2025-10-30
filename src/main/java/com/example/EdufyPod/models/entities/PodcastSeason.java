@@ -16,13 +16,13 @@ public class PodcastSeason {
     @Column(name = "podcast_season_id")
     private Long id;
 
-    @Column(name = "podcast_season_name", nullable = false, length = 50, unique = true)
+    @Column(name = "podcast_season_name", nullable = false, length = 50)
     private String title;
 
     @Column(name = "podcast_season_description", nullable = false, length = 500)
     private String description;
 
-    @Column(name = "podcast_season_url", nullable = false)
+    @Column(name = "podcast_season_url", nullable = false, unique = true)
     private String url;
 
     @Column(name = "podcast_season_release_date", nullable = false)
