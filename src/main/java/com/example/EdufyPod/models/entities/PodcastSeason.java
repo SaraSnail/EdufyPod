@@ -16,7 +16,7 @@ public class PodcastSeason {
     @Column(name = "podcast_season_id")
     private Long id;
 
-    @Column(name = "podcast_season_name", nullable = false, length = 50)
+    @Column(name = "podcast_season_title", nullable = false, length = 50)
     private String title;
 
     @Column(name = "podcast_season_description", nullable = false, length = 500)
