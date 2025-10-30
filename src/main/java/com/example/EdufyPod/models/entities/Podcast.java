@@ -26,12 +26,16 @@ public class Podcast {
     @Column(name = "podcast_episode_description", nullable = false)
     private String description;
 
-    /*
-    @ManyToMany
-    @JoinColumn(name = "podcast_episode_creators", nullable = false)
-    private List<Creator> creators = new ArrayList<>();
-    */
+    //ED-118-SA
+    @ElementCollection
+    @CollectionTable(
+            name = "creator_podcast_episode",
+            joinColumns = @JoinColumn(name = "creator_id")
+    )
+    @Column(name = "podcast_episode_creators_id", nullable = false)
+    private List<Long> creatorsIds = new ArrayList<>();
 
+    //ED-112-SA
     @Column(name = "podcast_episode_release_date", nullable = false)
     private LocalDate releaseDate;
 
@@ -62,64 +66,29 @@ public class Podcast {
     public Podcast() {
     }
 
-    /*
+
     public Podcast(Podcast podcast) {
         this.title = podcast.getTitle();
         this.url = podcast.getUrl();
         this.description = podcast.getDescription();
-        this.creators = podcast.getCreators();
+        this.creatorsIds = podcast.getCreatorsIds();
         this.releaseDate = podcast.getReleaseDate();
-        this.genres = podcast.getGenres();
+        //this.genres = podcast.getGenreIds();
         this.length = podcast.getLength();
         this.nrInSeason = podcast.getNrInSeason();
         this.season = podcast.getSeason();
         this.timesListened = podcast.getTimesListened();
         this.isActive = podcast.isActive();
     }
-    public Podcast(Long id, String title, String url, String description, List<Creator> creators, LocalDate releaseDate, List<Genre> genres, LocalTime length, int nrInSeason, PodcastSeason season, Integer timesListened, boolean isActive) {
+
+    public Podcast(Long id, String title, String url, String description, List<Long> creatorsIds, LocalDate releaseDate, LocalTime length, int nrInSeason, PodcastSeason season, Integer timesListened, boolean isActive) {
         this.id = id;
         this.title = title;
         this.url = url;
         this.description = description;
-        this.creators = creators;
+        this.creatorsIds = creatorsIds;
         this.releaseDate = releaseDate;
-        this.genres = genres;
-        this.length = length;
-        this.nrInSeason = nrInSeason;
-        this.season = season;
-        this.timesListened = timesListened;
-        this.isActive = isActive;
-    }
-
-    public Podcast(String title, String url, String description, LocalDate releaseDate, LocalTime length, Integer timesListened, boolean isActive) {
-        this.title = title;
-        this.url = url;
-        this.description = description;
-        this.releaseDate = releaseDate;
-        this.length = length;
-        this.timesListened = timesListened;
-        this.isActive = isActive;
-    }
-
-    public Podcast(String title, String url, String description, LocalDate releaseDate, LocalTime length, int nrInSeason, PodcastSeason season, Integer timesListened, boolean isActive) {
-        this.title = title;
-        this.url = url;
-        this.description = description;
-        this.releaseDate = releaseDate;
-        this.length = length;
-        this.nrInSeason = nrInSeason;
-        this.season = season;
-        this.timesListened = timesListened;
-        this.isActive = isActive;
-    }
-
-    public Podcast(String title, String url, String description, List<Creator> creators, LocalDate releaseDate, List<Genre> genres, LocalTime length, int nrInSeason, PodcastSeason season, Integer timesListened, boolean isActive) {
-        this.title = title;
-        this.url = url;
-        this.description = description;
-        this.creators = creators;
-        this.releaseDate = releaseDate;
-        this.genres = genres;
+        //this.genres =
         this.length = length;
         this.nrInSeason = nrInSeason;
         this.season = season;
@@ -159,12 +128,12 @@ public class Podcast {
         this.description = description;
     }
 
-    public List<Creator> getCreators() {
-        return creators;
+    public List<Long> getCreatorsIds() {
+        return creatorsIds;
     }
 
-    public void setCreators(List<Creator> creators) {
-        this.creators = creators;
+    public void setCreatorsIds(List<Long> creatorsIds) {
+        this.creatorsIds = creatorsIds;
     }
 
     public LocalDate getReleaseDate() {
@@ -175,13 +144,14 @@ public class Podcast {
         this.releaseDate = releaseDate;
     }
 
+    /*
     public List<Genre> getGenres() {
         return genres;
     }
 
     public void setGenres(List<Genre> genres) {
         this.genres = genres;
-    }
+    }*/
 
     public LocalTime getLength() {
         return length;
@@ -230,9 +200,9 @@ public class Podcast {
                 ", title='" + title + '\'' +
                 ", url='" + url + '\'' +
                 ", description='" + description + '\'' +
-                ", creators=" + creators +
+                ", creators=" + creatorsIds +
                 ", releaseDate=" + releaseDate +
-                ", genres=" + genres +
+                //", genres=" + genres +
                 ", length=" + length +
                 ", nrInSeason=" + nrInSeason +
                 ", season=" + season +
@@ -241,5 +211,5 @@ public class Podcast {
                 '}';
     }
 
- */
+
 }
