@@ -33,6 +33,7 @@ public class PodcastSeasonServiceImpl implements PodcastSeasonService {
         return PodcastSeasonMapper.toDTOWithId(findPodcastSeason.get());
     }
 
+    //ED-58-SA
     @Override
     public List<PodcastSeasonDTO> getPodcastSeasonByTitle(String title) {
         List<PodcastSeason> podcastSeasons = podcastSeasonRepository.findAllByTitleContainingIgnoreCase(title);

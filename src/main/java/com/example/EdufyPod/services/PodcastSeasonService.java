@@ -8,5 +8,5 @@ import java.util.List;
 public interface PodcastSeasonService {
 
     PodcastSeasonDTO getPodcastSeasonById(Long id);//ED-77-SA
-    List<PodcastSeasonDTO> getPodcastSeasonByTitle(String title);
+    List<PodcastSeasonDTO> getPodcastSeasonByTitle(String title);//ED-58-SA
 }

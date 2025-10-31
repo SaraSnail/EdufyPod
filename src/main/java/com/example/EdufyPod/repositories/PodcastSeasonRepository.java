@@ -12,5 +12,5 @@ import java.util.List;
 @Repository
 public interface PodcastSeasonRepository extends JpaRepository<PodcastSeason, Long> {
 
-    List<PodcastSeason> findAllByTitleContainingIgnoreCase(String title);
+    List<PodcastSeason> findAllByTitleContainingIgnoreCase(String title);//ED-58-SA
 }
