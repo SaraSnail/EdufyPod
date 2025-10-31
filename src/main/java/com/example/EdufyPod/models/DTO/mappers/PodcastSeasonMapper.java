@@ -7,6 +7,7 @@ import java.util.List;
 
 public class PodcastSeasonMapper {
 
+    //ED-76-SA
     public static PodcastSeasonDTO toDTO(PodcastSeason podcastSeason) {
         PodcastSeasonDTO podcastSeasonDTO = new PodcastSeasonDTO();
         podcastSeasonDTO.setTitle(podcastSeason.getTitle());
@@ -20,12 +21,14 @@ public class PodcastSeasonMapper {
         return podcastSeasonDTO;
     }
 
+    //ED-77-SA
     public static PodcastSeasonDTO toDTONoId(PodcastSeason podcastSeason) {
         PodcastSeasonDTO podcastSeasonDTO = toDTO(podcastSeason);
         podcastSeasonDTO.setEpisodes(PodcastMapper.toDTOList(podcastSeason.getPodcasts()));
         return podcastSeasonDTO;
     }
 
+    //ED-77-SA
     public static PodcastSeasonDTO DTOWithId(PodcastSeason podcastSeason) {
         PodcastSeasonDTO podcastSeasonDTO = toDTO(podcastSeason);
         podcastSeasonDTO.setId(podcastSeason.getId());

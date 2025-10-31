@@ -6,6 +6,7 @@ import com.example.EdufyPod.models.entities.PodcastSeason;
 import java.util.ArrayList;
 import java.util.List;
 
+//ED-76-SA
 public class GenreMapping {
 
     public static List<String> getGenres(Podcast podcast) {

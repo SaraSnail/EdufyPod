@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+//ED-76-SA
 @RestController
 @RequestMapping("/api/v1/pod")
 public class AdminController {
@@ -18,17 +19,20 @@ public class AdminController {
     private final PodcastService podcastService;
     private final PodcastSeasonService podcastSeasonService;
 
+    //ED-76-SA
     @Autowired
     public AdminController(PodcastService podcastService, PodcastSeasonService podcastSeasonService) {
         this.podcastService = podcastService;
         this.podcastSeasonService = podcastSeasonService;
     }
 
+    //ED-76-SA
     @GetMapping("/getpodcastbyid/{id}")
     public ResponseEntity<PodcastDTO> getPodcastById(@PathVariable Long id) {
         return ResponseEntity.ok(podcastService.getPodcastById(id));
     }
 
+    //ED-77-SA
     @GetMapping("/getpodcastseasonbyid/{id}")
     public ResponseEntity<PodcastSeasonDTO> getPodcastSeasonById(@PathVariable Long id) {
         return ResponseEntity.ok(podcastSeasonService.getPodcastSeasonById(id));

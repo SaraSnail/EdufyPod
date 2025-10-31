@@ -8,9 +8,9 @@ import java.time.LocalTime;
 import java.util.List;
 
 //ED-76-SA
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)//ED-77-SA
 public class PodcastDTO {
-    private Long id;
+    private Long id;//ED-77-SA
     private String title;
     private String url;
     private String description;

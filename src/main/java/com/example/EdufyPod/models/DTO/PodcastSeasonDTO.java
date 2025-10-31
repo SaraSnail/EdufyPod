@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.LocalDate;
 import java.util.List;
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class PodcastSeasonDTO {
+//ED-76-SA
+@JsonInclude(JsonInclude.Include.NON_NULL)//ED-77-SA
+public class PodcastSeasonDTO {//ED-77-SA
     private Long id;
     private String title;
     private String url;
