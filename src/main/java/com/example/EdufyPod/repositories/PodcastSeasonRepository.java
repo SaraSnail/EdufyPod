@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+//ED-76-SA
 @Repository
 public interface PodcastSeasonRepository extends JpaRepository<PodcastSeason, Long> {
 }
