@@ -29,6 +29,6 @@ public class PodcastSeasonServiceImpl implements PodcastSeasonService {
         if(findPodcastSeason.isEmpty()){
             throw new ResourceNotFoundException("Podcast Season", "id", id);
         }
-        return PodcastSeasonMapper.DTOWithId(findPodcastSeason.get());
+        return PodcastSeasonMapper.toDTOWithId(findPodcastSeason.get());
     }
 }

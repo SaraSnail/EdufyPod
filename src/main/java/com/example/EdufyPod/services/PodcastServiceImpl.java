@@ -7,8 +7,8 @@ import com.example.EdufyPod.models.entities.Podcast;
 import com.example.EdufyPod.repositories.PodcastRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 //ED-76-SA
@@ -31,6 +31,16 @@ public class PodcastServiceImpl implements PodcastService {
             throw new ResourceNotFoundException("Podcast", "id", id);
         }
         Podcast podcast = findPodcast.get();
-        return PodcastMapper.DTOWithId(podcast);
+        return PodcastMapper.toDTOWithId(podcast);
+    }
+
+    //ED-56-SA
+    @Override
+    public List<PodcastDTO> getPodcastByTitle(String title) {
+        List<Podcast> podcasts = podcastRepository.findAllByTitleContainingIgnoreCase(title);
+        if(podcasts.isEmpty()){
+            throw new ResourceNotFoundException("Podcast", "title containing", title);
+        }
+        return PodcastMapper.toDTOWithIdList(podcasts);
     }
 }

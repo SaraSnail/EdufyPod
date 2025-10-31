@@ -3,8 +3,6 @@ package com.example.EdufyPod.models.DTO.mappers;
 import com.example.EdufyPod.models.DTO.PodcastSeasonDTO;
 import com.example.EdufyPod.models.entities.PodcastSeason;
 
-import java.util.List;
-
 public class PodcastSeasonMapper {
 
     //ED-76-SA
@@ -24,16 +22,16 @@ public class PodcastSeasonMapper {
     //ED-77-SA
     public static PodcastSeasonDTO toDTONoId(PodcastSeason podcastSeason) {
         PodcastSeasonDTO podcastSeasonDTO = toDTO(podcastSeason);
-        podcastSeasonDTO.setEpisodes(PodcastMapper.toDTOList(podcastSeason.getPodcasts()));
+        podcastSeasonDTO.setEpisodes(PodcastMapper.toDTONoIdList(podcastSeason.getPodcasts()));
         return podcastSeasonDTO;
     }
 
     //ED-77-SA
-    public static PodcastSeasonDTO DTOWithId(PodcastSeason podcastSeason) {
+    public static PodcastSeasonDTO toDTOWithId(PodcastSeason podcastSeason) {
         PodcastSeasonDTO podcastSeasonDTO = toDTO(podcastSeason);
         podcastSeasonDTO.setId(podcastSeason.getId());
 
-        podcastSeasonDTO.setEpisodes(PodcastMapper.DTOWithIdList(podcastSeason.getPodcasts()));
+        podcastSeasonDTO.setEpisodes(PodcastMapper.toDTOWithIdList(podcastSeason.getPodcasts()));
         return podcastSeasonDTO;
     }
 }
