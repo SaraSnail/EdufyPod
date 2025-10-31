@@ -26,6 +26,7 @@ public class SecurityConfig {
                         auth
                                 .requestMatchers("/h2-console/**").permitAll()//ED-120-SA
                                 //.requestMatchers("/h2-console/**").hasRole("edufy_realm_admin")//ED-120-SA
+                                //.requestMatchers("/api/v1/pod/getpodcastbyid/**").permitAll()
                                 .anyRequest().permitAll()//change later
                                 //.anyRequest().authenticated()
 

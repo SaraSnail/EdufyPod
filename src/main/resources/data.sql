@@ -1,14 +1,14 @@
-INSERT INTO podcast_season(podcast_season_id, podcast_season_title, podcast_season_description, podcast_season_url, podcast_season_release_date, podcast_season_episode_count, podcast_season_is_active) VALUES
-(1, 'Voices of Tomorrow', 'A deep dive into the tech shaping our future.', 'https://pod.example.com/season/1', '2023-01-05', 10, true),
-(2, 'Echoes of History', 'Exploring untold stories and forgotten events.', 'https://pod.example.com/season/2', '2023-02-10', 10, true),
-(3, 'Mind Over Matter', 'Psychology, philosophy, and the art of thinking.', 'https://pod.example.com/season/3', '2023-03-15', 10, true),
-(4, 'The Cosmic Frequency', 'Space, time, and everything in between.', 'https://pod.example.com/season/4', '2023-04-20', 10, true),
-(5, 'Urban Legends Uncovered', 'Myths and mysteries behind famous stories.', 'https://pod.example.com/season/5', '2023-05-25', 10, true),
-(6, 'Creative Minds', 'Conversations with artists, writers, and innovators.', 'https://pod.example.com/season/6', '2023-06-30', 10, true),
-(7, 'The Sound of Science', 'Breaking down complex discoveries in simple terms.', 'https://pod.example.com/season/7', '2023-08-04', 10, true),
-(8, 'Future Frontiers', 'Exploring the edge of innovation and exploration.', 'https://pod.example.com/season/8', '2023-09-08', 10, true),
-(9, 'Coffee and Conversations', 'Casual talks with extraordinary people.', 'https://pod.example.com/season/9', '2023-10-13', 10, true),
-(10, 'The Hidden Signal', 'Investigating mysteries of sound, frequency, and rhythm.', 'https://pod.example.com/season/10', '2023-11-17', 10, true);
+INSERT INTO podcast_season(podcast_season_id, podcast_season_title, podcast_season_description, podcast_season_url, podcast_season_release_date, podcast_season_is_active) VALUES
+(1, 'Voices of Tomorrow', 'A deep dive into the tech shaping our future.', 'https://pod.example.com/season/1', '2023-01-05', true),
+(2, 'Echoes of History', 'Exploring untold stories and forgotten events.', 'https://pod.example.com/season/2', '2023-02-10',  true),
+(3, 'Mind Over Matter', 'Psychology, philosophy, and the art of thinking.', 'https://pod.example.com/season/3', '2023-03-15', true),
+(4, 'The Cosmic Frequency', 'Space, time, and everything in between.', 'https://pod.example.com/season/4', '2023-04-20',  true),
+(5, 'Urban Legends Uncovered', 'Myths and mysteries behind famous stories.', 'https://pod.example.com/season/5', '2023-05-25',  true),
+(6, 'Creative Minds', 'Conversations with artists, writers, and innovators.', 'https://pod.example.com/season/6', '2023-06-30', true),
+(7, 'The Sound of Science', 'Breaking down complex discoveries in simple terms.', 'https://pod.example.com/season/7', '2023-08-04',  true),
+(8, 'Future Frontiers', 'Exploring the edge of innovation and exploration.', 'https://pod.example.com/season/8', '2023-09-08', true),
+(9, 'Coffee and Conversations', 'Casual talks with extraordinary people.', 'https://pod.example.com/season/9', '2023-10-13', true),
+(10, 'The Hidden Signal', 'Investigating mysteries of sound, frequency, and rhythm.', 'https://pod.example.com/season/10', '2023-11-17', true);
 
 
 INSERT INTO podcast_episode(podcast_episode_id,podcast_episode_title,podcast_episode_url,podcast_episode_description, podcast_episode_release_date, podcast_episode_length, podcast_episode_nr_in_season, podcast_episode_times_listened, podcast_episode_is_active, podcast_episode_podcast_season) VALUES
@@ -241,6 +241,18 @@ INSERT INTO podcast_episode_creators(podcast_episode_id, creator_id) VALUES
 (98,30),
 (99,30),
 (100,30);
+
+INSERT INTO podcast_season_creator(podcast_season_id, creator_id) VALUES
+(1,21),
+(2,22),
+(3,23),
+(4,24),
+(5,25),
+(6,26),
+(7,27),
+(8,28),
+(9,29),
+(10,30);
 
 INSERT INTO podcast_episode_genre(podcast_episode_id, genre_id) VALUES
 -- Season 1: genre 11

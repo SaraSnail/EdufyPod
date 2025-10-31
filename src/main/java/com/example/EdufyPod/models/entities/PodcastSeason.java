@@ -1,5 +1,7 @@
 package com.example.EdufyPod.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -28,11 +30,9 @@ public class PodcastSeason {
     @Column(name = "podcast_season_release_date", nullable = false)
     private LocalDate releaseDate;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "season")
     private List<Podcast> podcasts = new ArrayList<>();
-
-    @Column(name = "podcast_season_episode_count")
-    private Integer episodeCount;
 
     //ED-118-SA
     //ED-119-SA: had connected it wrong
@@ -54,6 +54,7 @@ public class PodcastSeason {
     private List<Long> genresIds = new ArrayList<>();
 
     //ED-117-SA
+    @JsonProperty("isActive")//ED-76-SA
     @Column(name = "podcast_season_is_active")
     private boolean isActive;
 
@@ -67,20 +68,18 @@ public class PodcastSeason {
         this.description = podcastSeason.getDescription();
         this.url = podcastSeason.getUrl();
         this.releaseDate = podcastSeason.getReleaseDate();
-        this.episodeCount = podcastSeason.getEpisodeCount();
         this.creatorsIds = podcastSeason.getCreatorsIds();
         this.genresIds = podcastSeason.getGenresIds();
         this.isActive = podcastSeason.isActive();
     }
 
-    public PodcastSeason(Long id, String title, String description, String url, LocalDate releaseDate, List<Podcast> podcasts, Integer episodeCount, List<Long> creatorsIds, List<Long> genresIds, boolean isActive) {
+    public PodcastSeason(Long id, String title, String description, String url, LocalDate releaseDate, List<Podcast> podcasts, List<Long> creatorsIds, List<Long> genresIds, boolean isActive) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.url = url;
         this.releaseDate = releaseDate;
         this.podcasts = podcasts;
-        this.episodeCount = episodeCount;
         this.creatorsIds = creatorsIds;
         this.genresIds = genresIds;
         this.isActive = isActive;
@@ -135,12 +134,10 @@ public class PodcastSeason {
         this.podcasts = podcasts;
     }
 
-    public Integer getEpisodeCount() {
-        return episodeCount;
-    }
-
-    public void setEpisodeCount(Integer episodeCount) {
-        this.episodeCount = episodeCount;
+    public int getEpisodeCount() {
+        return (int) podcasts.stream()
+                .filter(Podcast::isActive)
+                .count();
     }
 
     public List<Long> getCreatorsIds() {
@@ -176,7 +173,6 @@ public class PodcastSeason {
                 ", url='" + url + '\'' +
                 ", releaseDate=" + releaseDate +
                 ", podcasts=" + podcasts +
-                ", episodeCount=" + episodeCount +
                 ", creatorsIds=" + creatorsIds +
                 ", genresIds=" + genresIds +
                 ", isActive=" + isActive +
