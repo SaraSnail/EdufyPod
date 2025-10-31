@@ -28,6 +28,6 @@ public class PodcastServiceImpl implements PodcastService {
             throw new ResourceNotFoundException("Podcast", "id", id);
         }
         Podcast podcast = findPodcast.get();
-        return PodcastMapper.toDTO(podcast);
+        return PodcastMapper.DTOWithId(podcast);
     }
 }

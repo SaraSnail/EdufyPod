@@ -1,13 +1,16 @@
 package com.example.EdufyPod.models.DTO;
 
 import com.example.EdufyPod.models.entities.PodcastSeason;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
 //ED-76-SA
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PodcastDTO {
+    private Long id;
     private String title;
     private String url;
     private String description;
@@ -22,6 +25,20 @@ public class PodcastDTO {
     public PodcastDTO() {
     }
 
+    public PodcastDTO(Long id, String title, String url, String description, List<String> creators, LocalDate releaseDate, List<String> genres, LocalTime length, int nrInSeason, PodcastSeasonDTO season, Integer timesListened) {
+        this.id = id;
+        this.title = title;
+        this.url = url;
+        this.description = description;
+        this.creators = creators;
+        this.releaseDate = releaseDate;
+        this.genres = genres;
+        this.length = length;
+        this.nrInSeason = nrInSeason;
+        this.season = season;
+        this.timesListened = timesListened;
+    }
+
     public PodcastDTO(String title, String url, String description, List<String> creators, LocalDate releaseDate, List<String> genres, LocalTime length, int nrInSeason, PodcastSeasonDTO season, Integer timesListened) {
         this.title = title;
         this.url = url;
@@ -33,6 +50,14 @@ public class PodcastDTO {
         this.nrInSeason = nrInSeason;
         this.season = season;
         this.timesListened = timesListened;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {

@@ -1,9 +1,13 @@
 package com.example.EdufyPod.models.DTO;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.time.LocalDate;
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PodcastSeasonDTO {
+    private Long id;
     private String title;
     private String url;
     private String description;
@@ -11,11 +15,14 @@ public class PodcastSeasonDTO {
     private LocalDate releaseDate;
     private List<String> genres;
     private Integer episodeCount;
+    private List<PodcastDTO> episodes;
 
     public PodcastSeasonDTO() {
     }
 
-    public PodcastSeasonDTO(String title, String url, String description, List<String> creators, LocalDate releaseDate, List<String> genres, Integer episodeCount) {
+
+    public PodcastSeasonDTO(Long id, String title, String url, String description, List<String> creators, LocalDate releaseDate, List<String> genres, Integer episodeCount, List<PodcastDTO> episodes) {
+        this.id = id;
         this.title = title;
         this.url = url;
         this.description = description;
@@ -23,6 +30,26 @@ public class PodcastSeasonDTO {
         this.releaseDate = releaseDate;
         this.genres = genres;
         this.episodeCount = episodeCount;
+        this.episodes = episodes;
+    }
+
+    public PodcastSeasonDTO(String title, String url, String description, List<String> creators, LocalDate releaseDate, List<String> genres, Integer episodeCount, List<PodcastDTO> episodes) {
+        this.title = title;
+        this.url = url;
+        this.description = description;
+        this.creators = creators;
+        this.releaseDate = releaseDate;
+        this.genres = genres;
+        this.episodeCount = episodeCount;
+        this.episodes = episodes;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -81,9 +108,18 @@ public class PodcastSeasonDTO {
         this.episodeCount = episodeCount;
     }
 
+    public List<PodcastDTO> getEpisodes() {
+        return episodes;
+    }
+
+    public void setEpisodes(List<PodcastDTO> episodes) {
+        this.episodes = episodes;
+    }
+
     @Override
     public String toString() {
         return "PodcastSeasonDTO{" +
+                "id=" + id +
                 "title='" + title + '\'' +
                 ", url='" + url + '\'' +
                 ", description='" + description + '\'' +
@@ -91,6 +127,7 @@ public class PodcastSeasonDTO {
                 ", releaseDate=" + releaseDate +
                 ", genres=" + genres +
                 ", episodeCount=" + episodeCount +
+                ", episodes=" + episodes +
                 '}';
     }
 }
