@@ -8,6 +8,7 @@ import com.example.EdufyPod.repositories.PodcastSeasonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 //ED-77-SA
@@ -30,5 +31,14 @@ public class PodcastSeasonServiceImpl implements PodcastSeasonService {
             throw new ResourceNotFoundException("Podcast Season", "id", id);
         }
         return PodcastSeasonMapper.toDTOWithId(findPodcastSeason.get());
+    }
+
+    @Override
+    public List<PodcastSeasonDTO> getPodcastSeasonByTitle(String title) {
+        List<PodcastSeason> podcastSeasons = podcastSeasonRepository.findAllByTitleContainingIgnoreCase(title);
+        if(podcastSeasons.isEmpty()){
+            throw new ResourceNotFoundException("Podcast Season", "title containing", title);
+        }
+        return PodcastSeasonMapper.toDTONoIdList(podcastSeasons);
     }
 }
