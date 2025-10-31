@@ -1,6 +1,7 @@
 package com.example.EdufyPod.controllers;
 
 import com.example.EdufyPod.models.DTO.PodcastDTO;
+import com.example.EdufyPod.models.DTO.PodcastSeasonDTO;
 import com.example.EdufyPod.repositories.PodcastRepository;
 import com.example.EdufyPod.repositories.PodcastSeasonRepository;
 import com.example.EdufyPod.services.PodcastSeasonService;
@@ -33,5 +34,11 @@ public class UserController {
     @GetMapping("/getpodcastbytitle")
     public ResponseEntity<List<PodcastDTO>> getPodcastByTitle(@RequestParam String title) {
         return ResponseEntity.ok(podcastService.getPodcastByTitle(title));
+    }
+
+    //ED-58-SA
+    @GetMapping("/getpodcastseasonbytitle")
+    public ResponseEntity<List<PodcastSeasonDTO>> getPodcastSeasonByTitle(@RequestParam String title) {
+        return ResponseEntity.ok(podcastSeasonService.getPodcastSeasonByTitle(title));
     }
 }
