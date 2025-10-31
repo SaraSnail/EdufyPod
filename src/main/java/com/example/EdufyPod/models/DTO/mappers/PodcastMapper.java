@@ -41,7 +41,7 @@ public class PodcastMapper {
     }
 
     //ED-77-SA
-    public static PodcastDTO DTOWithId(Podcast podcast) {
+    public static PodcastDTO toDTOWithId(Podcast podcast) {
         PodcastDTO podcastDTO = toDTO(podcast);
         podcastDTO.setId(podcast.getId());
 
@@ -58,7 +58,7 @@ public class PodcastMapper {
     }
 
     //ED-77-SA
-    public static List<PodcastDTO> toDTOList(List<Podcast> podcasts) {
+    public static List<PodcastDTO> toDTONoIdList(List<Podcast> podcasts) {
         List<PodcastDTO> podcastDTOS = new ArrayList<>();
         for (Podcast podcast : podcasts) {
             podcastDTOS.add(toDTONoId(podcast));
@@ -67,10 +67,10 @@ public class PodcastMapper {
     }
 
     //ED-77-SA
-    public static List<PodcastDTO> DTOWithIdList(List<Podcast> podcasts) {
+    public static List<PodcastDTO> toDTOWithIdList(List<Podcast> podcasts) {
         List<PodcastDTO> podcastDTOS = new ArrayList<>();
         for (Podcast podcast : podcasts) {
-            podcastDTOS.add(DTOWithId(podcast));
+            podcastDTOS.add(toDTOWithId(podcast));
         }
         return podcastDTOS;
     }
