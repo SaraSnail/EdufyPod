@@ -33,6 +33,7 @@ public class PodcastSeasonMapper {
     public static PodcastSeasonDTO toDTOWithId(PodcastSeason podcastSeason) {
         PodcastSeasonDTO podcastSeasonDTO = toDTO(podcastSeason);
         podcastSeasonDTO.setId(podcastSeason.getId());
+        podcastSeasonDTO.setActive(String.valueOf(podcastSeason.isActive()));
 
         podcastSeasonDTO.setEpisodes(PodcastMapper.toDTOWithIdList(podcastSeason.getPodcasts()));
         return podcastSeasonDTO;

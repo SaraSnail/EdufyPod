@@ -14,14 +14,16 @@ public class PodcastSeasonDTO {//ED-77-SA
     private List<String> creators;
     private LocalDate releaseDate;
     private List<String> genres;
+    private String active;//ED-82-SA
     private Integer episodeCount;
     private List<PodcastDTO> episodes;
+
 
     public PodcastSeasonDTO() {
     }
 
 
-    public PodcastSeasonDTO(Long id, String title, String url, String description, List<String> creators, LocalDate releaseDate, List<String> genres, Integer episodeCount, List<PodcastDTO> episodes) {
+    public PodcastSeasonDTO(Long id, String title, String url, String description, List<String> creators, LocalDate releaseDate, List<String> genres, String active, Integer episodeCount, List<PodcastDTO> episodes) {
         this.id = id;
         this.title = title;
         this.url = url;
@@ -29,17 +31,7 @@ public class PodcastSeasonDTO {//ED-77-SA
         this.creators = creators;
         this.releaseDate = releaseDate;
         this.genres = genres;
-        this.episodeCount = episodeCount;
-        this.episodes = episodes;
-    }
-
-    public PodcastSeasonDTO(String title, String url, String description, List<String> creators, LocalDate releaseDate, List<String> genres, Integer episodeCount, List<PodcastDTO> episodes) {
-        this.title = title;
-        this.url = url;
-        this.description = description;
-        this.creators = creators;
-        this.releaseDate = releaseDate;
-        this.genres = genres;
+        this.active = active;
         this.episodeCount = episodeCount;
         this.episodes = episodes;
     }
@@ -100,6 +92,14 @@ public class PodcastSeasonDTO {//ED-77-SA
         this.genres = genres;
     }
 
+    public String getActive() {
+        return active;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
+    }
+
     public Integer getEpisodeCount() {
         return episodeCount;
     }
@@ -126,8 +126,10 @@ public class PodcastSeasonDTO {//ED-77-SA
                 ", creators=" + creators +
                 ", releaseDate=" + releaseDate +
                 ", genres=" + genres +
+                ", active='" + active + '\'' +
                 ", episodeCount=" + episodeCount +
                 ", episodes=" + episodes +
+
                 '}';
     }
 }
