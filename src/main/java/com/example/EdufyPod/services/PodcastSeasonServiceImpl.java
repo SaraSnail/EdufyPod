@@ -36,7 +36,7 @@ public class PodcastSeasonServiceImpl implements PodcastSeasonService {
     //ED-58-SA
     @Override
     public List<PodcastSeasonDTO> getPodcastSeasonByTitle(String title) {
-        List<PodcastSeason> podcastSeasons = podcastSeasonRepository.findAllByTitleContainingIgnoreCase(title);
+        List<PodcastSeason> podcastSeasons = podcastSeasonRepository.findAllByTitleContainingIgnoreCaseAndIsActiveTrue(title);//ED-219-SA:changed so only ones where isActive=true
         if(podcastSeasons.isEmpty()){
             throw new ResourceNotFoundException("Podcast Season", "title containing", title);
         }
