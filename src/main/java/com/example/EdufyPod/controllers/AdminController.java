@@ -27,13 +27,13 @@ public class AdminController {
     }
 
     //ED-76-SA
-    @GetMapping("/getpodcastbyid/{id}")
+    @GetMapping("/episode-id/{id}")
     public ResponseEntity<PodcastDTO> getPodcastById(@PathVariable Long id) {
         return ResponseEntity.ok(podcastService.getPodcastById(id));
     }
 
     //ED-77-SA
-    @GetMapping("/getpodcastseasonbyid/{id}")
+    @GetMapping("/season-id/{id}")
     public ResponseEntity<PodcastSeasonDTO> getPodcastSeasonById(@PathVariable Long id) {
         return ResponseEntity.ok(podcastSeasonService.getPodcastSeasonById(id));
     }
