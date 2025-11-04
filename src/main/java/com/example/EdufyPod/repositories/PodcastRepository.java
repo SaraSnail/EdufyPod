@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface PodcastRepository extends JpaRepository<Podcast, Long> {
 
-    List<Podcast> findAllByTitleContainingIgnoreCase(String title);//ED-56-SA
+    List<Podcast> findAllByTitleContainingIgnoreCaseAndIsActiveTrue(String title);//ED-56-SA + ED-219-SA (isActive=true)
 }

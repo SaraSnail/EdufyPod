@@ -37,7 +37,7 @@ public class PodcastServiceImpl implements PodcastService {
     //ED-56-SA
     @Override
     public List<PodcastDTO> getPodcastByTitle(String title) {
-        List<Podcast> podcasts = podcastRepository.findAllByTitleContainingIgnoreCase(title);
+        List<Podcast> podcasts = podcastRepository.findAllByTitleContainingIgnoreCaseAndIsActiveTrue(title);//ED-219-SA:changed so only ones where isActive=true
         if(podcasts.isEmpty()){
             throw new ResourceNotFoundException("Podcast", "title containing", title);
         }
