@@ -1,5 +1,7 @@
 package com.example.EdufyPod.configs;
 
+import com.example.EdufyPod.converters.JwtAuthConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -12,14 +14,21 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    //ED-166-SA
+    private JwtAuthConverter jwtAuthConverter;
+
+    //ED-166-SA
+    @Autowired
+    public SecurityConfig(JwtAuthConverter jwtAuthConverter) {
+        this.jwtAuthConverter = jwtAuthConverter;
+    }
+
     //add converter
     //ED-40-SA
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                /*.oauth2ResourceServer(oauth->
-                        oauth.jwt(jwt->
-                                jwt.jwtAuthenticationConverter(converter)))*/
+
                 .csrf(csrf->csrf.disable())//ED-120-SA
                 //.csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))//ED-120-SA
                 .authorizeHttpRequests(auth->
@@ -31,6 +40,8 @@ public class SecurityConfig {
                                 //.anyRequest().authenticated()
 
                 )
+                /*.oauth2ResourceServer(oauth->
+                        oauth.jwt(jwt-> jwt.jwtAuthenticationConverter(jwtAuthConverter)))*/ //ED-166-SA
                 //ED-120-SA
                 .headers(headers ->
                         headers.frameOptions(frame ->
