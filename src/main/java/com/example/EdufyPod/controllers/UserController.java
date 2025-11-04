@@ -31,13 +31,13 @@ public class UserController {
     }
 
     //ED-56-SA
-    @GetMapping("/getpodcastbytitle")
+    @GetMapping("/episode-title")//ED-249-SA: renamed endpoint
     public ResponseEntity<List<PodcastDTO>> getPodcastByTitle(@RequestParam String title) {
         return ResponseEntity.ok(podcastService.getPodcastByTitle(title));
     }
 
     //ED-58-SA
-    @GetMapping("/getpodcastseasonbytitle")
+    @GetMapping("/season-title")//ED-249-SA: renamed endpoint
     public ResponseEntity<List<PodcastSeasonDTO>> getPodcastSeasonByTitle(@RequestParam String title) {
         return ResponseEntity.ok(podcastSeasonService.getPodcastSeasonByTitle(title));
     }
