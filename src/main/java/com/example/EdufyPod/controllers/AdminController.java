@@ -27,13 +27,13 @@ public class AdminController {
     }
 
     //ED-76-SA
-    @GetMapping("/episode-id/{id}")
+    @GetMapping("/episode-id/{id}")//ED-249-SA: renamed endpoint
     public ResponseEntity<PodcastDTO> getPodcastById(@PathVariable Long id) {
         return ResponseEntity.ok(podcastService.getPodcastById(id));
     }
 
     //ED-77-SA
-    @GetMapping("/season-id/{id}")
+    @GetMapping("/season-id/{id}")//ED-249-SA: renamed endpoint
     public ResponseEntity<PodcastSeasonDTO> getPodcastSeasonById(@PathVariable Long id) {
         return ResponseEntity.ok(podcastSeasonService.getPodcastSeasonById(id));
     }
