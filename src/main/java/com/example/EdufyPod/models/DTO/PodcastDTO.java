@@ -21,11 +21,12 @@ public class PodcastDTO {
     private int nrInSeason;
     private PodcastSeasonDTO season;
     private Integer timesListened;
+    private String active;//ED-82-SA
 
     public PodcastDTO() {
     }
 
-    public PodcastDTO(Long id, String title, String url, String description, List<String> creators, LocalDate releaseDate, List<String> genres, LocalTime length, int nrInSeason, PodcastSeasonDTO season, Integer timesListened) {
+    public PodcastDTO(Long id, String title, String url, String description, List<String> creators, LocalDate releaseDate, List<String> genres, LocalTime length, int nrInSeason, PodcastSeasonDTO season, Integer timesListened, String active) {
         this.id = id;
         this.title = title;
         this.url = url;
@@ -37,19 +38,7 @@ public class PodcastDTO {
         this.nrInSeason = nrInSeason;
         this.season = season;
         this.timesListened = timesListened;
-    }
-
-    public PodcastDTO(String title, String url, String description, List<String> creators, LocalDate releaseDate, List<String> genres, LocalTime length, int nrInSeason, PodcastSeasonDTO season, Integer timesListened) {
-        this.title = title;
-        this.url = url;
-        this.description = description;
-        this.creators = creators;
-        this.releaseDate = releaseDate;
-        this.genres = genres;
-        this.length = length;
-        this.nrInSeason = nrInSeason;
-        this.season = season;
-        this.timesListened = timesListened;
+        this.active = active;
     }
 
     public Long getId() {
@@ -140,6 +129,14 @@ public class PodcastDTO {
         this.timesListened = timesListened;
     }
 
+    public String getActive() {
+        return active;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
+    }
+
     @Override
     public String toString() {
         return "PodcastDTO{" +
@@ -153,6 +150,7 @@ public class PodcastDTO {
                 ", nrInSeason=" + nrInSeason +
                 ", season=" + season +
                 ", timesListened=" + timesListened +
+                ", active='" + active + '\'' +
                 '}';
     }
 }
