@@ -56,4 +56,22 @@ public class PodcastSeasonMapper {
         }
         return podcastSeasonDTOS;
     }
+
+    //ED-60-SA
+    public static List<PodcastSeasonDTO> toDTONoEpisodeList(List<PodcastSeason> podcastSeasons) {
+        List<PodcastSeasonDTO> podcastSeasonDTOS = new ArrayList<>();
+        for (PodcastSeason podcastSeason : podcastSeasons) {
+            podcastSeasonDTOS.add(toDTONoEpisode(podcastSeason));
+        }
+        return podcastSeasonDTOS;
+    }
+
+    //ED-60-SA
+    public static PodcastSeasonDTO toDTONoEpisode(PodcastSeason podcastSeason) {
+        PodcastSeasonDTO podcastSeasonDTO = toDTO(podcastSeason);
+        podcastSeasonDTO.setId(podcastSeason.getId());
+        podcastSeasonDTO.setActive(String.valueOf(podcastSeason.isActive()));
+
+        return podcastSeasonDTO;
+    }
 }
