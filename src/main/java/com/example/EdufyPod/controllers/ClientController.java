@@ -27,8 +27,14 @@ public class ClientController {
 
     //ED-60-SA
     @GetMapping("/pod-creator")
-    public ResponseEntity<PodcastResponse> getPodByCreator(@RequestParam List<Long> seasonIds, @RequestParam List<Long> podcastIds) {
-        PodcastResponse response = podcastAggregationService.getPodcastsAndSeasonsByIds(seasonIds, podcastIds);
+    public ResponseEntity<PodcastResponse> getPodByCreator(
+            @RequestParam List<Long> seasonIds,
+            @RequestParam List<Long> podcastIds,
+            @RequestParam(defaultValue = "false") Boolean withId) {//makes so if withId is not given just set value to false
+        PodcastResponse response = podcastAggregationService.getPodcastsAndSeasonsByIds(
+                seasonIds,
+                podcastIds,
+                withId);
 
         //Checks if there were any missing ids on podcast episodes or season, if so the status is changed to Partial content
         //(it won't throw, just inform that it could not find everything)

@@ -14,9 +14,9 @@ import com.example.EdufyPod.repositories.PodcastSeasonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 //ED-60-SA
 @Service
@@ -33,7 +33,7 @@ public class PodcastAggregationService {
     }
 
     //ED-60-SA : gets podcast episodes and seasons based on id. Will ignore not found id one some if the list still contains some with valid ids
-    public PodcastResponse getPodcastsAndSeasonsByIds(List<Long> seasonIds, List<Long> podcastIds) {
+    public PodcastResponse getPodcastsAndSeasonsByIds(List<Long> seasonIds, List<Long> podcastIds, Boolean withId) {
 
         List<PodcastSeasonDTO> seasonsDTOS = List.of();
         List<Long> missingSeasonIds = List.of();
@@ -43,12 +43,17 @@ public class PodcastAggregationService {
 
 
         if(!seasonIds.isEmpty()){
-            var seasons = podcastSeasonRepository.findAllById(seasonIds);
-            if(seasons.isEmpty()){
-                throw new ResourceNotFoundException("Podcast seasons","ids", seasonIds);
+            List<PodcastSeason> seasons;
+            if(withId){
+                seasons = podcastSeasonRepository.findAllById(seasonIds);
+                emptySeasonList(seasons, seasonIds);
+                seasonsDTOS = PodcastSeasonMapper.toDTONoEpisodeListId(seasons);
+            }else {
+                seasons = podcastSeasonRepository.findAllByIdInAndIsActiveTrue(seasonIds);
+                emptySeasonList(seasons, seasonIds);
+                seasonsDTOS = PodcastSeasonMapper.toDTONoEpisodeListNoId(seasons);
             }
 
-            seasonsDTOS = PodcastSeasonMapper.toDTONoEpisodeList(seasons);
             missingSeasonIds = seasonIds.stream()
                     .filter(id -> seasons.stream().noneMatch(s -> s.getId().equals(id)))
                     .toList();
@@ -56,18 +61,17 @@ public class PodcastAggregationService {
 
         if(!podcastIds.isEmpty()){
 
-            var podcasts = podcastRepository.findAllById(podcastIds);
-            if(podcasts.isEmpty()){
-                throw new ResourceNotFoundException("Podcast episodes","ids", podcastIds);
+            List<Podcast> podcasts;
+            if(withId){
+                podcasts = podcastRepository.findAllById(podcastIds);
+                emptyPodcastList(podcasts, podcastIds);
+                podcastDTOS = PodcastMapper.toDTOWithIdList(sortList(podcasts));
+            }else {
+                podcasts = podcastRepository.findAllByIdInAndIsActiveTrue(podcastIds);
+                emptyPodcastList(podcasts, podcastIds);
+                podcastDTOS = PodcastMapper.toDTONoIdList(sortList(podcasts));
             }
 
-            List<Podcast> sorted = podcasts.stream()
-                    .sorted(Comparator
-                            .comparing((Podcast p) -> p.getSeason().getId())
-                            .thenComparing(Podcast::getNrInSeason))
-                    .toList();
-
-            podcastDTOS = PodcastMapper.toDTOWithIdList(sorted);
             missingEpisodeIds = podcastIds.stream()
                     .filter(id -> podcasts.stream().noneMatch(p -> p.getId().equals(id)))
                     .toList();
@@ -79,4 +83,25 @@ public class PodcastAggregationService {
 
         return new PodcastResponse(seasonsDTOS, podcastDTOS, missingEpisodeIds, missingSeasonIds);
     }
+
+    private List<Podcast> sortList(List<Podcast> podcasts){
+        return podcasts.stream()
+                .sorted(Comparator
+                        .comparing((Podcast p) -> p.getSeason().getId())
+                        .thenComparing(Podcast::getNrInSeason))
+                .toList();
+    }
+
+    private void emptyPodcastList(List<Podcast> podcasts, List<Long> podcastIds){
+        if(podcasts.isEmpty()){
+            throw new ResourceNotFoundException("Podcast episodes","ids", podcastIds);
+        }
+    }
+
+    private void emptySeasonList(List<PodcastSeason> seasons, List<Long> seasonsIds){
+        if(seasons.isEmpty()){
+            throw new ResourceNotFoundException("Podcast seasons","ids", seasonsIds);
+        }
+    }
+
 }

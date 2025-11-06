@@ -12,4 +12,5 @@ public interface PodcastRepository extends JpaRepository<Podcast, Long> {
 
     List<Podcast> findAllByTitleContainingIgnoreCaseAndIsActiveTrue(String title);//ED-56-SA + ED-219-SA (isActive=true)
     List<Podcast> findAllByIsActiveTrue();//ED-82-SA
+    List<Podcast> findAllByIdInAndIsActiveTrue(List<Long> ids);
 }
