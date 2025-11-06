@@ -52,7 +52,9 @@ public class PodcastServiceImpl implements PodcastService {
     public List<PodcastDTO> getAllPodcasts(Authentication authentication) {
         List<Podcast> allPodcastEpisodes;
 
-        if(Roles.getRoles(authentication).contains("pod_admin")){
+        List<String> roles = Roles.getRoles(authentication);//ED-83-SA
+
+        if(roles.contains("pod_admin") || roles.contains("edufy_realm_admin")){
             allPodcastEpisodes = podcastRepository.findAll();
             listPodEmpty(allPodcastEpisodes);
             return PodcastMapper.toDTOWithIdList(allPodcastEpisodes);

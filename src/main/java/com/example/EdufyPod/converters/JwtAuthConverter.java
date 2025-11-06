@@ -30,9 +30,12 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
     @Override
     public AbstractAuthenticationToken convert(@Nonnull Jwt source) {
         Collection<GrantedAuthority> authorities = Stream.concat(
-                jwtGrantedAuthoritiesConverter.convert(source).stream(),
-                extractRoles(source).stream())
-                .collect(Collectors.toSet()
+                Stream.concat(
+                        jwtGrantedAuthoritiesConverter.convert(source).stream(),
+                        extractRoles(source).stream()
+                ),
+                    extractRealmRoles(source).stream()
+                ).collect(Collectors.toSet()
         );
 
         return new JwtAuthenticationToken(source, authorities);
@@ -66,5 +69,27 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
 
         return resourceRoles.stream().map(role -> new SimpleGrantedAuthority("ROLE_"+role)).collect(Collectors.toSet());
 
+    }
+
+    //ED-83-SA
+    private Collection<? extends GrantedAuthority> extractRealmRoles(Jwt jwt) {
+        Map<String, Object> realmAccess;
+        Collection<String> realmRoles;
+
+        if(!jwt.hasClaim("realm_access")) {
+            return Set.of();
+        }
+
+        realmAccess = jwt.getClaimAsMap("realm_access");
+
+        if(!realmAccess.containsKey("roles")) {
+            return Set.of();
+        }
+
+        realmRoles = (Collection<String>) realmAccess.get("roles");
+
+        System.out.println("Realm Roles: "+realmRoles);
+
+        return realmRoles.stream().map(role -> new SimpleGrantedAuthority("ROLE_"+role)).collect(Collectors.toSet());
     }
 }
