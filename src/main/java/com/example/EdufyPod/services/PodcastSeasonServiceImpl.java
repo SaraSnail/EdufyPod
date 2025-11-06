@@ -51,7 +51,9 @@ public class PodcastSeasonServiceImpl implements PodcastSeasonService {
     public List<PodcastSeasonDTO> getAllPodcastSeasons(Authentication authentication) {
         List<PodcastSeason> allPodcastSeasons;
 
-        if(Roles.getRoles(authentication).contains("pod_admin")){
+        List<String> roles = Roles.getRoles(authentication);
+
+        if(roles.contains("pod_admin") || roles.contains("edufy_realm_admin")){
             allPodcastSeasons = podcastSeasonRepository.findAll();
             emptySeasonList(allPodcastSeasons);
             return PodcastSeasonMapper.toDTOWithIdList(allPodcastSeasons);
