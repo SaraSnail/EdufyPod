@@ -14,5 +14,5 @@ public interface PodcastSeasonRepository extends JpaRepository<PodcastSeason, Lo
 
     List<PodcastSeason> findAllByTitleContainingIgnoreCaseAndIsActiveTrue(String title);//ED-58-SA + ED-219-SA (isActive=true)
     List<PodcastSeason> findAllByIsActiveTrue();//ED-83-SA
-    List<PodcastSeason> findAllByIdInAndIsActiveTrue(List<Long> ids);
+    List<PodcastSeason> findAllByIdInAndIsActiveTrue(List<Long> ids);//ED-60-SA
 }
