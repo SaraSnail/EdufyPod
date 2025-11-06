@@ -1,6 +1,7 @@
 package com.example.EdufyPod.controllers;
 
 import com.example.EdufyPod.models.DTO.PodcastDTO;
+import com.example.EdufyPod.models.DTO.PodcastSeasonDTO;
 import com.example.EdufyPod.services.PodcastSeasonService;
 import com.example.EdufyPod.services.PodcastService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+//ED-82-SA
 @RestController
 @RequestMapping("/api/v1/pod")
 public class CommonController {
@@ -25,8 +27,15 @@ public class CommonController {
         this.podcastSeasonService = podcastSeasonService;
     }
 
+    //ED-82-SA
     @GetMapping("/episode-all")
     public ResponseEntity<List<PodcastDTO>> getAllPodcasts(Authentication authentication) {
         return ResponseEntity.ok(podcastService.getAllPodcasts(authentication));
+    }
+
+    //ED-83-SA
+    @GetMapping("/season-all")
+    public ResponseEntity<List<PodcastSeasonDTO>> getAllPodcastSeasons(Authentication authentication) {
+        return ResponseEntity.ok(podcastSeasonService.getAllPodcastSeasons(authentication));
     }
 }

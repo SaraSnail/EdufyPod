@@ -13,4 +13,5 @@ import java.util.List;
 public interface PodcastSeasonRepository extends JpaRepository<PodcastSeason, Long> {
 
     List<PodcastSeason> findAllByTitleContainingIgnoreCaseAndIsActiveTrue(String title);//ED-58-SA + ED-219-SA (isActive=true)
+    List<PodcastSeason> findAllByIsActiveTrue();//ED-83-SA
 }

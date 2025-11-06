@@ -1,11 +1,14 @@
 package com.example.EdufyPod.services;
 
+import com.example.EdufyPod.converters.Roles;
+import com.example.EdufyPod.exceptions.ContentNotFoundException;
 import com.example.EdufyPod.exceptions.ResourceNotFoundException;
 import com.example.EdufyPod.models.DTO.PodcastSeasonDTO;
 import com.example.EdufyPod.models.DTO.mappers.PodcastSeasonMapper;
 import com.example.EdufyPod.models.entities.PodcastSeason;
 import com.example.EdufyPod.repositories.PodcastSeasonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,5 +44,31 @@ public class PodcastSeasonServiceImpl implements PodcastSeasonService {
             throw new ResourceNotFoundException("Podcast Season", "title containing", title);
         }
         return PodcastSeasonMapper.toDTONoIdList(podcastSeasons);
+    }
+
+    //ED-83-SA
+    @Override
+    public List<PodcastSeasonDTO> getAllPodcastSeasons(Authentication authentication) {
+        List<PodcastSeason> allPodcastSeasons;
+
+        if(Roles.getRoles(authentication).contains("pod_admin")){
+            allPodcastSeasons = podcastSeasonRepository.findAll();
+            emptySeasonList(allPodcastSeasons);
+            return PodcastSeasonMapper.toDTOWithIdList(allPodcastSeasons);
+
+        }else {
+            allPodcastSeasons = podcastSeasonRepository.findAllByIsActiveTrue();
+            emptySeasonList(allPodcastSeasons);
+            return PodcastSeasonMapper.toDTONoIdList(allPodcastSeasons);
+
+        }
+
+    }
+
+    //ED-83-SA
+    private void emptySeasonList(List<PodcastSeason> podcastSeasons) {
+        if(podcastSeasons.isEmpty()){
+            throw new ContentNotFoundException("No podcast seasons found");
+        }
     }
 }
