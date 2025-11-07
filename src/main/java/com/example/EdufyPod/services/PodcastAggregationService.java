@@ -5,6 +5,7 @@ import com.example.EdufyPod.exceptions.ResourceNotFoundException;
 import com.example.EdufyPod.models.DTO.PodcastDTO;
 import com.example.EdufyPod.models.DTO.PodcastResponse;
 import com.example.EdufyPod.models.DTO.PodcastSeasonDTO;
+import com.example.EdufyPod.models.DTO.SeasonResponse;
 import com.example.EdufyPod.models.DTO.mappers.PodcastMapper;
 import com.example.EdufyPod.models.DTO.mappers.PodcastSeasonMapper;
 import com.example.EdufyPod.models.entities.Podcast;
@@ -14,7 +15,6 @@ import com.example.EdufyPod.repositories.PodcastSeasonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -84,6 +84,36 @@ public class PodcastAggregationService {
         return new PodcastResponse(seasonsDTOS, podcastDTOS, missingEpisodeIds, missingSeasonIds);
     }
 
+    //ED-231-SA : this one only shows seasons, but the seasons also contains all their episodes
+    public SeasonResponse getSeasonsByIds(List<Long> seasonIds, Boolean withId) {
+        List<PodcastSeasonDTO> seasonsDTOS = List.of();
+        List<Long> missingSeasonIds = List.of();
+
+        if(!seasonIds.isEmpty()){
+            List<PodcastSeason> seasons;
+            if(withId){
+                seasons = podcastSeasonRepository.findAllById(seasonIds);
+                emptySeasonList(seasons, seasonIds);
+                seasonsDTOS = PodcastSeasonMapper.toDTOWithIdList(seasons);
+            }else {
+                seasons = podcastSeasonRepository.findAllByIdInAndIsActiveTrue(seasonIds);
+                emptySeasonList(seasons, seasonIds);
+                seasonsDTOS = PodcastSeasonMapper.toDTONoIdList(seasons);
+            }
+
+            missingSeasonIds = seasonIds.stream()
+                    .filter(id -> seasons.stream().noneMatch(s -> s.getId().equals(id)))
+                    .toList();
+        }
+
+        if(seasonsDTOS.isEmpty()){
+            throw new ContentNotFoundException("No seasons");
+        }
+
+        return new SeasonResponse( missingSeasonIds, seasonsDTOS);
+    }
+
+    //ED-60-SA
     private List<Podcast> sortList(List<Podcast> podcasts){
         return podcasts.stream()
                 .sorted(Comparator
@@ -92,12 +122,14 @@ public class PodcastAggregationService {
                 .toList();
     }
 
+    //ED-60-SA
     private void emptyPodcastList(List<Podcast> podcasts, List<Long> podcastIds){
         if(podcasts.isEmpty()){
             throw new ResourceNotFoundException("Podcast episodes","ids", podcastIds);
         }
     }
 
+    //ED-60-SA
     private void emptySeasonList(List<PodcastSeason> seasons, List<Long> seasonsIds){
         if(seasons.isEmpty()){
             throw new ResourceNotFoundException("Podcast seasons","ids", seasonsIds);
