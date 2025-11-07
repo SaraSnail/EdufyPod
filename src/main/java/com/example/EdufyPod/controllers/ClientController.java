@@ -1,6 +1,7 @@
 package com.example.EdufyPod.controllers;
 
 import com.example.EdufyPod.models.DTO.PodcastResponse;
+import com.example.EdufyPod.models.DTO.SeasonResponse;
 import com.example.EdufyPod.services.PodcastAggregationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,21 @@ public class ClientController {
         //Checks if there were any missing ids on podcast episodes or season, if so the status is changed to Partial content
         //(it won't throw, just inform that it could not find everything)
         boolean hasMissingIds = !response.missingEpisodeIds().isEmpty() || !response.missingSeasonIds().isEmpty();
+        HttpStatus status = hasMissingIds ? HttpStatus.PARTIAL_CONTENT : HttpStatus.OK;
+
+        return ResponseEntity.status(status).body(response);
+    }
+
+    //ED-231-SA: gets seasons, they also contains the seasons episodes
+    @GetMapping("/season-creator")
+    public ResponseEntity<SeasonResponse> getSeasonByCreator(
+            @RequestParam List<Long> seasonIds,
+            @RequestParam(defaultValue = "false") Boolean withId) {//makes so if withId is not given just set value to false
+        SeasonResponse response = podcastAggregationService.getSeasonsByIds(seasonIds, withId);
+
+        //Checks if there were any missing ids on podcast season, if so the status is changed to Partial content
+        //(it won't throw, just inform that it could not find everything)
+        boolean hasMissingIds = !response.missingSeasonIds().isEmpty();
         HttpStatus status = hasMissingIds ? HttpStatus.PARTIAL_CONTENT : HttpStatus.OK;
 
         return ResponseEntity.status(status).body(response);
