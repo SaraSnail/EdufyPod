@@ -1,15 +1,11 @@
 package com.example.EdufyPod.controllers;
 
-import com.example.EdufyPod.models.DTO.PodcastResponse;
-import com.example.EdufyPod.models.DTO.SeasonResponse;
+import com.example.EdufyPod.models.DTO.*;
 import com.example.EdufyPod.services.PodcastAggregationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,14 +23,13 @@ public class ClientController {
     }
 
     //ED-60-SA
-    @GetMapping("/pod-creator")
+    @PostMapping("/pod-creator")
     public ResponseEntity<PodcastResponse> getPodByCreator(
-            @RequestParam List<Long> seasonIds,
-            @RequestParam List<Long> podcastIds,
+            @RequestBody PodcastRequest request,
             @RequestParam(defaultValue = "false") Boolean withId) {//makes so if withId is not given just set value to false
         PodcastResponse response = podcastAggregationService.getPodcastsAndSeasonsByIds(
-                seasonIds,
-                podcastIds,
+                request.getSeasonDTOs(),
+                request.getPodcastDTOs(),
                 withId);
 
         //Checks if there were any missing ids on podcast episodes or season, if so the status is changed to Partial content
@@ -46,11 +41,11 @@ public class ClientController {
     }
 
     //ED-231-SA: gets seasons, they also contains the seasons episodes
-    @GetMapping("/season-creator")
+    @PostMapping("/season-creator")
     public ResponseEntity<SeasonResponse> getSeasonByCreator(
-            @RequestParam List<Long> seasonIds,
+            @RequestBody List<TransferPodcastSeasonDTO> seasonDTOs,
             @RequestParam(defaultValue = "false") Boolean withId) {//makes so if withId is not given just set value to false
-        SeasonResponse response = podcastAggregationService.getSeasonsByIds(seasonIds, withId);
+        SeasonResponse response = podcastAggregationService.getSeasonsByIds(seasonDTOs, withId);
 
         //Checks if there were any missing ids on podcast season, if so the status is changed to Partial content
         //(it won't throw, just inform that it could not find everything)

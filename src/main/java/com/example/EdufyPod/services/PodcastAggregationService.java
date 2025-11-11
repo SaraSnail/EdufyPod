@@ -2,10 +2,7 @@ package com.example.EdufyPod.services;
 
 import com.example.EdufyPod.exceptions.ContentNotFoundException;
 import com.example.EdufyPod.exceptions.ResourceNotFoundException;
-import com.example.EdufyPod.models.DTO.PodcastDTO;
-import com.example.EdufyPod.models.DTO.PodcastResponse;
-import com.example.EdufyPod.models.DTO.PodcastSeasonDTO;
-import com.example.EdufyPod.models.DTO.SeasonResponse;
+import com.example.EdufyPod.models.DTO.*;
 import com.example.EdufyPod.models.DTO.mappers.PodcastMapper;
 import com.example.EdufyPod.models.DTO.mappers.PodcastSeasonMapper;
 import com.example.EdufyPod.models.entities.Podcast;
@@ -17,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 //ED-60-SA
 @Service
@@ -33,13 +31,23 @@ public class PodcastAggregationService {
     }
 
     //ED-60-SA : gets podcast episodes and seasons based on id. Will ignore not found id one some if the list still contains some with valid ids
-    public PodcastResponse getPodcastsAndSeasonsByIds(List<Long> seasonIds, List<Long> podcastIds, Boolean withId) {
+    public PodcastResponse getPodcastsAndSeasonsByIds(List<TransferPodcastSeasonDTO> seasonDTOs, List<TransferPodcastDTO> podcastDTOs, Boolean withId) {
 
         List<PodcastSeasonDTO> seasonsDTOS = List.of();
         List<Long> missingSeasonIds = List.of();
 
         List<PodcastDTO> podcastDTOS = List.of();
         List<Long> missingEpisodeIds = List.of();
+
+        List<Long> seasonIds = seasonDTOs.stream()
+                .map(TransferPodcastSeasonDTO::getId)
+                .filter(Objects::nonNull)
+                .toList();
+
+        List<Long> podcastIds = podcastDTOs.stream()
+                .map(TransferPodcastDTO::getId)
+                .filter(Objects::nonNull)
+                .toList();
 
 
         if(!seasonIds.isEmpty()){
@@ -85,9 +93,14 @@ public class PodcastAggregationService {
     }
 
     //ED-231-SA : this one only shows seasons, but the seasons also contains all their episodes
-    public SeasonResponse getSeasonsByIds(List<Long> seasonIds, Boolean withId) {
+    public SeasonResponse getSeasonsByIds(List<TransferPodcastSeasonDTO> seasonDTOS, Boolean withId) {
         List<PodcastSeasonDTO> seasonsDTOS = List.of();
         List<Long> missingSeasonIds = List.of();
+
+        List<Long> seasonIds = seasonDTOS.stream()
+                .map(TransferPodcastSeasonDTO::getId)
+                .filter(Objects::nonNull)
+                .toList();
 
         if(!seasonIds.isEmpty()){
             List<PodcastSeason> seasons;
