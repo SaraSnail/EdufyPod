@@ -15,7 +15,7 @@ import java.util.List;
 
 //ED-82-SA
 @RestController
-@RequestMapping("/api/v1/pod")
+@RequestMapping("/pod")
 public class CommonController {
 
     private final PodcastService podcastService;

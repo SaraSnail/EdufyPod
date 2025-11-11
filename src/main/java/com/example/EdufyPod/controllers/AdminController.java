@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 //ED-76-SA
 @RestController
-@RequestMapping("/api/v1/pod")
+@RequestMapping("/pod")
 public class AdminController {
 
     private final PodcastService podcastService;
