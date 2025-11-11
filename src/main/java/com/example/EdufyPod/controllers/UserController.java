@@ -18,7 +18,7 @@ import java.util.List;
 //ED-76-SA
 //ED-56-SA
 @RestController
-@RequestMapping("/api/v1/pod")
+@RequestMapping("/pod")
 public class UserController {
 
     private final PodcastService podcastService;

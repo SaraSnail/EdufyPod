@@ -14,7 +14,7 @@ import java.util.List;
 
 //ED-60-SA
 @RestController
-@RequestMapping("/api/v1/pod")
+@RequestMapping("/pod")
 public class ClientController {
 
     private final PodcastAggregationService podcastAggregationService;
