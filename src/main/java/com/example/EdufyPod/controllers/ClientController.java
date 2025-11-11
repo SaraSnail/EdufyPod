@@ -23,9 +23,9 @@ public class ClientController {
     }
 
     //ED-60-SA
-    @PostMapping("/pod-creator")
+    @PostMapping("/pod-creator")//ED-303-SA - GET mapping to POST mapping
     public ResponseEntity<PodcastResponse> getPodByCreator(
-            @RequestBody PodcastRequest request,
+            @RequestBody PodcastRequest request, //ED-303-SA
             @RequestParam(defaultValue = "false") Boolean withId) {//makes so if withId is not given just set value to false
         PodcastResponse response = podcastAggregationService.getPodcastsAndSeasonsByIds(
                 request.getSeasonDTOs(),
@@ -41,9 +41,9 @@ public class ClientController {
     }
 
     //ED-231-SA: gets seasons, they also contains the seasons episodes
-    @PostMapping("/season-creator")
+    @PostMapping("/season-creator")//ED-303-SA - GET mapping to POST mapping
     public ResponseEntity<SeasonResponse> getSeasonByCreator(
-            @RequestBody List<TransferPodcastSeasonDTO> seasonDTOs,
+            @RequestBody List<TransferPodcastSeasonDTO> seasonDTOs, //ED-303-SA
             @RequestParam(defaultValue = "false") Boolean withId) {//makes so if withId is not given just set value to false
         SeasonResponse response = podcastAggregationService.getSeasonsByIds(seasonDTOs, withId);
 

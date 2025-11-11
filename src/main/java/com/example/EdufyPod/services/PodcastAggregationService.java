@@ -39,6 +39,7 @@ public class PodcastAggregationService {
         List<PodcastDTO> podcastDTOS = List.of();
         List<Long> missingEpisodeIds = List.of();
 
+        //ED-303-SA
         List<Long> seasonIds = seasonDTOs.stream()
                 .map(TransferPodcastSeasonDTO::getId)
                 .filter(Objects::nonNull)
@@ -50,6 +51,7 @@ public class PodcastAggregationService {
                 .toList();
 
 
+        //ED-60-SA
         if(!seasonIds.isEmpty()){
             List<PodcastSeason> seasons;
             if(withId){
@@ -97,11 +99,13 @@ public class PodcastAggregationService {
         List<PodcastSeasonDTO> seasonsDTOS = List.of();
         List<Long> missingSeasonIds = List.of();
 
+        //ED-303-SA
         List<Long> seasonIds = seasonDTOS.stream()
                 .map(TransferPodcastSeasonDTO::getId)
                 .filter(Objects::nonNull)
                 .toList();
 
+        //ED-231-SA
         if(!seasonIds.isEmpty()){
             List<PodcastSeason> seasons;
             if(withId){
