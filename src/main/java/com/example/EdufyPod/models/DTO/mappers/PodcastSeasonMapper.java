@@ -1,6 +1,8 @@
 package com.example.EdufyPod.models.DTO.mappers;
 
+import com.example.EdufyPod.models.DTO.PodcastDTO;
 import com.example.EdufyPod.models.DTO.PodcastSeasonDTO;
+import com.example.EdufyPod.models.entities.Podcast;
 import com.example.EdufyPod.models.entities.PodcastSeason;
 
 import java.util.ArrayList;
@@ -25,7 +27,15 @@ public class PodcastSeasonMapper {
     //ED-77-SA
     public static PodcastSeasonDTO toDTONoId(PodcastSeason podcastSeason) {
         PodcastSeasonDTO podcastSeasonDTO = toDTO(podcastSeason);
-        podcastSeasonDTO.setEpisodes(PodcastMapper.toDTONoIdList(podcastSeason.getPodcasts()));
+
+        //ED-290-SA
+        List<PodcastDTO> activeEpisodes = podcastSeason.getPodcasts().stream()
+                .filter(Podcast::isActive)
+                .map(PodcastMapper::toDTONoId)
+                .toList();
+
+        //ED-77-SA
+        podcastSeasonDTO.setEpisodes(activeEpisodes);
         return podcastSeasonDTO;
     }
 
