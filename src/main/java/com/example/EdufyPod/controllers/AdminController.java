@@ -6,6 +6,7 @@ import com.example.EdufyPod.services.PodcastSeasonService;
 import com.example.EdufyPod.services.PodcastService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 //ED-76-SA
 @RestController
 @RequestMapping("/pod")
+@PreAuthorize("hasAnyAuthority('pod_admin','edufy_realm_admin')")
 public class AdminController {
 
     private final PodcastService podcastService;
