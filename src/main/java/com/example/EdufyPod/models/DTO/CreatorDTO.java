@@ -1,41 +1,45 @@
 package com.example.EdufyPod.models.DTO;
 
-//ED-40-SA
-//ED-118-SA
-public class CreatorDTO {
+import com.fasterxml.jackson.annotation.JsonInclude;
 
-    private Long creator_id;
+
+//ED-40-SA
+// ED-118-SA
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class CreatorDTO {
+    private Long id;
     private String username;
 
     public CreatorDTO() {
     }
 
     public CreatorDTO(Long creator_id, String username) {
-        this.creator_id = creator_id;
+        this.id = creator_id;
         this.username = username;
     }
 
-    public Long getCreator_id() {
-        return creator_id;
-    }
+    public Long getId() {
+            return id;
+        }
 
-    public void setCreator_id(Long creator_id) {
-        this.creator_id = creator_id;
-    }
+    public void setId(Long id) {
+            this.id = id;
+        }
 
     public String getUsername() {
-        return username;
-    }
+            return username;
+        }
 
     public void setUsername(String username) {
-        this.username = username;
-    }
+            this.username = username;
+        }
 
     @Override
     public String toString() {
         return "CreatorDTO{" +
-                "creator_id=" + creator_id +
+                "creator_id=" + id +
                 ", username='" + username + '\'' +
                 '}';
     }
 }
+

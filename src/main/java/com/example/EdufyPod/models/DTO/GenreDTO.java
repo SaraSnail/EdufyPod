@@ -1,5 +1,7 @@
 package com.example.EdufyPod.models.DTO;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 //ED-40-SA
 //ED-119-SA
 public class GenreDTO {
@@ -38,4 +40,6 @@ public class GenreDTO {
                 ", name='" + name + '\'' +
                 '}';
     }
+
+
 }

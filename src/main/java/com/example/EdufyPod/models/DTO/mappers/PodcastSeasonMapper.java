@@ -14,9 +14,7 @@ public class PodcastSeasonMapper {
         podcastSeasonDTO.setTitle(podcastSeason.getTitle());
         podcastSeasonDTO.setUrl(podcastSeason.getUrl());
         podcastSeasonDTO.setDescription(podcastSeason.getDescription());
-        podcastSeasonDTO.setCreators(CreatorMapper.getCreators(podcastSeason));//TODO: fix later
         podcastSeasonDTO.setReleaseDate(podcastSeason.getReleaseDate());
-        podcastSeasonDTO.setGenres(GenreMapping.getGenres(podcastSeason));//TODO: fix later
         podcastSeasonDTO.setEpisodeCount(podcastSeason.getEpisodeCount());
 
         return podcastSeasonDTO;
@@ -25,6 +23,7 @@ public class PodcastSeasonMapper {
     //ED-77-SA
     public static PodcastSeasonDTO toDTONoId(PodcastSeason podcastSeason) {
         PodcastSeasonDTO podcastSeasonDTO = toDTO(podcastSeason);
+        podcastSeasonDTO.setCreators(CreatorMapper.getCreatorsSeasonUser(podcastSeason));//TODO: fix later
         podcastSeasonDTO.setEpisodes(PodcastMapper.toDTONoIdList(podcastSeason.getPodcasts()));
         return podcastSeasonDTO;
     }
@@ -34,6 +33,7 @@ public class PodcastSeasonMapper {
         PodcastSeasonDTO podcastSeasonDTO = toDTO(podcastSeason);
         podcastSeasonDTO.setId(podcastSeason.getId());
         podcastSeasonDTO.setActive(podcastSeason.isActive());
+        podcastSeasonDTO.setCreators(CreatorMapper.getCreatorsSeasonAdmin(podcastSeason));//TODO: fix later
 
         podcastSeasonDTO.setEpisodes(PodcastMapper.toDTOWithIdList(podcastSeason.getPodcasts()));
         return podcastSeasonDTO;
