@@ -11,7 +11,7 @@ public class PodcastSeasonDTO {//ED-77-SA
     private String title;
     private String url;
     private String description;
-    private List<String> creators;
+    private List<GenreDTO.CreatorDTO> creators;
     private LocalDate releaseDate;
     private List<String> genres;
     private Boolean active;//ED-82-SA - ED-263-SA:changed to Boolean
@@ -23,7 +23,7 @@ public class PodcastSeasonDTO {//ED-77-SA
     }
 
 
-    public PodcastSeasonDTO(Long id, String title, String url, String description, List<String> creators, LocalDate releaseDate, List<String> genres, Boolean active, Integer episodeCount, List<PodcastDTO> episodes) {
+    public PodcastSeasonDTO(Long id, String title, String url, String description, List<GenreDTO.CreatorDTO> creators, LocalDate releaseDate, List<String> genres, Boolean active, Integer episodeCount, List<PodcastDTO> episodes) {
         this.id = id;
         this.title = title;
         this.url = url;
@@ -68,11 +68,11 @@ public class PodcastSeasonDTO {//ED-77-SA
         this.description = description;
     }
 
-    public List<String> getCreators() {
+    public List<GenreDTO.CreatorDTO> getCreators() {
         return creators;
     }
 
-    public void setCreators(List<String> creators) {
+    public void setCreators(List<GenreDTO.CreatorDTO> creators) {
         this.creators = creators;
     }
 
