@@ -1,6 +1,5 @@
 package com.example.EdufyPod.models.DTO;
 
-import com.example.EdufyPod.models.entities.PodcastSeason;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.LocalDate;
@@ -14,7 +13,7 @@ public class PodcastDTO {
     private String title;
     private String url;
     private String description;
-    private List<String> creators;
+    private List<CreatorDTO> creators;
     private LocalDate releaseDate;
     private List<String> genres;
     private LocalTime length;
@@ -26,7 +25,7 @@ public class PodcastDTO {
     public PodcastDTO() {
     }
 
-    public PodcastDTO(Long id, String title, String url, String description, List<String> creators, LocalDate releaseDate, List<String> genres, LocalTime length, int nrInSeason, PodcastSeasonDTO season, Integer timesListened, Boolean active) {
+    public PodcastDTO(Long id, String title, String url, String description, List<CreatorDTO> creators, LocalDate releaseDate, List<String> genres, LocalTime length, int nrInSeason, PodcastSeasonDTO season, Integer timesListened, Boolean active) {
         this.id = id;
         this.title = title;
         this.url = url;
@@ -73,11 +72,11 @@ public class PodcastDTO {
         this.description = description;
     }
 
-    public List<String> getCreators() {
+    public List<CreatorDTO> getCreators() {
         return creators;
     }
 
-    public void setCreators(List<String> creators) {
+    public void setCreators(List<CreatorDTO> creators) {
         this.creators = creators;
     }
 

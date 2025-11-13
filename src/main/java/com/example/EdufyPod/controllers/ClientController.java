@@ -1,36 +1,31 @@
 package com.example.EdufyPod.controllers;
 
 import com.example.EdufyPod.models.DTO.*;
-import com.example.EdufyPod.services.PodcastAggregationService;
+import com.example.EdufyPod.services.PodcastAggregationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 //ED-60-SA
 @RestController
 @RequestMapping("/pod")
 public class ClientController {
 
-    private final PodcastAggregationService podcastAggregationService;
+    private final PodcastAggregationServiceImpl podcastAggregationService;
 
     //ED-60-SA
     @Autowired
-    public ClientController(PodcastAggregationService podcastAggregationService) {
+    public ClientController(PodcastAggregationServiceImpl podcastAggregationService) {
         this.podcastAggregationService = podcastAggregationService;
     }
 
     //ED-60-SA
-    @PostMapping("/pod-creator")//ED-303-SA - GET mapping to POST mapping
-    public ResponseEntity<PodcastResponse> getPodByCreator(
-            @RequestBody PodcastRequest request, //ED-303-SA
-            @RequestParam(defaultValue = "false") Boolean withId) {//makes so if withId is not given just set value to false
-        PodcastResponse response = podcastAggregationService.getPodcastsAndSeasonsByIds(
-                request.getSeasonDTOs(),
-                request.getPodcastDTOs(),
-                withId);
+    //ED-303
+    @GetMapping("/pod-creator/{creatorId}")//ED-303-SA - GET mapping to POST mapping
+    public ResponseEntity<PodcastResponse> getPodByCreator(@PathVariable Long creatorId, Authentication auth) {
+        PodcastResponse response = podcastAggregationService.getPodcastsAndSeasonsByIds(creatorId, auth);
 
         //Checks if there were any missing ids on podcast episodes or season, if so the status is changed to Partial content
         //(it won't throw, just inform that it could not find everything)
@@ -41,11 +36,9 @@ public class ClientController {
     }
 
     //ED-231-SA: gets seasons, they also contains the seasons episodes
-    @PostMapping("/season-creator")//ED-303-SA - GET mapping to POST mapping
-    public ResponseEntity<SeasonResponse> getSeasonByCreator(
-            @RequestBody List<TransferPodcastSeasonDTO> seasonDTOs, //ED-303-SA
-            @RequestParam(defaultValue = "false") Boolean withId) {//makes so if withId is not given just set value to false
-        SeasonResponse response = podcastAggregationService.getSeasonsByIds(seasonDTOs, withId);
+    @GetMapping("/season-creator/{creatorId}")//ED-303-SA - GET mapping to POST mapping
+    public ResponseEntity<SeasonResponse> getSeasonByCreator(@PathVariable Long creatorId, Authentication authentication) {//makes so if withId is not given just set value to false
+        SeasonResponse response = podcastAggregationService.getSeasonsByIds(creatorId, authentication);
 
         //Checks if there were any missing ids on podcast season, if so the status is changed to Partial content
         //(it won't throw, just inform that it could not find everything)
