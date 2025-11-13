@@ -1,5 +1,6 @@
 package com.example.EdufyPod.models.DTO.mappers;
 
+import com.example.EdufyPod.models.DTO.CreatorDTO;
 import com.example.EdufyPod.models.DTO.GenreDTO;
 import com.example.EdufyPod.models.entities.Podcast;
 import com.example.EdufyPod.models.entities.PodcastSeason;
@@ -19,9 +20,9 @@ public class CreatorMapper {
     }
 
     //ED-303-SA
-    public static List<GenreDTO.CreatorDTO> getCreatorsPodcastAdmin(Podcast podcast) {
+    public static List<CreatorDTO> getCreatorsPodcastAdmin(Podcast podcast) {
         CreatorCallImpl creatorCallImpl = new CreatorCallImpl();
-        List<GenreDTO.CreatorDTO> creators = creatorCallImpl.getCreatorsEpisode(podcast.getId());
+        List<CreatorDTO> creators = creatorCallImpl.getCreatorsEpisode(podcast.getId());
         if (creators == null || creators.isEmpty()) {
             throw new RuntimeException("There are no creators in the podcast");
         }
@@ -30,10 +31,10 @@ public class CreatorMapper {
     }
 
     //ED-303-SA
-    public static List<GenreDTO.CreatorDTO> getCreatorsPodcastUser(Podcast podcast) {
+    public static List<CreatorDTO> getCreatorsPodcastUser(Podcast podcast) {
         return  getCreatorsPodcastAdmin(podcast).stream()
                 .map(creator -> {
-                    GenreDTO.CreatorDTO creatorDTO = new GenreDTO.CreatorDTO();
+                    CreatorDTO creatorDTO = new CreatorDTO();
                     creatorDTO.setUsername(creator.getUsername());
                     return creatorDTO;
                 })
@@ -42,9 +43,9 @@ public class CreatorMapper {
     }
 
     //ED-303-SA
-    public static List<GenreDTO.CreatorDTO> getCreatorsSeasonAdmin(PodcastSeason season) {
+    public static List<CreatorDTO> getCreatorsSeasonAdmin(PodcastSeason season) {
         CreatorCallImpl creatorCallImpl = new CreatorCallImpl();
-        List<GenreDTO.CreatorDTO> creators = creatorCallImpl.getCreatorsSeason(season.getId());
+        List<CreatorDTO> creators = creatorCallImpl.getCreatorsSeason(season.getId());
         if (creators == null || creators.isEmpty()) {
             throw new RuntimeException("There are no creators in the podcast");
         }
@@ -53,10 +54,10 @@ public class CreatorMapper {
     }
 
     //ED-303-SA
-    public static List<GenreDTO.CreatorDTO> getCreatorsSeasonUser(PodcastSeason season) {
+    public static List<CreatorDTO> getCreatorsSeasonUser(PodcastSeason season) {
         return  getCreatorsSeasonAdmin(season).stream()
                 .map(creator -> {
-                    GenreDTO.CreatorDTO creatorDTO = new GenreDTO.CreatorDTO();
+                    CreatorDTO creatorDTO = new CreatorDTO();
                     creatorDTO.setUsername(creator.getUsername());
                     return creatorDTO;
                 })

@@ -1,6 +1,7 @@
 package com.example.EdufyPod.services.ClientCalls;
 
 import com.example.EdufyPod.exceptions.CallFailException;
+import com.example.EdufyPod.models.DTO.CreatorDTO;
 import com.example.EdufyPod.models.DTO.GenreDTO;
 import com.example.EdufyPod.models.DTO.TransferPodcastDTO;
 import com.example.EdufyPod.models.DTO.TransferPodcastSeasonDTO;
@@ -70,14 +71,14 @@ public class CreatorCallImpl implements CreatorCall {
 
     //ED-303-SA
     @Override
-    public List<GenreDTO.CreatorDTO> getCreatorsEpisode(Long mediaId) {
+    public List<CreatorDTO> getCreatorsEpisode(Long mediaId) {
         String uri = "http://localhost:4545/api/v1/creator/creatortomedia/" + mediaId + "/POD_EPISODE";
         try{
-            List<GenreDTO.CreatorDTO> response = restClient
+            List<CreatorDTO> response = restClient
                     .get()
                     .uri(uri)
                     .retrieve()
-                    .body(new ParameterizedTypeReference<List<GenreDTO.CreatorDTO>>() {});
+                    .body(new ParameterizedTypeReference<List<CreatorDTO>>() {});
 
             if(response == null){
                 throw new CallFailException("Creator", uri);
@@ -92,14 +93,14 @@ public class CreatorCallImpl implements CreatorCall {
 
     //ED-303-SA
     @Override
-    public List<GenreDTO.CreatorDTO> getCreatorsSeason(Long mediaId) {
+    public List<CreatorDTO> getCreatorsSeason(Long mediaId) {
         String uri = "http://localhost:4545/api/v1/creator/creatortomedia/" + mediaId + "/POD_SEASON";
         try{
-            List<GenreDTO.CreatorDTO> response = restClient
+            List<CreatorDTO> response = restClient
                     .get()
                     .uri(uri)
                     .retrieve()
-                    .body(new ParameterizedTypeReference<List<GenreDTO.CreatorDTO>>() {});
+                    .body(new ParameterizedTypeReference<List<CreatorDTO>>() {});
 
             if(response == null){
                 throw new CallFailException("Creator", uri);

@@ -13,7 +13,7 @@ public class PodcastDTO {
     private String title;
     private String url;
     private String description;
-    private List<GenreDTO.CreatorDTO> creators;
+    private List<CreatorDTO> creators;
     private LocalDate releaseDate;
     private List<String> genres;
     private LocalTime length;
@@ -25,7 +25,7 @@ public class PodcastDTO {
     public PodcastDTO() {
     }
 
-    public PodcastDTO(Long id, String title, String url, String description, List<GenreDTO.CreatorDTO> creators, LocalDate releaseDate, List<String> genres, LocalTime length, int nrInSeason, PodcastSeasonDTO season, Integer timesListened, Boolean active) {
+    public PodcastDTO(Long id, String title, String url, String description, List<CreatorDTO> creators, LocalDate releaseDate, List<String> genres, LocalTime length, int nrInSeason, PodcastSeasonDTO season, Integer timesListened, Boolean active) {
         this.id = id;
         this.title = title;
         this.url = url;
@@ -72,11 +72,11 @@ public class PodcastDTO {
         this.description = description;
     }
 
-    public List<GenreDTO.CreatorDTO> getCreators() {
+    public List<CreatorDTO> getCreators() {
         return creators;
     }
 
-    public void setCreators(List<GenreDTO.CreatorDTO> creators) {
+    public void setCreators(List<CreatorDTO> creators) {
         this.creators = creators;
     }
 
