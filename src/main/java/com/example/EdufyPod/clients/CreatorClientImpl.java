@@ -1,15 +1,17 @@
 package com.example.EdufyPod.clients;
 
 import com.example.EdufyPod.exceptions.CallFailException;
-import com.example.EdufyPod.models.DTO.CreatorDTO;
-import com.example.EdufyPod.models.DTO.TransferPodcastDTO;
-import com.example.EdufyPod.models.DTO.TransferPodcastSeasonDTO;
+import com.example.EdufyPod.models.DTO.body.CreatorBody;
+import com.example.EdufyPod.models.DTO.callDTOs.CreatorDTO;
+import com.example.EdufyPod.models.DTO.callDTOs.TransferPodcastDTO;
+import com.example.EdufyPod.models.DTO.callDTOs.TransferPodcastSeasonDTO;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientResponseException;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
@@ -20,9 +22,13 @@ public class CreatorClientImpl implements CreatorClient {
     private final RestClient restClient;
     private final LoadBalancerClient loadBalancer;//ED-276-SA
 
-    public CreatorClientImpl(RestClient.Builder restClientBuilder, LoadBalancerClient loadBalancerClient) {
+    //ED-232-SA
+    private WebClient webClient;
+
+    public CreatorClientImpl(RestClient.Builder restClientBuilder, LoadBalancerClient loadBalancerClient, WebClient.Builder webClientBuilder) {
         this.restClient = restClientBuilder.build();
         this.loadBalancer = loadBalancerClient;
+        this.webClient = webClientBuilder.build();
     }
 
     //ED-303-SA
@@ -118,5 +124,17 @@ public class CreatorClientImpl implements CreatorClient {
         } catch (RestClientResponseException e) {
             throw new CallFailException("Creator", uri, String.format(e.getMessage(), e));
         }
+    }
+
+    //ED-232-SA
+    @Override
+    public void registerWithCreator(CreatorBody body) {
+        webClient.post()
+                .uri("http://EDUFYCREATOR/creator/media/record")
+                .bodyValue(body)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
+
     }
 }

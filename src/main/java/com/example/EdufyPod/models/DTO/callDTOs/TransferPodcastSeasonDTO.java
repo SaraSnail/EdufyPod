@@ -1,4 +1,4 @@
-package com.example.EdufyPod.models.DTO;
+package com.example.EdufyPod.models.DTO.callDTOs;
 
 //ED-303-SA
 public class TransferPodcastSeasonDTO {

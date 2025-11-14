@@ -2,6 +2,7 @@ package com.example.EdufyPod.models.DTO.mappers;
 
 import com.example.EdufyPod.clients.CreatorClient;
 import com.example.EdufyPod.clients.GenreClient;
+import com.example.EdufyPod.converters.DurationConverter;
 import com.example.EdufyPod.models.DTO.PodcastDTO;
 import com.example.EdufyPod.models.DTO.PodcastSeasonDTO;
 import com.example.EdufyPod.models.entities.Podcast;
@@ -21,7 +22,7 @@ public class PodcastMapper {
         podcastDTO.setDescription(podcast.getDescription());
         podcastDTO.setReleaseDate(podcast.getReleaseDate());
 
-        podcastDTO.setLength(podcast.getLength());
+        podcastDTO.setLength(DurationConverter.formatPodcastDuration(podcast.getLength()));
         podcastDTO.setNrInSeason(podcast.getNrInSeason());
         podcastDTO.setTimesListened(podcast.getTimesListened());
         return podcastDTO;

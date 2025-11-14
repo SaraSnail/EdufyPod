@@ -1,10 +1,9 @@
 package com.example.EdufyPod.models.DTO.mappers;
 
-import com.example.EdufyPod.models.DTO.CreatorDTO;
+import com.example.EdufyPod.models.DTO.callDTOs.CreatorDTO;
 import com.example.EdufyPod.models.entities.Podcast;
 import com.example.EdufyPod.models.entities.PodcastSeason;
 import com.example.EdufyPod.clients.CreatorClient;
-import com.example.EdufyPod.clients.CreatorClientImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
