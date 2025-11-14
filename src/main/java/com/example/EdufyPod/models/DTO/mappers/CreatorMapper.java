@@ -5,6 +5,8 @@ import com.example.EdufyPod.models.entities.Podcast;
 import com.example.EdufyPod.models.entities.PodcastSeason;
 import com.example.EdufyPod.clients.CreatorClient;
 import com.example.EdufyPod.clients.CreatorClientImpl;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -16,7 +18,7 @@ public class CreatorMapper {
     public static List<CreatorDTO> getCreatorsPodcastAdmin(Podcast podcast, CreatorClient creatorClient) {
         List<CreatorDTO> creators = creatorClient.getCreatorsEpisode(podcast.getId());
         if (creators == null || creators.isEmpty()) {
-            throw new RuntimeException("There are no creators in the podcast");
+            throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED,"There are no creators in the podcast");
         }
 
         return creators;
@@ -38,7 +40,7 @@ public class CreatorMapper {
     public static List<CreatorDTO> getCreatorsSeasonAdmin(PodcastSeason season, CreatorClient creatorClient) {
         List<CreatorDTO> creators = creatorClient.getCreatorsSeason(season.getId());
         if (creators == null || creators.isEmpty()) {
-            throw new RuntimeException("There are no creators in the podcast");
+            throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED,"There are no creators in the podcast");
         }
 
         return creators;

@@ -31,15 +31,6 @@ public class Podcast {
     @Column(name = "podcast_episode_release_date", nullable = false)
     private LocalDate releaseDate;
 
-    //ED-119-SA
-    @ElementCollection
-    @CollectionTable(
-            name = "podcast_episode_genre",
-            joinColumns = @JoinColumn(name = "podcast_episode_id")
-    )
-    @Column(name = "genre_id", nullable = false)
-    private List<Long> genresIds = new ArrayList<>();
-
     //ED-112-SA
     @Column(name = "podcast_episode_length", nullable = false)
     private LocalTime length;
@@ -69,7 +60,6 @@ public class Podcast {
         this.url = podcast.getUrl();
         this.description = podcast.getDescription();
         this.releaseDate = podcast.getReleaseDate();
-        this.genresIds = podcast.getGenresIds();
         this.length = podcast.getLength();
         this.nrInSeason = podcast.getNrInSeason();
         this.season = podcast.getSeason();
@@ -77,13 +67,12 @@ public class Podcast {
         this.isActive = podcast.isActive();
     }
 
-    public Podcast(Long id, String title, String url, String description, LocalDate releaseDate, List<Long> genresIds, LocalTime length, int nrInSeason, PodcastSeason season, Integer timesListened, boolean isActive) {
+    public Podcast(Long id, String title, String url, String description, LocalDate releaseDate, LocalTime length, int nrInSeason, PodcastSeason season, Integer timesListened, boolean isActive) {
         this.id = id;
         this.title = title;
         this.url = url;
         this.description = description;
         this.releaseDate = releaseDate;
-        this.genresIds = genresIds;
         this.length = length;
         this.nrInSeason = nrInSeason;
         this.season = season;
@@ -129,14 +118,6 @@ public class Podcast {
 
     public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
-    }
-
-    public List<Long> getGenresIds() {
-        return genresIds;
-    }
-
-    public void setGenresIds(List<Long> genresIds) {
-        this.genresIds = genresIds;
     }
 
     public LocalTime getLength() {
@@ -187,7 +168,6 @@ public class Podcast {
                 ", url='" + url + '\'' +
                 ", description='" + description + '\'' +
                 ", releaseDate=" + releaseDate +
-                ", genresIds=" + genresIds +
                 ", length=" + length +
                 ", nrInSeason=" + nrInSeason +
                 ", season=" + season +

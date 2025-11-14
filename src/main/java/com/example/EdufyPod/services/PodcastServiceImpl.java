@@ -1,6 +1,7 @@
 package com.example.EdufyPod.services;
 
 import com.example.EdufyPod.clients.CreatorClient;
+import com.example.EdufyPod.clients.GenreClient;
 import com.example.EdufyPod.converters.Roles;
 import com.example.EdufyPod.exceptions.ContentNotFoundException;
 import com.example.EdufyPod.exceptions.ResourceNotFoundException;
@@ -21,12 +22,14 @@ public class PodcastServiceImpl implements PodcastService {
 
     private final PodcastRepository podcastRepository;
     private final CreatorClient creatorClient;//ED-276-SA
+    private final GenreClient genreClient;
 
     //ED-76-SA
     @Autowired
-    public PodcastServiceImpl(PodcastRepository podcastRepository, CreatorClient creatorClient) {
+    public PodcastServiceImpl(PodcastRepository podcastRepository, CreatorClient creatorClient, GenreClient genreClient) {
         this.podcastRepository = podcastRepository;
         this.creatorClient = creatorClient;
+        this.genreClient = genreClient;
     }
 
     //ED-76-SA
@@ -37,7 +40,7 @@ public class PodcastServiceImpl implements PodcastService {
             throw new ResourceNotFoundException("Podcast", "id", id);
         }
         Podcast podcast = findPodcast.get();
-        return PodcastMapper.toDTOAdmin(podcast,creatorClient);
+        return PodcastMapper.toDTOAdmin(podcast,creatorClient, genreClient);
     }
 
     //ED-56-SA
@@ -47,7 +50,7 @@ public class PodcastServiceImpl implements PodcastService {
         if(podcasts.isEmpty()){
             throw new ResourceNotFoundException("Podcast", "title containing", title);
         }
-        return PodcastMapper.toDTOUserList(podcasts,creatorClient);
+        return PodcastMapper.toDTOUserList(podcasts,creatorClient, genreClient);
     }
 
     //ED-82-SA
@@ -60,12 +63,12 @@ public class PodcastServiceImpl implements PodcastService {
         if(roles.contains("pod_admin") || roles.contains("edufy_realm_admin")){
             allPodcastEpisodes = podcastRepository.findAll();
             listPodEmpty(allPodcastEpisodes);
-            return PodcastMapper.toDTOAdminList(allPodcastEpisodes,creatorClient);
+            return PodcastMapper.toDTOAdminList(allPodcastEpisodes,creatorClient, genreClient);
 
         }else {
             allPodcastEpisodes = podcastRepository.findAllByIsActiveTrue();
             listPodEmpty(allPodcastEpisodes);
-            return PodcastMapper.toDTOUserList(allPodcastEpisodes,creatorClient);
+            return PodcastMapper.toDTOUserList(allPodcastEpisodes,creatorClient, genreClient);
         }
     }
 
