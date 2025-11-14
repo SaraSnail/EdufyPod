@@ -44,15 +44,6 @@ public class PodcastSeason {
     @Column(name = "creator_id", nullable = false)
     private List<Long> creatorsIds = new ArrayList<>();
 
-    //ED-119-SA
-    @ElementCollection
-    @CollectionTable(
-            name = "podcast_season_genre",
-            joinColumns = @JoinColumn(name = "podcast_season_id")
-    )
-    @Column(name = "genre_id", nullable = false)
-    private List<Long> genresIds = new ArrayList<>();
-
     //ED-117-SA
     @JsonProperty("isActive")//ED-76-SA
     @Column(name = "podcast_season_is_active")
@@ -69,11 +60,10 @@ public class PodcastSeason {
         this.url = podcastSeason.getUrl();
         this.releaseDate = podcastSeason.getReleaseDate();
         this.creatorsIds = podcastSeason.getCreatorsIds();
-        this.genresIds = podcastSeason.getGenresIds();
         this.isActive = podcastSeason.isActive();
     }
 
-    public PodcastSeason(Long id, String title, String description, String url, LocalDate releaseDate, List<Podcast> podcasts, List<Long> creatorsIds, List<Long> genresIds, boolean isActive) {
+    public PodcastSeason(Long id, String title, String description, String url, LocalDate releaseDate, List<Podcast> podcasts, List<Long> creatorsIds, boolean isActive) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -81,7 +71,6 @@ public class PodcastSeason {
         this.releaseDate = releaseDate;
         this.podcasts = podcasts;
         this.creatorsIds = creatorsIds;
-        this.genresIds = genresIds;
         this.isActive = isActive;
     }
 
@@ -148,14 +137,6 @@ public class PodcastSeason {
         this.creatorsIds = creatorsIds;
     }
 
-    public List<Long> getGenresIds() {
-        return genresIds;
-    }
-
-    public void setGenresIds(List<Long> genresIds) {
-        this.genresIds = genresIds;
-    }
-
     public boolean isActive() {
         return isActive;
     }
@@ -174,7 +155,6 @@ public class PodcastSeason {
                 ", releaseDate=" + releaseDate +
                 ", podcasts=" + podcasts +
                 ", creatorsIds=" + creatorsIds +
-                ", genresIds=" + genresIds +
                 ", isActive=" + isActive +
                 '}';
     }
