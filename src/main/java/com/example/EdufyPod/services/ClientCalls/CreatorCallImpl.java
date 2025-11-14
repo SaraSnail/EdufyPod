@@ -5,6 +5,8 @@ import com.example.EdufyPod.models.DTO.CreatorDTO;
 import com.example.EdufyPod.models.DTO.GenreDTO;
 import com.example.EdufyPod.models.DTO.TransferPodcastDTO;
 import com.example.EdufyPod.models.DTO.TransferPodcastSeasonDTO;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -17,20 +19,23 @@ import java.util.List;
 public class CreatorCallImpl implements CreatorCall {
 
     private final RestClient restClient;
+    private final LoadBalancerClient loadBalancerClient;//ED-276-SA
 
-    public CreatorCallImpl() {
-        this.restClient = RestClient.create();
+    public CreatorCallImpl(RestClient.Builder restClientBuilder, LoadBalancerClient loadBalancerClient) {
+        this.restClient = restClientBuilder.build();
+        this.loadBalancerClient = loadBalancerClient;
     }
 
     //ED-303-SA
     @Override
     public List<TransferPodcastDTO> transferPodcastDTOs(Long creatorId) {
-        String uri = "http://localhost:4545/api/v1/creator/media-creator/" + creatorId + "/POD_EPISODE";
+        ServiceInstance serviceInstance = loadBalancerClient.choose("EDUFYCREATOR");//ED-276-SA
+        String uri = "/creator/media-creator/" + creatorId + "/PODCAST_EPISODE";
 
         try{
             List<TransferPodcastDTO> response = restClient
                     .get()
-                    .uri(uri)
+                    .uri(serviceInstance.getUri()+uri)
                     .retrieve()
                     .body(new ParameterizedTypeReference<List<TransferPodcastDTO>>() {});
 
@@ -49,12 +54,13 @@ public class CreatorCallImpl implements CreatorCall {
     //ED-303-SA
     @Override
     public List<TransferPodcastSeasonDTO> transferPodcastSeasonDTOs(Long creatorId) {
-        String uri = "http://localhost:4545/api/v1/creator/media-creator/" + creatorId + "/POD_SEASON";
+        ServiceInstance serviceInstance = loadBalancerClient.choose("EDUFYCREATOR");//ED-276-SA
+        String uri = "/creator/media-creator/" + creatorId + "/PODCAST_SEASON";
 
         try{
             List<TransferPodcastSeasonDTO> response = restClient
                     .get()
-                    .uri(uri)
+                    .uri(serviceInstance.getUri()+uri)
                     .retrieve()
                     .body(new ParameterizedTypeReference<List<TransferPodcastSeasonDTO>>() {});
 
@@ -72,11 +78,13 @@ public class CreatorCallImpl implements CreatorCall {
     //ED-303-SA
     @Override
     public List<CreatorDTO> getCreatorsEpisode(Long mediaId) {
-        String uri = "http://localhost:4545/api/v1/creator/creatortomedia/" + mediaId + "/POD_EPISODE";
+        ServiceInstance serviceInstance = loadBalancerClient.choose("EDUFYCREATOR");//ED-276-SA
+        String uri = "/creator/creatortomedia/" + mediaId + "/PODCAST_EPISODE";
+
         try{
             List<CreatorDTO> response = restClient
                     .get()
-                    .uri(uri)
+                    .uri(serviceInstance.getUri()+uri)
                     .retrieve()
                     .body(new ParameterizedTypeReference<List<CreatorDTO>>() {});
 
@@ -94,11 +102,13 @@ public class CreatorCallImpl implements CreatorCall {
     //ED-303-SA
     @Override
     public List<CreatorDTO> getCreatorsSeason(Long mediaId) {
-        String uri = "http://localhost:4545/api/v1/creator/creatortomedia/" + mediaId + "/POD_SEASON";
+        ServiceInstance serviceInstance = loadBalancerClient.choose("EDUFYCREATOR");//ED-276-SA
+        String uri = "/creator/creatortomedia/" + mediaId + "/PODCAST_SEASON";
+
         try{
             List<CreatorDTO> response = restClient
                     .get()
-                    .uri(uri)
+                    .uri(serviceInstance.getUri()+uri)
                     .retrieve()
                     .body(new ParameterizedTypeReference<List<CreatorDTO>>() {});
 

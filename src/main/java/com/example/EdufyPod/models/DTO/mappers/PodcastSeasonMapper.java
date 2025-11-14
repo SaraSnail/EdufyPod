@@ -13,6 +13,8 @@ public class PodcastSeasonMapper {
     //ED-76-SA
     public static PodcastSeasonDTO toDTO(PodcastSeason podcastSeason) {
         PodcastSeasonDTO podcastSeasonDTO = new PodcastSeasonDTO();
+        podcastSeasonDTO.setId(podcastSeason.getId());
+
         podcastSeasonDTO.setTitle(podcastSeason.getTitle());
         podcastSeasonDTO.setUrl(podcastSeason.getUrl());
         podcastSeasonDTO.setDescription(podcastSeason.getDescription());
@@ -23,15 +25,14 @@ public class PodcastSeasonMapper {
     }
 
     //ED-77-SA
-    public static PodcastSeasonDTO toDTONoId(PodcastSeason podcastSeason) {
+    public static PodcastSeasonDTO toDTOUser(PodcastSeason podcastSeason) {
         PodcastSeasonDTO podcastSeasonDTO = toDTO(podcastSeason);
-        podcastSeasonDTO.setCreators(CreatorMapper.getCreatorsSeasonUser(podcastSeason));//TODO: fix later
-        podcastSeasonDTO.setEpisodes(PodcastMapper.toDTONoIdList(podcastSeason.getPodcasts()));
+        podcastSeasonDTO.setEpisodes(PodcastMapper.toDTOUserList(podcastSeason.getPodcasts()));
 
         //ED-290-SA
         List<PodcastDTO> activeEpisodes = podcastSeason.getPodcasts().stream()
                 .filter(Podcast::isActive)
-                .map(PodcastMapper::toDTONoId)
+                .map(PodcastMapper::toDTOUser)
                 .toList();
 
         //ED-77-SA
@@ -40,36 +41,34 @@ public class PodcastSeasonMapper {
     }
 
     //ED-77-SA
-    public static PodcastSeasonDTO toDTOWithId(PodcastSeason podcastSeason) {
+    public static PodcastSeasonDTO toDTOAdmin(PodcastSeason podcastSeason) {
         PodcastSeasonDTO podcastSeasonDTO = toDTO(podcastSeason);
-        podcastSeasonDTO.setId(podcastSeason.getId());
         podcastSeasonDTO.setActive(podcastSeason.isActive());
-        podcastSeasonDTO.setCreators(CreatorMapper.getCreatorsSeasonAdmin(podcastSeason));//TODO: fix later
 
-        podcastSeasonDTO.setEpisodes(PodcastMapper.toDTOWithIdList(podcastSeason.getPodcasts()));
+        podcastSeasonDTO.setEpisodes(PodcastMapper.toDTOAdminList(podcastSeason.getPodcasts()));
         return podcastSeasonDTO;
     }
 
     //ED-58-SA
-    public static List<PodcastSeasonDTO> toDTOWithIdList(List<PodcastSeason> podcastSeasons) {
+    public static List<PodcastSeasonDTO> toDTOAdminList(List<PodcastSeason> podcastSeasons) {
         List<PodcastSeasonDTO> podcastSeasonDTOS = new ArrayList<>();
         for (PodcastSeason podcastSeason : podcastSeasons) {
-            podcastSeasonDTOS.add(toDTOWithId(podcastSeason));
+            podcastSeasonDTOS.add(toDTOAdmin(podcastSeason));
         }
         return podcastSeasonDTOS;
     }
 
     //ED-58-SA
-    public static List<PodcastSeasonDTO> toDTONoIdList(List<PodcastSeason> podcastSeasons) {
+    public static List<PodcastSeasonDTO> toDTOUserList(List<PodcastSeason> podcastSeasons) {
         List<PodcastSeasonDTO> podcastSeasonDTOS = new ArrayList<>();
         for (PodcastSeason podcastSeason : podcastSeasons) {
-            podcastSeasonDTOS.add(toDTONoId(podcastSeason));
+            podcastSeasonDTOS.add(toDTOUser(podcastSeason));
         }
         return podcastSeasonDTOS;
     }
 
     //ED-60-SA
-    public static List<PodcastSeasonDTO> toDTONoEpisodeListId(List<PodcastSeason> podcastSeasons) {
+    public static List<PodcastSeasonDTO> toDTONoEpisodeListIdAdmin(List<PodcastSeason> podcastSeasons) {
         List<PodcastSeasonDTO> podcastSeasonDTOS = new ArrayList<>();
         for (PodcastSeason podcastSeason : podcastSeasons) {
             podcastSeasonDTOS.add(toDTONoEpisodeId(podcastSeason));
@@ -87,7 +86,7 @@ public class PodcastSeasonMapper {
     }
 
     //ED-60-SA
-    public static List<PodcastSeasonDTO> toDTONoEpisodeListNoId(List<PodcastSeason> podcastSeasons) {
+    public static List<PodcastSeasonDTO> toDTONoEpisodeListUser(List<PodcastSeason> podcastSeasons) {
         List<PodcastSeasonDTO> podcastSeasonDTOS = new ArrayList<>();
         for (PodcastSeason podcastSeason : podcastSeasons) {
             podcastSeasonDTOS.add(toDTO(podcastSeason));

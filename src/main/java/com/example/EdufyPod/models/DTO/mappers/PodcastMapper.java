@@ -14,6 +14,8 @@ public class PodcastMapper {
     //ED-76-SA
     public static PodcastDTO toDTO(Podcast podcast) {
         PodcastDTO podcastDTO = new PodcastDTO();
+        podcastDTO.setId(podcast.getId());
+
         podcastDTO.setTitle(podcast.getTitle());
         podcastDTO.setUrl(podcast.getUrl());
         podcastDTO.setDescription(podcast.getDescription());
@@ -26,10 +28,8 @@ public class PodcastMapper {
     }
 
     //ED-77-SA
-    public static PodcastDTO toDTONoId(Podcast podcast) {
+    public static PodcastDTO toDTOUser(Podcast podcast) {
         PodcastDTO podcastDTO = toDTO(podcast);
-
-        podcastDTO.setCreators(CreatorMapper.getCreatorsPodcastUser(podcast));//TODO: fix later
 
         PodcastSeasonDTO seasonDTO = new PodcastSeasonDTO();
         PodcastSeason season = podcast.getSeason();
@@ -42,13 +42,9 @@ public class PodcastMapper {
     }
 
     //ED-77-SA
-    public static PodcastDTO toDTOWithId(Podcast podcast) {
+    public static PodcastDTO toDTOAdmin(Podcast podcast) {
         PodcastDTO podcastDTO = toDTO(podcast);
-        podcastDTO.setId(podcast.getId());
         podcastDTO.setActive(podcast.isActive());//ED-82-SA
-
-        podcastDTO.setCreators(CreatorMapper.getCreatorsPodcastAdmin(podcast));//TODO: fix later
-
 
         PodcastSeasonDTO seasonDTO = new PodcastSeasonDTO();
         PodcastSeason season = podcast.getSeason();
@@ -63,19 +59,19 @@ public class PodcastMapper {
     }
 
     //ED-77-SA
-    public static List<PodcastDTO> toDTONoIdList(List<Podcast> podcasts) {
+    public static List<PodcastDTO> toDTOUserList(List<Podcast> podcasts) {
         List<PodcastDTO> podcastDTOS = new ArrayList<>();
         for (Podcast podcast : podcasts) {
-            podcastDTOS.add(toDTONoId(podcast));
+            podcastDTOS.add(toDTOUser(podcast));
         }
         return podcastDTOS;
     }
 
     //ED-77-SA
-    public static List<PodcastDTO> toDTOWithIdList(List<Podcast> podcasts) {
+    public static List<PodcastDTO> toDTOAdminList(List<Podcast> podcasts) {
         List<PodcastDTO> podcastDTOS = new ArrayList<>();
         for (Podcast podcast : podcasts) {
-            podcastDTOS.add(toDTOWithId(podcast));
+            podcastDTOS.add(toDTOAdmin(podcast));
         }
         return podcastDTOS;
     }

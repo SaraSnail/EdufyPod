@@ -12,13 +12,14 @@ public class GenreMapping {
     public static List<String> getGenres(Podcast podcast) {
         List<String> genres = new ArrayList<>();
 
+        /*
         if(podcast.getCreatorsIds() != null) {
             for (Long genreId : podcast.getGenresIds()) {
                 //TODO: Call to Genre microservice
                 String genre = null;
                 genres.add(genre != null ? genre : "Genre: " + genreId);
             }
-        }
+        }*/
 
         return genres;
     }

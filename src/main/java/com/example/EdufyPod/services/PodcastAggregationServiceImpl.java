@@ -26,13 +26,15 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
     private final PodcastRepository podcastRepository;
     private final PodcastSeasonRepository podcastSeasonRepository;
     private final CreatorCall creatorCall;
+    private final CreatorService creatorService;
 
     //ED-60-SA
     @Autowired
-    public PodcastAggregationServiceImpl(PodcastRepository podcastRepository, PodcastSeasonRepository podcastSeasonRepository, CreatorCall creatorCall) {
+    public PodcastAggregationServiceImpl(PodcastRepository podcastRepository, PodcastSeasonRepository podcastSeasonRepository, CreatorCall creatorCall, CreatorService creatorService) {
         this.podcastRepository = podcastRepository;
         this.podcastSeasonRepository = podcastSeasonRepository;
         this.creatorCall = creatorCall;
+        this.creatorService = creatorService;
     }
 
     //ED-60-SA : gets podcast episodes and seasons based on id. Will ignore not found id one some if the list still contains some with valid ids
@@ -69,11 +71,13 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
             if(roles.contains("edufy_realm_admin") || roles.contains("pod_admin")){
                 seasons = podcastSeasonRepository.findAllById(seasonIds);
                 emptySeasonList(seasons, seasonIds);
-                seasonsDTOS = PodcastSeasonMapper.toDTONoEpisodeListId(seasons);
+                seasonsDTOS = PodcastSeasonMapper.toDTONoEpisodeListIdAdmin(seasons);
+
             }else {
                 seasons = podcastSeasonRepository.findAllByIdInAndIsActiveTrue(seasonIds);
                 emptySeasonList(seasons, seasonIds);
-                seasonsDTOS = PodcastSeasonMapper.toDTONoEpisodeListNoId(seasons);
+                seasonsDTOS = PodcastSeasonMapper.toDTONoEpisodeListUser(seasons);
+
             }
 
             missingSeasonIds = seasonIds.stream()
@@ -87,11 +91,11 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
             if(roles.contains("edufy_realm_admin") || roles.contains("pod_admin")){
                 podcasts = podcastRepository.findAllById(podcastIds);
                 emptyPodcastList(podcasts, podcastIds);
-                podcastDTOS = PodcastMapper.toDTOWithIdList(sortList(podcasts));
+                podcastDTOS = PodcastMapper.toDTOAdminList(sortList(podcasts));
             }else {
                 podcasts = podcastRepository.findAllByIdInAndIsActiveTrue(podcastIds);
                 emptyPodcastList(podcasts, podcastIds);
-                podcastDTOS = PodcastMapper.toDTONoIdList(sortList(podcasts));
+                podcastDTOS = PodcastMapper.toDTOUserList(sortList(podcasts));
             }
 
             missingEpisodeIds = podcastIds.stream()
@@ -130,11 +134,11 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
             if(roles.contains("edufy_realm_admin") || roles.contains("pod_admin")){
                 seasons = podcastSeasonRepository.findAllById(seasonIds);
                 emptySeasonList(seasons, seasonIds);
-                seasonsDTOS = PodcastSeasonMapper.toDTOWithIdList(seasons);
+                seasonsDTOS = PodcastSeasonMapper.toDTOAdminList(seasons);
             }else {
                 seasons = podcastSeasonRepository.findAllByIdInAndIsActiveTrue(seasonIds);
                 emptySeasonList(seasons, seasonIds);
-                seasonsDTOS = PodcastSeasonMapper.toDTONoIdList(seasons);
+                seasonsDTOS = PodcastSeasonMapper.toDTOUserList(seasons);
             }
 
             missingSeasonIds = seasonIds.stream()
