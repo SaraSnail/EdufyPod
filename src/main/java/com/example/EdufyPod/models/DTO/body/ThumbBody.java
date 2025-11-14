@@ -1,5 +1,6 @@
 package com.example.EdufyPod.models.DTO.body;
 
+//ED-232-SA
 public class ThumbBody {
     private Long mediaId;
     private String mediaType;

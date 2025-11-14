@@ -84,6 +84,7 @@ public class PodcastServiceImpl implements PodcastService {
         }
     }
 
+    //ED-232-SA
     @Override
     public PodcastDTO createPodcast(IncomingPodcastDTO incomingPodcastDTO) {
 
@@ -129,6 +130,7 @@ public class PodcastServiceImpl implements PodcastService {
         }
     }
 
+    //ED-232-SA
     private void notNull(IncomingPodcastDTO incomingPodcastDTO){
         if(incomingPodcastDTO.getTitle() == null){
             throw new NullValueException("Title", incomingPodcastDTO.getTitle());
@@ -162,6 +164,7 @@ public class PodcastServiceImpl implements PodcastService {
         }
     }
 
+    //ED-232-SA
     private void checkValues(Podcast podcast){
         if(podcast.getTitle().isEmpty()){
             throw new NullValueException("Title", podcast.getTitle());

@@ -10,7 +10,7 @@ INSERT INTO podcast_season(podcast_season_id, podcast_season_title, podcast_seas
 (9, 'Coffee and Conversations', 'Casual talks with extraordinary people.', 'https://pod.example.com/season/9', '2023-10-13', true),
 (10, 'The Hidden Signal', 'Investigating mysteries of sound, frequency, and rhythm.', 'https://pod.example.com/season/10', '2023-11-17', true);
 
-
+-- changed time to duration, seconds //ED-232-SA
 INSERT INTO podcast_episode(podcast_episode_id,podcast_episode_title,podcast_episode_url,podcast_episode_description, podcast_episode_release_date, podcast_episode_length, podcast_episode_nr_in_season, podcast_episode_times_listened, podcast_episode_is_active, podcast_episode_podcast_season) VALUES
 (1, 'The Dawn of AI', 'https://pod.example.com/ep/1', 'An exploration into artificial intelligence and its impact on daily life.', '2024-01-06', 2520, 1, 1520, true,1),
 (2, 'Voices from Mars', 'https://pod.example.com/ep/2', 'Scientists discuss communication with future Mars colonies.', '2024-01-13', 2302, 2, 1310, true,1),

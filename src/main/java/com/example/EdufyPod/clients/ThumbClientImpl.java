@@ -4,6 +4,7 @@ import com.example.EdufyPod.models.DTO.body.ThumbBody;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+//ED-232-SA
 @Service
 public class ThumbClientImpl implements ThumbClient {
 
@@ -13,6 +14,7 @@ public class ThumbClientImpl implements ThumbClient {
         this.webClient = webClientBuilder.build();
     }
 
+    //ED-232-SA
     @Override
     public void registerWithThumb(ThumbBody body) {
         webClient.post()

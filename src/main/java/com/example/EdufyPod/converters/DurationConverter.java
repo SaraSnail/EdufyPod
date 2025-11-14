@@ -5,10 +5,12 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Duration;
 
+//ED-232-SA
 public class DurationConverter {
 
     private DurationConverter(){};
 
+    //ED-232-SA
     public static Duration parsePodcastDuration(String input){
         String[] parts = input.split(":");
 
@@ -25,6 +27,7 @@ public class DurationConverter {
                 .plusSeconds(seconds);
     }
 
+    //ED-232-SA
     public static String formatPodcastDuration(Duration duration){
         long seconds = duration.getSeconds();
         long hours = seconds / 3600;

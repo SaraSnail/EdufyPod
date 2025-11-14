@@ -3,6 +3,7 @@ package com.example.EdufyPod.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+//ED-232-SA
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class NullValueException extends RuntimeException {
     private String field;

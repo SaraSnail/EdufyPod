@@ -2,6 +2,7 @@ package com.example.EdufyPod.models.DTO.body;
 
 import java.util.List;
 
+//ED-232-SA
 public class GenreBody {
 
     private Long mediaId;

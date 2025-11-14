@@ -34,7 +34,7 @@ public class Podcast {
 
     //ED-112-SA
     @Column(name = "podcast_episode_length", nullable = false)
-    private Duration length;
+    private Duration length;//ED-232-SA
 
     @Column(name = "podcast_episode_nr_in_season")
     private int nrInSeason;
