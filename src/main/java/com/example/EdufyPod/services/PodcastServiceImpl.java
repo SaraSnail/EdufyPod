@@ -22,7 +22,7 @@ public class PodcastServiceImpl implements PodcastService {
 
     private final PodcastRepository podcastRepository;
     private final CreatorClient creatorClient;//ED-276-SA
-    private final GenreClient genreClient;
+    private final GenreClient genreClient;//ED-267-SA
 
     //ED-76-SA
     @Autowired

@@ -11,9 +11,11 @@ import org.springframework.web.client.RestClientResponseException;
 
 import java.util.List;
 
+//ED-267-SA
 @Service
 public class GenreClientImpl implements GenreClient {
 
+    //ED-267-SA
     private final RestClient restClient;
     private final LoadBalancerClient loadBalancer;
 
@@ -22,6 +24,7 @@ public class GenreClientImpl implements GenreClient {
         this.loadBalancer = loadBalancer;
     }
 
+    //ED-267-SA
     @Override
     public List<GenreDTO> getGenreEpisode(Long mediaId) {
         ServiceInstance serviceInstance = loadBalancer.choose("EDUFYGENRE");

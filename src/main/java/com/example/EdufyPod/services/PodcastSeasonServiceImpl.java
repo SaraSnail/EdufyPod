@@ -22,7 +22,7 @@ public class PodcastSeasonServiceImpl implements PodcastSeasonService {
 
     private final PodcastSeasonRepository podcastSeasonRepository;
     private final CreatorClient creatorClient;//ED-276-SA
-    private final GenreClient genreClient;
+    private final GenreClient genreClient;//ED-267-SA
 
     //ED-77-SA
     @Autowired

@@ -11,6 +11,7 @@ import java.util.List;
 //ED-76-SA
 public class GenreMapper {
 
+    //ED-267-SA
     public static List<GenreDTO> getGenresAdmin(Podcast podcast, GenreClient genreClient) {
         List<GenreDTO> genres = genreClient.getGenreEpisode(podcast.getId());
         if(genres == null || genres.isEmpty()) {
@@ -20,6 +21,7 @@ public class GenreMapper {
         return genres;
     }
 
+    //ED-267-SA
     public static List<GenreDTO> getGenresUser(Podcast podcast, GenreClient genreClient) {
 
         return getGenresAdmin(podcast, genreClient).stream()
