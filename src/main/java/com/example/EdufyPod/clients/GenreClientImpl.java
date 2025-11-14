@@ -1,13 +1,15 @@
 package com.example.EdufyPod.clients;
 
 import com.example.EdufyPod.exceptions.CallFailException;
-import com.example.EdufyPod.models.DTO.GenreDTO;
+import com.example.EdufyPod.models.DTO.body.GenreBody;
+import com.example.EdufyPod.models.DTO.callDTOs.GenreDTO;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientResponseException;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
@@ -19,9 +21,13 @@ public class GenreClientImpl implements GenreClient {
     private final RestClient restClient;
     private final LoadBalancerClient loadBalancer;
 
-    public GenreClientImpl(RestClient.Builder restClientBuilder, LoadBalancerClient loadBalancer) {
+    //ED-232-SA
+    private WebClient webClient;
+
+    public GenreClientImpl(RestClient.Builder restClientBuilder, LoadBalancerClient loadBalancer, WebClient.Builder webClientBuilder) {
         this.restClient = restClientBuilder.build();
         this.loadBalancer = loadBalancer;
+        this.webClient = webClientBuilder.build();
     }
 
     //ED-267-SA
@@ -47,4 +53,19 @@ public class GenreClientImpl implements GenreClient {
         }
 
     }
+
+
+    //ED-232-SA
+    @Override
+    public void registerWithGenre(GenreBody body) {
+        webClient.post()
+                .uri("http://EDUFYGENRE/genre/media/record")
+                .bodyValue(body)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
+    }
+
+
+
 }

@@ -1,5 +1,8 @@
 package com.example.EdufyPod.models.DTO;
 
+import com.example.EdufyPod.models.DTO.callDTOs.TransferPodcastDTO;
+import com.example.EdufyPod.models.DTO.callDTOs.TransferPodcastSeasonDTO;
+
 import java.util.List;
 
 public class PodcastRequest {

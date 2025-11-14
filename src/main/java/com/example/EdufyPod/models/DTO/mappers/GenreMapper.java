@@ -1,7 +1,7 @@
 package com.example.EdufyPod.models.DTO.mappers;
 
 import com.example.EdufyPod.clients.GenreClient;
-import com.example.EdufyPod.models.DTO.GenreDTO;
+import com.example.EdufyPod.models.DTO.callDTOs.GenreDTO;
 import com.example.EdufyPod.models.entities.Podcast;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;

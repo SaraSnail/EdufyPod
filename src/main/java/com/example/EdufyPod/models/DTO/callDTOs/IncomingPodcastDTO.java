@@ -1,52 +1,31 @@
-package com.example.EdufyPod.models.DTO;
-
-import com.example.EdufyPod.models.DTO.callDTOs.CreatorDTO;
-import com.example.EdufyPod.models.DTO.callDTOs.GenreDTO;
-import com.fasterxml.jackson.annotation.JsonInclude;
+package com.example.EdufyPod.models.DTO.callDTOs;
 
 import java.time.LocalDate;
 import java.util.List;
 
-//ED-76-SA
-@JsonInclude(JsonInclude.Include.NON_NULL)//ED-77-SA
-public class PodcastDTO {
-    private Long id;//ED-77-SA
+public class IncomingPodcastDTO {
     private String title;
     private String url;
     private String description;
-    private List<CreatorDTO> creators;
+    private List<Long> creatorIds;
     private LocalDate releaseDate;
-    private List<GenreDTO> genres;
+    private List<Long> genreIds;
     private String length;
     private Integer nrInSeason;
-    private PodcastSeasonDTO season;
+    private Long seasonId;
     private Integer timesListened;
-    private Boolean active;//ED-82-SA - ED-263-SA:changed to Boolean
 
-    public PodcastDTO() {
-    }
-
-    public PodcastDTO(Long id, String title, String url, String description, List<CreatorDTO> creators, LocalDate releaseDate, List<GenreDTO> genres, String length, Integer nrInSeason, PodcastSeasonDTO season, Integer timesListened, Boolean active) {
-        this.id = id;
+    public IncomingPodcastDTO(String title, String url, String description, List<Long> creatorIds, LocalDate releaseDate, List<Long> genreIds, String length, Integer nrInSeason, Long seasonId, Integer timesListened) {
         this.title = title;
         this.url = url;
         this.description = description;
-        this.creators = creators;
+        this.creatorIds = creatorIds;
         this.releaseDate = releaseDate;
-        this.genres = genres;
+        this.genreIds = genreIds;
         this.length = length;
         this.nrInSeason = nrInSeason;
-        this.season = season;
+        this.seasonId = seasonId;
         this.timesListened = timesListened;
-        this.active = active;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -73,12 +52,12 @@ public class PodcastDTO {
         this.description = description;
     }
 
-    public List<CreatorDTO> getCreators() {
-        return creators;
+    public List<Long> getCreatorIds() {
+        return creatorIds;
     }
 
-    public void setCreators(List<CreatorDTO> creators) {
-        this.creators = creators;
+    public void setCreatorIds(List<Long> creatorIds) {
+        this.creatorIds = creatorIds;
     }
 
     public LocalDate getReleaseDate() {
@@ -89,12 +68,12 @@ public class PodcastDTO {
         this.releaseDate = releaseDate;
     }
 
-    public List<GenreDTO> getGenres() {
-        return genres;
+    public List<Long> getGenreIds() {
+        return genreIds;
     }
 
-    public void setGenres(List<GenreDTO> genres) {
-        this.genres = genres;
+    public void setGenreIds(List<Long> genreIds) {
+        this.genreIds = genreIds;
     }
 
     public String getLength() {
@@ -113,12 +92,12 @@ public class PodcastDTO {
         this.nrInSeason = nrInSeason;
     }
 
-    public PodcastSeasonDTO getSeason() {
-        return season;
+    public Long getSeasonId() {
+        return seasonId;
     }
 
-    public void setSeason(PodcastSeasonDTO season) {
-        this.season = season;
+    public void setSeasonId(Long seasonId) {
+        this.seasonId = seasonId;
     }
 
     public Integer getTimesListened() {
@@ -129,28 +108,19 @@ public class PodcastDTO {
         this.timesListened = timesListened;
     }
 
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
     @Override
     public String toString() {
-        return "PodcastDTO{" +
+        return "IncomingPodcastDTO{" +
                 "title='" + title + '\'' +
                 ", url='" + url + '\'' +
                 ", description='" + description + '\'' +
-                ", creators=" + creators +
+                ", creatorIds=" + creatorIds +
                 ", releaseDate=" + releaseDate +
-                ", genres=" + genres +
+                ", genreIds=" + genreIds +
                 ", length=" + length +
                 ", nrInSeason=" + nrInSeason +
-                ", season=" + season +
+                ", seasonId=" + seasonId +
                 ", timesListened=" + timesListened +
-                ", active='" + active + '\'' +
                 '}';
     }
 }

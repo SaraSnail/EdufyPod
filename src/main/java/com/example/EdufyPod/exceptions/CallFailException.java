@@ -30,5 +30,15 @@ public class CallFailException extends RuntimeException {
         this.values = values;
     }
 
+    public String getService() {
+        return service;
+    }
 
+    public String getOriginalURL() {
+        return originalURL;
+    }
+
+    public String getValues() {
+        return values;
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.EdufyPod.models.DTO;
+package com.example.EdufyPod.models.DTO.callDTOs;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
