@@ -18,7 +18,7 @@ import java.util.List;
 public class CreatorClientImpl implements CreatorClient {
 
     private final RestClient restClient;
-    private final LoadBalancerClient loadBalancer;
+    private final LoadBalancerClient loadBalancer;//ED-276-SA
 
     public CreatorClientImpl(RestClient.Builder restClientBuilder, LoadBalancerClient loadBalancerClient) {
         this.restClient = restClientBuilder.build();
@@ -28,7 +28,7 @@ public class CreatorClientImpl implements CreatorClient {
     //ED-303-SA
     @Override
     public List<TransferPodcastDTO> transferPodcastDTOs(Long creatorId) {
-        ServiceInstance serviceInstance = loadBalancer.choose("EDUFYCREATOR");
+        ServiceInstance serviceInstance = loadBalancer.choose("EDUFYCREATOR");//ED-276-SA
         String uri = "/creator/media-creator/" + creatorId + "/PODCAST_EPISODE";
 
         try{
@@ -53,7 +53,7 @@ public class CreatorClientImpl implements CreatorClient {
     //ED-303-SA
     @Override
     public List<TransferPodcastSeasonDTO> transferPodcastSeasonDTOs(Long creatorId) {
-        ServiceInstance serviceInstance = loadBalancer.choose("EDUFYCREATOR");
+        ServiceInstance serviceInstance = loadBalancer.choose("EDUFYCREATOR");//ED-276-SA
         String uri = "/creator/media-creator/" + creatorId + "/PODCAST_SEASON";
 
         try{
@@ -77,7 +77,7 @@ public class CreatorClientImpl implements CreatorClient {
     //ED-303-SA
     @Override
     public List<CreatorDTO> getCreatorsEpisode(Long mediaId) {
-        ServiceInstance serviceInstance = loadBalancer.choose("EDUFYCREATOR");
+        ServiceInstance serviceInstance = loadBalancer.choose("EDUFYCREATOR");//ED-276-SA
         String uri = "/creator/creators-media/PODCAST_EPISODE/" + mediaId;
         try{
             List<CreatorDTO> response = restClient
@@ -100,7 +100,7 @@ public class CreatorClientImpl implements CreatorClient {
     //ED-303-SA
     @Override
     public List<CreatorDTO> getCreatorsSeason(Long mediaId) {
-        ServiceInstance serviceInstance = loadBalancer.choose("EDUFYCREATOR");
+        ServiceInstance serviceInstance = loadBalancer.choose("EDUFYCREATOR");//ED-276-SA
         String uri = "/creator/creators-media/PODCAST_SEASON/" + mediaId;
         try{
             List<CreatorDTO> response = restClient

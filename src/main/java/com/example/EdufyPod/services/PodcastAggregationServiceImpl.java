@@ -25,7 +25,7 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
 
     private final PodcastRepository podcastRepository;
     private final PodcastSeasonRepository podcastSeasonRepository;
-    private final CreatorClient creatorClient;
+    private final CreatorClient creatorClient;//ED-276-SA
 
     //ED-60-SA
     @Autowired
