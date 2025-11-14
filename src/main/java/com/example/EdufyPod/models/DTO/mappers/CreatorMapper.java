@@ -1,11 +1,10 @@
 package com.example.EdufyPod.models.DTO.mappers;
 
 import com.example.EdufyPod.models.DTO.CreatorDTO;
-import com.example.EdufyPod.models.DTO.GenreDTO;
 import com.example.EdufyPod.models.entities.Podcast;
 import com.example.EdufyPod.models.entities.PodcastSeason;
-import com.example.EdufyPod.services.ClientCalls.CreatorCall;
-import com.example.EdufyPod.services.ClientCalls.CreatorCallImpl;
+import com.example.EdufyPod.clients.CreatorClient;
+import com.example.EdufyPod.clients.CreatorClientImpl;
 
 import java.util.List;
 
@@ -13,16 +12,9 @@ import java.util.List;
 //ED-303-SA
 public class CreatorMapper {
 
-    private final CreatorCall creatorCall;
-
-    public CreatorMapper(CreatorCall creatorCall) {
-        this.creatorCall = creatorCall;
-    }
-
     //ED-303-SA
-    public static List<CreatorDTO> getCreatorsPodcastAdmin(Podcast podcast) {
-        CreatorCallImpl creatorCallImpl = new CreatorCallImpl();
-        List<CreatorDTO> creators = creatorCallImpl.getCreatorsEpisode(podcast.getId());
+    public static List<CreatorDTO> getCreatorsPodcastAdmin(Podcast podcast, CreatorClient creatorClient) {
+        List<CreatorDTO> creators = creatorClient.getCreatorsEpisode(podcast.getId());
         if (creators == null || creators.isEmpty()) {
             throw new RuntimeException("There are no creators in the podcast");
         }
@@ -31,8 +23,8 @@ public class CreatorMapper {
     }
 
     //ED-303-SA
-    public static List<CreatorDTO> getCreatorsPodcastUser(Podcast podcast) {
-        return  getCreatorsPodcastAdmin(podcast).stream()
+    public static List<CreatorDTO> getCreatorsPodcastUser(Podcast podcast, CreatorClient creatorClient) {
+        return  getCreatorsPodcastAdmin(podcast, creatorClient).stream()
                 .map(creator -> {
                     CreatorDTO creatorDTO = new CreatorDTO();
                     creatorDTO.setUsername(creator.getUsername());
@@ -43,9 +35,8 @@ public class CreatorMapper {
     }
 
     //ED-303-SA
-    public static List<CreatorDTO> getCreatorsSeasonAdmin(PodcastSeason season) {
-        CreatorCallImpl creatorCallImpl = new CreatorCallImpl();
-        List<CreatorDTO> creators = creatorCallImpl.getCreatorsSeason(season.getId());
+    public static List<CreatorDTO> getCreatorsSeasonAdmin(PodcastSeason season, CreatorClient creatorClient) {
+        List<CreatorDTO> creators = creatorClient.getCreatorsSeason(season.getId());
         if (creators == null || creators.isEmpty()) {
             throw new RuntimeException("There are no creators in the podcast");
         }
@@ -54,8 +45,8 @@ public class CreatorMapper {
     }
 
     //ED-303-SA
-    public static List<CreatorDTO> getCreatorsSeasonUser(PodcastSeason season) {
-        return  getCreatorsSeasonAdmin(season).stream()
+    public static List<CreatorDTO> getCreatorsSeasonUser(PodcastSeason season, CreatorClient creatorClient) {
+        return  getCreatorsSeasonAdmin(season, creatorClient).stream()
                 .map(creator -> {
                     CreatorDTO creatorDTO = new CreatorDTO();
                     creatorDTO.setUsername(creator.getUsername());

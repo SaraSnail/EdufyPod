@@ -59,18 +59,16 @@ public class PodcastSeason {
         this.description = podcastSeason.getDescription();
         this.url = podcastSeason.getUrl();
         this.releaseDate = podcastSeason.getReleaseDate();
-        this.creatorsIds = podcastSeason.getCreatorsIds();
         this.isActive = podcastSeason.isActive();
     }
 
-    public PodcastSeason(Long id, String title, String description, String url, LocalDate releaseDate, List<Podcast> podcasts, List<Long> creatorsIds, boolean isActive) {
+    public PodcastSeason(Long id, String title, String description, String url, LocalDate releaseDate, List<Podcast> podcasts, boolean isActive) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.url = url;
         this.releaseDate = releaseDate;
         this.podcasts = podcasts;
-        this.creatorsIds = creatorsIds;
         this.isActive = isActive;
     }
 
@@ -129,13 +127,6 @@ public class PodcastSeason {
                 .count();
     }
 
-    public List<Long> getCreatorsIds() {
-        return creatorsIds;
-    }
-
-    public void setCreatorsIds(List<Long> creatorsIds) {
-        this.creatorsIds = creatorsIds;
-    }
 
     public boolean isActive() {
         return isActive;
@@ -154,7 +145,6 @@ public class PodcastSeason {
                 ", url='" + url + '\'' +
                 ", releaseDate=" + releaseDate +
                 ", podcasts=" + podcasts +
-                ", creatorsIds=" + creatorsIds +
                 ", isActive=" + isActive +
                 '}';
     }

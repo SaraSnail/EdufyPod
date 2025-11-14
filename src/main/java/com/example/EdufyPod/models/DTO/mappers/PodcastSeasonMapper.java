@@ -1,5 +1,6 @@
 package com.example.EdufyPod.models.DTO.mappers;
 
+import com.example.EdufyPod.clients.CreatorClient;
 import com.example.EdufyPod.models.DTO.PodcastDTO;
 import com.example.EdufyPod.models.DTO.PodcastSeasonDTO;
 import com.example.EdufyPod.models.entities.Podcast;
@@ -23,16 +24,17 @@ public class PodcastSeasonMapper {
     }
 
     //ED-77-SA
-    public static PodcastSeasonDTO toDTONoId(PodcastSeason podcastSeason) {
+    public static PodcastSeasonDTO toDTOUser(PodcastSeason podcastSeason, CreatorClient creatorClient) {
         PodcastSeasonDTO podcastSeasonDTO = toDTO(podcastSeason);
-        podcastSeasonDTO.setCreators(CreatorMapper.getCreatorsSeasonUser(podcastSeason));//TODO: fix later
-        podcastSeasonDTO.setEpisodes(PodcastMapper.toDTONoIdList(podcastSeason.getPodcasts()));
+        podcastSeasonDTO.setCreators(CreatorMapper.getCreatorsSeasonUser(podcastSeason, creatorClient));//TODO: fix later
+        podcastSeasonDTO.setEpisodes(PodcastMapper.toDTOUserList(podcastSeason.getPodcasts(), creatorClient));
 
-        //ED-290-SA
-        List<PodcastDTO> activeEpisodes = podcastSeason.getPodcasts().stream()
-                .filter(Podcast::isActive)
-                .map(PodcastMapper::toDTONoId)
-                .toList();
+        List<PodcastDTO> activeEpisodes = new ArrayList<>();
+        for(Podcast podEp : podcastSeason.getPodcasts()) {
+            if(podEp.isActive()){
+                activeEpisodes.add(PodcastMapper.toDTOUser(podEp, creatorClient));
+            }
+        }
 
         //ED-77-SA
         podcastSeasonDTO.setEpisodes(activeEpisodes);
@@ -40,58 +42,67 @@ public class PodcastSeasonMapper {
     }
 
     //ED-77-SA
-    public static PodcastSeasonDTO toDTOWithId(PodcastSeason podcastSeason) {
+    public static PodcastSeasonDTO toDTOAdmin(PodcastSeason podcastSeason, CreatorClient creatorClient) {
         PodcastSeasonDTO podcastSeasonDTO = toDTO(podcastSeason);
         podcastSeasonDTO.setId(podcastSeason.getId());
         podcastSeasonDTO.setActive(podcastSeason.isActive());
-        podcastSeasonDTO.setCreators(CreatorMapper.getCreatorsSeasonAdmin(podcastSeason));//TODO: fix later
+        podcastSeasonDTO.setCreators(CreatorMapper.getCreatorsSeasonAdmin(podcastSeason, creatorClient));//TODO: fix later
 
-        podcastSeasonDTO.setEpisodes(PodcastMapper.toDTOWithIdList(podcastSeason.getPodcasts()));
+        podcastSeasonDTO.setEpisodes(PodcastMapper.toDTOAdminList(podcastSeason.getPodcasts(), creatorClient));
         return podcastSeasonDTO;
     }
 
     //ED-58-SA
-    public static List<PodcastSeasonDTO> toDTOWithIdList(List<PodcastSeason> podcastSeasons) {
+    public static List<PodcastSeasonDTO> toDTOAdminList(List<PodcastSeason> podcastSeasons, CreatorClient creatorClient) {
         List<PodcastSeasonDTO> podcastSeasonDTOS = new ArrayList<>();
         for (PodcastSeason podcastSeason : podcastSeasons) {
-            podcastSeasonDTOS.add(toDTOWithId(podcastSeason));
+            podcastSeasonDTOS.add(toDTOAdmin(podcastSeason, creatorClient));
         }
         return podcastSeasonDTOS;
     }
 
     //ED-58-SA
-    public static List<PodcastSeasonDTO> toDTONoIdList(List<PodcastSeason> podcastSeasons) {
+    public static List<PodcastSeasonDTO> toDTOUserList(List<PodcastSeason> podcastSeasons, CreatorClient creatorClient) {
         List<PodcastSeasonDTO> podcastSeasonDTOS = new ArrayList<>();
         for (PodcastSeason podcastSeason : podcastSeasons) {
-            podcastSeasonDTOS.add(toDTONoId(podcastSeason));
+            podcastSeasonDTOS.add(toDTOUser(podcastSeason, creatorClient));
         }
         return podcastSeasonDTOS;
     }
 
     //ED-60-SA
-    public static List<PodcastSeasonDTO> toDTONoEpisodeListId(List<PodcastSeason> podcastSeasons) {
+    public static List<PodcastSeasonDTO> toDTONoEpisodeListAdmin(List<PodcastSeason> podcastSeasons, CreatorClient creatorClient) {
         List<PodcastSeasonDTO> podcastSeasonDTOS = new ArrayList<>();
         for (PodcastSeason podcastSeason : podcastSeasons) {
-            podcastSeasonDTOS.add(toDTONoEpisodeId(podcastSeason));
+            podcastSeasonDTOS.add(toDTONoEpisodeAdmin(podcastSeason, creatorClient));
         }
         return podcastSeasonDTOS;
     }
 
     //ED-60-SA
-    public static PodcastSeasonDTO toDTONoEpisodeId(PodcastSeason podcastSeason) {
+    public static PodcastSeasonDTO toDTONoEpisodeAdmin(PodcastSeason podcastSeason, CreatorClient creatorClient) {
         PodcastSeasonDTO podcastSeasonDTO = toDTO(podcastSeason);
         podcastSeasonDTO.setId(podcastSeason.getId());
         podcastSeasonDTO.setActive(podcastSeason.isActive());
+
+        podcastSeasonDTO.setCreators(CreatorMapper.getCreatorsSeasonAdmin(podcastSeason, creatorClient));
 
         return podcastSeasonDTO;
     }
 
     //ED-60-SA
-    public static List<PodcastSeasonDTO> toDTONoEpisodeListNoId(List<PodcastSeason> podcastSeasons) {
+    public static List<PodcastSeasonDTO> toDTONoEpisodeListUser(List<PodcastSeason> podcastSeasons, CreatorClient creatorClient) {
         List<PodcastSeasonDTO> podcastSeasonDTOS = new ArrayList<>();
         for (PodcastSeason podcastSeason : podcastSeasons) {
-            podcastSeasonDTOS.add(toDTO(podcastSeason));
+            podcastSeasonDTOS.add(toDTONoEpisodeUser(podcastSeason, creatorClient));
         }
         return podcastSeasonDTOS;
+    }
+
+    public static PodcastSeasonDTO toDTONoEpisodeUser(PodcastSeason podcastSeason, CreatorClient creatorClient) {
+        PodcastSeasonDTO podcastSeasonDTO = toDTO(podcastSeason);
+        podcastSeasonDTO.setCreators(CreatorMapper.getCreatorsSeasonUser(podcastSeason, creatorClient));
+
+        return podcastSeasonDTO;
     }
 }

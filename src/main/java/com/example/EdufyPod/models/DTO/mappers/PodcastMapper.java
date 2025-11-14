@@ -1,5 +1,6 @@
 package com.example.EdufyPod.models.DTO.mappers;
 
+import com.example.EdufyPod.clients.CreatorClient;
 import com.example.EdufyPod.models.DTO.PodcastDTO;
 import com.example.EdufyPod.models.DTO.PodcastSeasonDTO;
 import com.example.EdufyPod.models.entities.Podcast;
@@ -26,10 +27,10 @@ public class PodcastMapper {
     }
 
     //ED-77-SA
-    public static PodcastDTO toDTONoId(Podcast podcast) {
+    public static PodcastDTO toDTOUser(Podcast podcast, CreatorClient creatorClient) {
         PodcastDTO podcastDTO = toDTO(podcast);
 
-        podcastDTO.setCreators(CreatorMapper.getCreatorsPodcastUser(podcast));//TODO: fix later
+        podcastDTO.setCreators(CreatorMapper.getCreatorsPodcastUser(podcast, creatorClient));//TODO: fix later
 
         PodcastSeasonDTO seasonDTO = new PodcastSeasonDTO();
         PodcastSeason season = podcast.getSeason();
@@ -42,12 +43,12 @@ public class PodcastMapper {
     }
 
     //ED-77-SA
-    public static PodcastDTO toDTOWithId(Podcast podcast) {
+    public static PodcastDTO toDTOAdmin(Podcast podcast, CreatorClient creatorClient) {
         PodcastDTO podcastDTO = toDTO(podcast);
         podcastDTO.setId(podcast.getId());
         podcastDTO.setActive(podcast.isActive());//ED-82-SA
 
-        podcastDTO.setCreators(CreatorMapper.getCreatorsPodcastAdmin(podcast));//TODO: fix later
+        podcastDTO.setCreators(CreatorMapper.getCreatorsPodcastAdmin(podcast, creatorClient));//TODO: fix later
 
 
         PodcastSeasonDTO seasonDTO = new PodcastSeasonDTO();
@@ -63,19 +64,19 @@ public class PodcastMapper {
     }
 
     //ED-77-SA
-    public static List<PodcastDTO> toDTONoIdList(List<Podcast> podcasts) {
+    public static List<PodcastDTO> toDTOUserList(List<Podcast> podcasts, CreatorClient creatorClient) {
         List<PodcastDTO> podcastDTOS = new ArrayList<>();
         for (Podcast podcast : podcasts) {
-            podcastDTOS.add(toDTONoId(podcast));
+            podcastDTOS.add(toDTOUser(podcast, creatorClient));
         }
         return podcastDTOS;
     }
 
     //ED-77-SA
-    public static List<PodcastDTO> toDTOWithIdList(List<Podcast> podcasts) {
+    public static List<PodcastDTO> toDTOAdminList(List<Podcast> podcasts, CreatorClient creatorClient) {
         List<PodcastDTO> podcastDTOS = new ArrayList<>();
         for (Podcast podcast : podcasts) {
-            podcastDTOS.add(toDTOWithId(podcast));
+            podcastDTOS.add(toDTOAdmin(podcast, creatorClient));
         }
         return podcastDTOS;
     }

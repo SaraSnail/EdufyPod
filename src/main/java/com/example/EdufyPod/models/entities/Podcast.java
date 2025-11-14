@@ -27,16 +27,6 @@ public class Podcast {
     @Column(name = "podcast_episode_description", nullable = false)
     private String description;
 
-    //ED-118-SA
-    //ED-119-SA: had connected it wrong
-    @ElementCollection
-    @CollectionTable(
-            name = "podcast_episode_creators",
-            joinColumns = @JoinColumn(name = "podcast_episode_id")
-    )
-    @Column(name = "creator_id", nullable = false)
-    private List<Long> creatorsIds = new ArrayList<>();
-
     //ED-112-SA
     @Column(name = "podcast_episode_release_date", nullable = false)
     private LocalDate releaseDate;
@@ -69,7 +59,6 @@ public class Podcast {
         this.title = podcast.getTitle();
         this.url = podcast.getUrl();
         this.description = podcast.getDescription();
-        this.creatorsIds = podcast.getCreatorsIds();
         this.releaseDate = podcast.getReleaseDate();
         this.length = podcast.getLength();
         this.nrInSeason = podcast.getNrInSeason();
@@ -78,12 +67,11 @@ public class Podcast {
         this.isActive = podcast.isActive();
     }
 
-    public Podcast(Long id, String title, String url, String description, List<Long> creatorsIds, LocalDate releaseDate, LocalTime length, int nrInSeason, PodcastSeason season, Integer timesListened, boolean isActive) {
+    public Podcast(Long id, String title, String url, String description, LocalDate releaseDate, LocalTime length, int nrInSeason, PodcastSeason season, Integer timesListened, boolean isActive) {
         this.id = id;
         this.title = title;
         this.url = url;
         this.description = description;
-        this.creatorsIds = creatorsIds;
         this.releaseDate = releaseDate;
         this.length = length;
         this.nrInSeason = nrInSeason;
@@ -122,14 +110,6 @@ public class Podcast {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public List<Long> getCreatorsIds() {
-        return creatorsIds;
-    }
-
-    public void setCreatorsIds(List<Long> creatorsIds) {
-        this.creatorsIds = creatorsIds;
     }
 
     public LocalDate getReleaseDate() {
@@ -187,7 +167,6 @@ public class Podcast {
                 ", title='" + title + '\'' +
                 ", url='" + url + '\'' +
                 ", description='" + description + '\'' +
-                ", creatorsIds=" + creatorsIds +
                 ", releaseDate=" + releaseDate +
                 ", length=" + length +
                 ", nrInSeason=" + nrInSeason +
