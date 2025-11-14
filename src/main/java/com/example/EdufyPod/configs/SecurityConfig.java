@@ -36,12 +36,11 @@ public class SecurityConfig {
                                 .requestMatchers("/h2-console/**").permitAll()//ED-120-SA
                                 //.requestMatchers("/h2-console/**").hasRole("edufy_realm_admin")//ED-120-SA
                                 //.requestMatchers("/api/v1/pod/getpodcastbyid/**").permitAll()//ED-76-SA
-                                .anyRequest().permitAll()//change later
-                                //.anyRequest().authenticated()
+                                .anyRequest().authenticated()
 
                 )
-                /*.oauth2ResourceServer(oauth->
-                        oauth.jwt(jwt-> jwt.jwtAuthenticationConverter(jwtAuthConverter)))*/ //ED-166-SA
+                .oauth2ResourceServer(oauth->
+                        oauth.jwt(jwt-> jwt.jwtAuthenticationConverter(jwtAuthConverter))) //ED-166-SA
                 //ED-120-SA
                 .headers(headers ->
                         headers.frameOptions(frame ->
