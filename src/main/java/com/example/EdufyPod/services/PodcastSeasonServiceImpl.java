@@ -1,5 +1,6 @@
 package com.example.EdufyPod.services;
 
+import com.example.EdufyPod.clients.CreatorClient;
 import com.example.EdufyPod.converters.Roles;
 import com.example.EdufyPod.exceptions.ContentNotFoundException;
 import com.example.EdufyPod.exceptions.ResourceNotFoundException;
@@ -19,11 +20,13 @@ import java.util.Optional;
 public class PodcastSeasonServiceImpl implements PodcastSeasonService {
 
     private final PodcastSeasonRepository podcastSeasonRepository;
+    private final CreatorClient creatorClient;//ED-276-SA
 
     //ED-77-SA
     @Autowired
-    public PodcastSeasonServiceImpl(PodcastSeasonRepository podcastSeasonRepository) {
+    public PodcastSeasonServiceImpl(PodcastSeasonRepository podcastSeasonRepository, CreatorClient creatorClient) {
         this.podcastSeasonRepository = podcastSeasonRepository;
+        this.creatorClient = creatorClient;
     }
 
     //ED-77-SA
@@ -33,7 +36,7 @@ public class PodcastSeasonServiceImpl implements PodcastSeasonService {
         if(findPodcastSeason.isEmpty()){
             throw new ResourceNotFoundException("Podcast Season", "id", id);
         }
-        return PodcastSeasonMapper.toDTOWithId(findPodcastSeason.get());
+        return PodcastSeasonMapper.toDTOAdmin(findPodcastSeason.get(),creatorClient);
     }
 
     //ED-58-SA
@@ -43,7 +46,7 @@ public class PodcastSeasonServiceImpl implements PodcastSeasonService {
         if(podcastSeasons.isEmpty()){
             throw new ResourceNotFoundException("Podcast Season", "title containing", title);
         }
-        return PodcastSeasonMapper.toDTONoIdList(podcastSeasons);
+        return PodcastSeasonMapper.toDTOUserList(podcastSeasons,creatorClient);
     }
 
     //ED-83-SA
@@ -56,12 +59,12 @@ public class PodcastSeasonServiceImpl implements PodcastSeasonService {
         if(roles.contains("pod_admin") || roles.contains("edufy_realm_admin")){
             allPodcastSeasons = podcastSeasonRepository.findAll();
             emptySeasonList(allPodcastSeasons);
-            return PodcastSeasonMapper.toDTOWithIdList(allPodcastSeasons);
+            return PodcastSeasonMapper.toDTOAdminList(allPodcastSeasons,creatorClient);
 
         }else {
             allPodcastSeasons = podcastSeasonRepository.findAllByIsActiveTrue();
             emptySeasonList(allPodcastSeasons);
-            return PodcastSeasonMapper.toDTONoIdList(allPodcastSeasons);
+            return PodcastSeasonMapper.toDTOUserList(allPodcastSeasons,creatorClient);
 
         }
 
