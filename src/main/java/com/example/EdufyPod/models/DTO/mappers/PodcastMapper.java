@@ -1,6 +1,7 @@
 package com.example.EdufyPod.models.DTO.mappers;
 
 import com.example.EdufyPod.clients.CreatorClient;
+import com.example.EdufyPod.clients.GenreClient;
 import com.example.EdufyPod.models.DTO.PodcastDTO;
 import com.example.EdufyPod.models.DTO.PodcastSeasonDTO;
 import com.example.EdufyPod.models.entities.Podcast;
@@ -19,7 +20,7 @@ public class PodcastMapper {
         podcastDTO.setUrl(podcast.getUrl());
         podcastDTO.setDescription(podcast.getDescription());
         podcastDTO.setReleaseDate(podcast.getReleaseDate());
-        podcastDTO.setGenres(GenreMapping.getGenres(podcast));//TODO: fix later
+
         podcastDTO.setLength(podcast.getLength());
         podcastDTO.setNrInSeason(podcast.getNrInSeason());
         podcastDTO.setTimesListened(podcast.getTimesListened());
@@ -27,10 +28,11 @@ public class PodcastMapper {
     }
 
     //ED-77-SA
-    public static PodcastDTO toDTOUser(Podcast podcast, CreatorClient creatorClient) {
+    public static PodcastDTO toDTOUser(Podcast podcast, CreatorClient creatorClient, GenreClient genreClient) {
         PodcastDTO podcastDTO = toDTO(podcast);
 
         podcastDTO.setCreators(CreatorMapper.getCreatorsPodcastUser(podcast, creatorClient));//TODO: fix later
+        podcastDTO.setGenres(GenreMapper.getGenresUser(podcast, genreClient));
 
         PodcastSeasonDTO seasonDTO = new PodcastSeasonDTO();
         PodcastSeason season = podcast.getSeason();
@@ -43,12 +45,13 @@ public class PodcastMapper {
     }
 
     //ED-77-SA
-    public static PodcastDTO toDTOAdmin(Podcast podcast, CreatorClient creatorClient) {
+    public static PodcastDTO toDTOAdmin(Podcast podcast, CreatorClient creatorClient, GenreClient genreClient) {
         PodcastDTO podcastDTO = toDTO(podcast);
         podcastDTO.setId(podcast.getId());
         podcastDTO.setActive(podcast.isActive());//ED-82-SA
 
         podcastDTO.setCreators(CreatorMapper.getCreatorsPodcastAdmin(podcast, creatorClient));//TODO: fix later
+        podcastDTO.setGenres(GenreMapper.getGenresAdmin(podcast, genreClient));
 
 
         PodcastSeasonDTO seasonDTO = new PodcastSeasonDTO();
@@ -64,19 +67,19 @@ public class PodcastMapper {
     }
 
     //ED-77-SA
-    public static List<PodcastDTO> toDTOUserList(List<Podcast> podcasts, CreatorClient creatorClient) {
+    public static List<PodcastDTO> toDTOUserList(List<Podcast> podcasts, CreatorClient creatorClient, GenreClient genreClient) {
         List<PodcastDTO> podcastDTOS = new ArrayList<>();
         for (Podcast podcast : podcasts) {
-            podcastDTOS.add(toDTOUser(podcast, creatorClient));
+            podcastDTOS.add(toDTOUser(podcast, creatorClient, genreClient));
         }
         return podcastDTOS;
     }
 
     //ED-77-SA
-    public static List<PodcastDTO> toDTOAdminList(List<Podcast> podcasts, CreatorClient creatorClient) {
+    public static List<PodcastDTO> toDTOAdminList(List<Podcast> podcasts, CreatorClient creatorClient, GenreClient genreClient) {
         List<PodcastDTO> podcastDTOS = new ArrayList<>();
         for (Podcast podcast : podcasts) {
-            podcastDTOS.add(toDTOAdmin(podcast, creatorClient));
+            podcastDTOS.add(toDTOAdmin(podcast, creatorClient, genreClient));
         }
         return podcastDTOS;
     }

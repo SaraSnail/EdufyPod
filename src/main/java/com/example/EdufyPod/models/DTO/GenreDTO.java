@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 //ED-40-SA
 //ED-119-SA
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class GenreDTO {
 
     private Long genre_id;

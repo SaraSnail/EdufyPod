@@ -1,6 +1,7 @@
 package com.example.EdufyPod.services;
 
 import com.example.EdufyPod.clients.CreatorClient;
+import com.example.EdufyPod.clients.GenreClient;
 import com.example.EdufyPod.converters.Roles;
 import com.example.EdufyPod.exceptions.ContentNotFoundException;
 import com.example.EdufyPod.exceptions.ResourceNotFoundException;
@@ -21,12 +22,14 @@ public class PodcastSeasonServiceImpl implements PodcastSeasonService {
 
     private final PodcastSeasonRepository podcastSeasonRepository;
     private final CreatorClient creatorClient;//ED-276-SA
+    private final GenreClient genreClient;
 
     //ED-77-SA
     @Autowired
-    public PodcastSeasonServiceImpl(PodcastSeasonRepository podcastSeasonRepository, CreatorClient creatorClient) {
+    public PodcastSeasonServiceImpl(PodcastSeasonRepository podcastSeasonRepository, CreatorClient creatorClient, GenreClient genreClient) {
         this.podcastSeasonRepository = podcastSeasonRepository;
         this.creatorClient = creatorClient;
+        this.genreClient = genreClient;
     }
 
     //ED-77-SA
@@ -36,7 +39,7 @@ public class PodcastSeasonServiceImpl implements PodcastSeasonService {
         if(findPodcastSeason.isEmpty()){
             throw new ResourceNotFoundException("Podcast Season", "id", id);
         }
-        return PodcastSeasonMapper.toDTOAdmin(findPodcastSeason.get(),creatorClient);
+        return PodcastSeasonMapper.toDTOAdmin(findPodcastSeason.get(),creatorClient, genreClient);
     }
 
     //ED-58-SA
@@ -46,7 +49,7 @@ public class PodcastSeasonServiceImpl implements PodcastSeasonService {
         if(podcastSeasons.isEmpty()){
             throw new ResourceNotFoundException("Podcast Season", "title containing", title);
         }
-        return PodcastSeasonMapper.toDTOUserList(podcastSeasons,creatorClient);
+        return PodcastSeasonMapper.toDTOUserList(podcastSeasons,creatorClient, genreClient);
     }
 
     //ED-83-SA
@@ -59,12 +62,12 @@ public class PodcastSeasonServiceImpl implements PodcastSeasonService {
         if(roles.contains("pod_admin") || roles.contains("edufy_realm_admin")){
             allPodcastSeasons = podcastSeasonRepository.findAll();
             emptySeasonList(allPodcastSeasons);
-            return PodcastSeasonMapper.toDTOAdminList(allPodcastSeasons,creatorClient);
+            return PodcastSeasonMapper.toDTOAdminList(allPodcastSeasons,creatorClient, genreClient);
 
         }else {
             allPodcastSeasons = podcastSeasonRepository.findAllByIsActiveTrue();
             emptySeasonList(allPodcastSeasons);
-            return PodcastSeasonMapper.toDTOUserList(allPodcastSeasons,creatorClient);
+            return PodcastSeasonMapper.toDTOUserList(allPodcastSeasons,creatorClient, genreClient);
 
         }
 

@@ -1,5 +1,6 @@
 package com.example.EdufyPod.services;
 
+import com.example.EdufyPod.clients.GenreClient;
 import com.example.EdufyPod.converters.Roles;
 import com.example.EdufyPod.exceptions.ContentNotFoundException;
 import com.example.EdufyPod.exceptions.ResourceNotFoundException;
@@ -26,13 +27,15 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
     private final PodcastRepository podcastRepository;
     private final PodcastSeasonRepository podcastSeasonRepository;
     private final CreatorClient creatorClient;//ED-276-SA
+    private final GenreClient genreClient;
 
     //ED-60-SA
     @Autowired
-    public PodcastAggregationServiceImpl(PodcastRepository podcastRepository, PodcastSeasonRepository podcastSeasonRepository, CreatorClient creatorCall) {
+    public PodcastAggregationServiceImpl(PodcastRepository podcastRepository, PodcastSeasonRepository podcastSeasonRepository, CreatorClient creatorClient, GenreClient genreClient) {
         this.podcastRepository = podcastRepository;
         this.podcastSeasonRepository = podcastSeasonRepository;
-        this.creatorClient = creatorCall;
+        this.creatorClient = creatorClient;
+        this.genreClient = genreClient;
     }
 
     //ED-60-SA : gets podcast episodes and seasons based on id. Will ignore not found id one some if the list still contains some with valid ids
@@ -87,11 +90,11 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
             if(roles.contains("edufy_realm_admin") || roles.contains("pod_admin")){
                 podcasts = podcastRepository.findAllById(podcastIds);
                 emptyPodcastList(podcasts, podcastIds);
-                podcastDTOS = PodcastMapper.toDTOAdminList(sortList(podcasts),creatorClient);
+                podcastDTOS = PodcastMapper.toDTOAdminList(sortList(podcasts),creatorClient, genreClient);
             }else {
                 podcasts = podcastRepository.findAllByIdInAndIsActiveTrue(podcastIds);
                 emptyPodcastList(podcasts, podcastIds);
-                podcastDTOS = PodcastMapper.toDTOUserList(sortList(podcasts),creatorClient);
+                podcastDTOS = PodcastMapper.toDTOUserList(sortList(podcasts),creatorClient, genreClient);
             }
 
             missingEpisodeIds = podcastIds.stream()
@@ -130,11 +133,11 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
             if(roles.contains("edufy_realm_admin") || roles.contains("pod_admin")){
                 seasons = podcastSeasonRepository.findAllById(seasonIds);
                 emptySeasonList(seasons, seasonIds);
-                seasonsDTOS = PodcastSeasonMapper.toDTOAdminList(seasons,creatorClient);
+                seasonsDTOS = PodcastSeasonMapper.toDTOAdminList(seasons,creatorClient, genreClient);
             }else {
                 seasons = podcastSeasonRepository.findAllByIdInAndIsActiveTrue(seasonIds);
                 emptySeasonList(seasons, seasonIds);
-                seasonsDTOS = PodcastSeasonMapper.toDTOUserList(seasons,creatorClient);
+                seasonsDTOS = PodcastSeasonMapper.toDTOUserList(seasons,creatorClient, genreClient);
             }
 
             missingSeasonIds = seasonIds.stream()
