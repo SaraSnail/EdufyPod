@@ -1,9 +1,10 @@
 package com.example.EdufyPod.models.DTO;
 
+import com.example.EdufyPod.models.DTO.callDTOs.CreatorDTO;
+import com.example.EdufyPod.models.DTO.callDTOs.GenreDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 //ED-76-SA
@@ -16,8 +17,8 @@ public class PodcastDTO {
     private List<CreatorDTO> creators;
     private LocalDate releaseDate;
     private List<GenreDTO> genres;
-    private LocalTime length;
-    private int nrInSeason;
+    private String length;
+    private Integer nrInSeason;
     private PodcastSeasonDTO season;
     private Integer timesListened;
     private Boolean active;//ED-82-SA - ED-263-SA:changed to Boolean
@@ -25,7 +26,7 @@ public class PodcastDTO {
     public PodcastDTO() {
     }
 
-    public PodcastDTO(Long id, String title, String url, String description, List<CreatorDTO> creators, LocalDate releaseDate, List<GenreDTO> genres, LocalTime length, int nrInSeason, PodcastSeasonDTO season, Integer timesListened, Boolean active) {
+    public PodcastDTO(Long id, String title, String url, String description, List<CreatorDTO> creators, LocalDate releaseDate, List<GenreDTO> genres, String length, Integer nrInSeason, PodcastSeasonDTO season, Integer timesListened, Boolean active) {
         this.id = id;
         this.title = title;
         this.url = url;
@@ -96,19 +97,19 @@ public class PodcastDTO {
         this.genres = genres;
     }
 
-    public LocalTime getLength() {
+    public String getLength() {
         return length;
     }
 
-    public void setLength(LocalTime length) {
+    public void setLength(String length) {
         this.length = length;
     }
 
-    public int getNrInSeason() {
+    public Integer getNrInSeason() {
         return nrInSeason;
     }
 
-    public void setNrInSeason(int nrInSeason) {
+    public void setNrInSeason(Integer nrInSeason) {
         this.nrInSeason = nrInSeason;
     }
 

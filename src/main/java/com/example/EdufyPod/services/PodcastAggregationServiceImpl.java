@@ -5,6 +5,8 @@ import com.example.EdufyPod.converters.Roles;
 import com.example.EdufyPod.exceptions.ContentNotFoundException;
 import com.example.EdufyPod.exceptions.ResourceNotFoundException;
 import com.example.EdufyPod.models.DTO.*;
+import com.example.EdufyPod.models.DTO.callDTOs.TransferPodcastDTO;
+import com.example.EdufyPod.models.DTO.callDTOs.TransferPodcastSeasonDTO;
 import com.example.EdufyPod.models.DTO.mappers.PodcastMapper;
 import com.example.EdufyPod.models.DTO.mappers.PodcastSeasonMapper;
 import com.example.EdufyPod.models.entities.Podcast;

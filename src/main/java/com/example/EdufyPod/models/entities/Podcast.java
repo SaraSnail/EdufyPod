@@ -3,6 +3,7 @@ package com.example.EdufyPod.models.entities;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class Podcast {
 
     //ED-112-SA
     @Column(name = "podcast_episode_length", nullable = false)
-    private LocalTime length;
+    private Duration length;//ED-232-SA
 
     @Column(name = "podcast_episode_nr_in_season")
     private int nrInSeason;
@@ -67,7 +68,7 @@ public class Podcast {
         this.isActive = podcast.isActive();
     }
 
-    public Podcast(Long id, String title, String url, String description, LocalDate releaseDate, LocalTime length, int nrInSeason, PodcastSeason season, Integer timesListened, boolean isActive) {
+    public Podcast(Long id, String title, String url, String description, LocalDate releaseDate, Duration length, int nrInSeason, PodcastSeason season, Integer timesListened, boolean isActive) {
         this.id = id;
         this.title = title;
         this.url = url;
@@ -120,11 +121,11 @@ public class Podcast {
         this.releaseDate = releaseDate;
     }
 
-    public LocalTime getLength() {
+    public Duration getLength() {
         return length;
     }
 
-    public void setLength(LocalTime length) {
+    public void setLength(Duration length) {
         this.length = length;
     }
 
