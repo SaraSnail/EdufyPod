@@ -1,6 +1,7 @@
 package com.example.EdufyPod.models.DTO.callDTOs;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 //ED-232-SA
@@ -8,15 +9,14 @@ public class IncomingPodcastDTO {
     private String title;
     private String url;
     private String description;
-    private List<Long> creatorIds;
+    private List<Long> creatorIds = new ArrayList<>();
     private LocalDate releaseDate;
-    private List<Long> genreIds;
+    private List<Long> genreIds = new ArrayList<>();
     private String length;
     private Integer nrInSeason;
     private Long seasonId;
-    private Integer timesListened;
 
-    public IncomingPodcastDTO(String title, String url, String description, List<Long> creatorIds, LocalDate releaseDate, List<Long> genreIds, String length, Integer nrInSeason, Long seasonId, Integer timesListened) {
+    public IncomingPodcastDTO(String title, String url, String description, List<Long> creatorIds, LocalDate releaseDate, List<Long> genreIds, String length, Integer nrInSeason, Long seasonId) {
         this.title = title;
         this.url = url;
         this.description = description;
@@ -26,7 +26,6 @@ public class IncomingPodcastDTO {
         this.length = length;
         this.nrInSeason = nrInSeason;
         this.seasonId = seasonId;
-        this.timesListened = timesListened;
     }
 
     public String getTitle() {
@@ -101,13 +100,6 @@ public class IncomingPodcastDTO {
         this.seasonId = seasonId;
     }
 
-    public Integer getTimesListened() {
-        return timesListened;
-    }
-
-    public void setTimesListened(Integer timesListened) {
-        this.timesListened = timesListened;
-    }
 
     @Override
     public String toString() {
@@ -121,7 +113,6 @@ public class IncomingPodcastDTO {
                 ", length=" + length +
                 ", nrInSeason=" + nrInSeason +
                 ", seasonId=" + seasonId +
-                ", timesListened=" + timesListened +
                 '}';
     }
 }

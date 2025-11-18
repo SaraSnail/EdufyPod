@@ -1,15 +1,17 @@
-package com.example.EdufyPod.models.DTO.body;
+package com.example.EdufyPod.models.DTO.recordOfMedia;
+
+import com.example.EdufyPod.models.enums.MediaType;
 
 //ED-232-SA
-public class ThumbBody {
+public class RecordOfThumbDTO {
     private Long mediaId;
-    private String mediaType;
+    private MediaType mediaType;
     private String mediaName;
 
-    public ThumbBody() {
+    public RecordOfThumbDTO() {
     }
 
-    public ThumbBody(Long mediaId, String mediaType, String mediaName) {
+    public RecordOfThumbDTO(Long mediaId, MediaType mediaType, String mediaName) {
         this.mediaId = mediaId;
         this.mediaType = mediaType;
         this.mediaName = mediaName;
@@ -23,11 +25,11 @@ public class ThumbBody {
         this.mediaId = mediaId;
     }
 
-    public String getMediaType() {
+    public MediaType getMediaType() {
         return mediaType;
     }
 
-    public void setMediaType(String mediaType) {
+    public void setMediaType(MediaType mediaType) {
         this.mediaType = mediaType;
     }
 

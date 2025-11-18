@@ -5,26 +5,24 @@ import com.example.EdufyPod.clients.GenreClient;
 import com.example.EdufyPod.clients.ThumbClient;
 import com.example.EdufyPod.converters.DurationConverter;
 import com.example.EdufyPod.converters.Roles;
-import com.example.EdufyPod.exceptions.ContentNotFoundException;
-import com.example.EdufyPod.exceptions.NullValueException;
-import com.example.EdufyPod.exceptions.ResourceNotFoundException;
-import com.example.EdufyPod.exceptions.ValidFieldsException;
+import com.example.EdufyPod.exceptions.*;
 import com.example.EdufyPod.models.DTO.*;
-import com.example.EdufyPod.models.DTO.body.CreatorBody;
-import com.example.EdufyPod.models.DTO.body.GenreBody;
-import com.example.EdufyPod.models.DTO.body.ThumbBody;
+import com.example.EdufyPod.models.DTO.callDTOs.CreatorDTO;
+import com.example.EdufyPod.models.DTO.callDTOs.GenreDTO;
 import com.example.EdufyPod.models.DTO.callDTOs.IncomingPodcastDTO;
 import com.example.EdufyPod.models.DTO.mappers.PodcastMapper;
 import com.example.EdufyPod.models.entities.Podcast;
 import com.example.EdufyPod.models.entities.PodcastSeason;
+import com.example.EdufyPod.models.enums.MediaType;
 import com.example.EdufyPod.repositories.PodcastRepository;
 import com.example.EdufyPod.repositories.PodcastSeasonRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.client.RestClientResponseException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,7 +88,10 @@ public class PodcastServiceImpl implements PodcastService {
 
     //ED-232-SA
     @Override
+    @Transactional
     public PodcastDTO createPodcast(IncomingPodcastDTO incomingPodcastDTO) {
+        validateCreators(incomingPodcastDTO.getCreatorIds());
+        validateGenres(incomingPodcastDTO.getGenreIds());
 
         notNull(incomingPodcastDTO);
 
@@ -102,8 +103,8 @@ public class PodcastServiceImpl implements PodcastService {
 
         newPodcast.setLength(DurationConverter.parsePodcastDuration(incomingPodcastDTO.getLength()));
 
-        newPodcast.setNrInSeason(incomingPodcastDTO.getNrInSeason());
-        newPodcast.setTimesListened(incomingPodcastDTO.getTimesListened());
+        int targetNr = incomingPodcastDTO.getNrInSeason();;
+        newPodcast.setNrInSeason(targetNr);
 
         Optional<PodcastSeason> findSeason = podcastSeasonRepository.findById(incomingPodcastDTO.getSeasonId());
         if(findSeason.isEmpty()){
@@ -111,26 +112,32 @@ public class PodcastServiceImpl implements PodcastService {
         }
 
         PodcastSeason season = findSeason.get();
+
+        //Makes so if new episode is nr in season 2 of 4 episodes. The old episode 2 is moved to nrInSeason 3 aso
+        List<Podcast> episodes = podcastRepository.findAllBySeasonOrdered(season.getId());
+        for(Podcast ep: episodes){
+            if(ep.getNrInSeason() >= targetNr){
+                ep.setNrInSeason(ep.getNrInSeason() + 1);
+                podcastRepository.save(ep);
+            }
+        }
+
         newPodcast.setSeason(season);
 
         checkValues(newPodcast);
 
         podcastRepository.save(newPodcast);
+
         Long podId = newPodcast.getId();
 
-        String mediaType = "PODCAST_EPISODE";
-
         //register with creator
-        CreatorBody creatorBody = new CreatorBody(podId, mediaType, incomingPodcastDTO.getCreatorIds());
-        creatorClient.registerWithCreator(creatorBody);
+        creatorClient.createRecordOfMedia(podId, MediaType.PODCAST_EPISODE, incomingPodcastDTO.getCreatorIds());
 
         //register with genre
-        GenreBody genreBody = new GenreBody(podId, mediaType,incomingPodcastDTO.getGenreIds());
-        genreClient.registerWithGenre(genreBody);
+        genreClient.createRecordOfMedia(podId, MediaType.PODCAST_EPISODE,incomingPodcastDTO.getGenreIds());
 
         //register with thumb
-        ThumbBody thumbBody = new ThumbBody(podId, mediaType, incomingPodcastDTO.getTitle());
-        thumbClient.registerWithThumb(thumbBody);
+        thumbClient.createRecordOfMedia(podId, MediaType.PODCAST_EPISODE, incomingPodcastDTO.getTitle());
 
         return PodcastMapper.toDTOAdmin(newPodcast,creatorClient, genreClient);
     }
@@ -171,9 +178,6 @@ public class PodcastServiceImpl implements PodcastService {
         if(incomingPodcastDTO.getSeasonId() == null){
             throw new NullValueException("SeasonId", incomingPodcastDTO.getSeasonId());
         }
-        if(incomingPodcastDTO.getTimesListened() == null){
-            throw new NullValueException("TimesListened", incomingPodcastDTO.getTimesListened());
-        }
     }
 
     //ED-232-SA
@@ -188,9 +192,13 @@ public class PodcastServiceImpl implements PodcastService {
         if(podcast.getUrl().isEmpty()){
             throw new NullValueException("URL", podcast.getUrl());
         }
+
+        validateUniqueUrl(podcast.getUrl());
+
         if(!podcast.getUrl().contains("http://") || !podcast.getUrl().contains("https://")){
             throw new ValidFieldsException("URL", "needs to contain either http:// or https://", podcast.getUrl());
         }
+
         if(podcast.getUrl().length() < 10){
             throw new ValidFieldsException("URL", "more than 10 characters", podcast.getUrl());
         }
@@ -200,6 +208,40 @@ public class PodcastServiceImpl implements PodcastService {
         }
         if(podcast.getDescription().length() < 10){
             throw new ValidFieldsException("Description", "more than 10 characters", podcast.getDescription());
+        }
+    }
+
+    //ED-232-SA
+    private void validateCreators(List<Long> creatorIds){
+        for(Long creatorId : creatorIds){
+            try{
+                CreatorDTO creator = creatorClient.getCreatorById(creatorId);
+                Long id = creator.getId();
+            }catch (RestClientResponseException e){
+                throw new ResourceNotFoundException("Creator", "id", creatorId);
+            }
+        }
+
+    }
+
+    //ED-232-SA
+    private void validateGenres(List<Long> genreIds){
+
+        for(Long genreId : genreIds){
+            try{
+                GenreDTO genreDTO = genreClient.getGenreById(genreId);
+                Long id = genreDTO.getGenre_id();
+            }catch (RestClientResponseException e){
+                throw new ResourceNotFoundException("Genre", "id", genreId);
+            }
+        }
+
+    }
+
+    //ED-232-SA
+    private void validateUniqueUrl(String url){
+        if(podcastRepository.existsByUrl(url)){
+            throw new UniqueConflictException("URL", url);
         }
     }
 }

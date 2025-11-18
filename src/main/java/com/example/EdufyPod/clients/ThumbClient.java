@@ -1,8 +1,8 @@
 package com.example.EdufyPod.clients;
 
-import com.example.EdufyPod.models.DTO.body.ThumbBody;
+import com.example.EdufyPod.models.enums.MediaType;
 
 //ED-232-SA
 public interface ThumbClient {
-    void registerWithThumb(ThumbBody body);
+    void createRecordOfMedia(Long mediaId, MediaType mediaType, String mediaName);
 }
