@@ -90,8 +90,8 @@ public class PodcastServiceImpl implements PodcastService {
     @Override
     @Transactional
     public PodcastDTO createPodcast(IncomingPodcastDTO incomingPodcastDTO) {
-        validateCreators(incomingPodcastDTO.getCreatorIds());
         validateGenres(incomingPodcastDTO.getGenreIds());
+        validateCreators(incomingPodcastDTO.getCreatorIds());
 
         notNull(incomingPodcastDTO);
 
