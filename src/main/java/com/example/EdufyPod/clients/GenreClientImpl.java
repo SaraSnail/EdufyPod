@@ -53,6 +53,8 @@ public class GenreClientImpl implements GenreClient {
 
         }catch (RestClientResponseException e){
             throw new CallFailException("Genre", uri, String.format(e.getMessage(), e));
+        }catch (ResourceAccessException e){
+            throw new RestClientException("Edufy Pod", "Edufy Genre");
         }
 
     }

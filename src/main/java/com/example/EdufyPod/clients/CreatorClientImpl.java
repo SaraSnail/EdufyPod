@@ -54,6 +54,8 @@ public class CreatorClientImpl implements CreatorClient {
 
         } catch (RestClientResponseException e) {
             throw new CallFailException("Creator", uri, String.format(e.getMessage(), e));
+        }catch (RestClientException e){
+            throw new RestClientException("Edufy Pod", "Edufy Creator");
         }
 
     }
@@ -79,6 +81,8 @@ public class CreatorClientImpl implements CreatorClient {
 
         } catch (RestClientResponseException e) {
             throw new CallFailException("Creator", uri, String.format(e.getMessage(), e));
+        }catch (RestClientException e){
+            throw new RestClientException("Edufy Pod", "Edufy Creator");
         }
     }
 
@@ -102,6 +106,8 @@ public class CreatorClientImpl implements CreatorClient {
 
         } catch (RestClientResponseException e) {
             throw new CallFailException("Creator", uri, String.format(e.getMessage(), e));
+        }catch (RestClientException e){
+            throw new RestClientException("Edufy Pod", "Edufy Creator");
         }
     }
 
@@ -125,6 +131,8 @@ public class CreatorClientImpl implements CreatorClient {
 
         } catch (RestClientResponseException e) {
             throw new CallFailException("Creator", uri, String.format(e.getMessage(), e));
+        }catch (RestClientException e){
+            throw new RestClientException("Edufy Pod", "Edufy Creator");
         }
     }
 
