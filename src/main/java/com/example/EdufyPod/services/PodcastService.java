@@ -13,4 +13,7 @@ public interface PodcastService {
     List<PodcastDTO> getPodcastByTitle(String title);
     List<PodcastDTO> getAllPodcasts(Authentication authentication);
     PodcastDTO createPodcast(IncomingPodcastDTO incomingPodcastDTO);
+
+    //ED-283-SA
+    List<PodcastDTO> getUserHistory(Long userId);
 }

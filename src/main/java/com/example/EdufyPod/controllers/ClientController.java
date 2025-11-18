@@ -2,11 +2,15 @@ package com.example.EdufyPod.controllers;
 
 import com.example.EdufyPod.models.DTO.*;
 import com.example.EdufyPod.services.PodcastAggregationServiceImpl;
+import com.example.EdufyPod.services.PodcastService;
+import com.example.EdufyPod.services.PodcastServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 //ED-60-SA
 @RestController
@@ -14,11 +18,13 @@ import org.springframework.web.bind.annotation.*;
 public class ClientController {
 
     private final PodcastAggregationServiceImpl podcastAggregationService;
+    private final PodcastService podcastService;
 
     //ED-60-SA
     @Autowired
-    public ClientController(PodcastAggregationServiceImpl podcastAggregationService) {
+    public ClientController(PodcastAggregationServiceImpl podcastAggregationService, PodcastService podcastService) {
         this.podcastAggregationService = podcastAggregationService;
+        this.podcastService = podcastService;
     }
 
     //ED-60-SA
@@ -46,5 +52,11 @@ public class ClientController {
         HttpStatus status = hasMissingIds ? HttpStatus.PARTIAL_CONTENT : HttpStatus.OK;
 
         return ResponseEntity.status(status).body(response);
+    }
+
+    //ED-283-SA
+    @GetMapping("/user-history/{userId}")
+    public ResponseEntity<List<PodcastDTO>> getUserHistory(@PathVariable Long userId) {
+        return ResponseEntity.ok(podcastService.getUserHistory(userId));
     }
 }
