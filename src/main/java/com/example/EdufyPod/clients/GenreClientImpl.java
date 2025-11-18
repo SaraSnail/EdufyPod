@@ -53,6 +53,8 @@ public class GenreClientImpl implements GenreClient {
 
         }catch (RestClientResponseException e){
             throw new CallFailException("Genre", uri, String.format(e.getMessage(), e));
+        }catch (ResourceAccessException e){
+            throw new RestClientException("Edufy Pod", "Edufy Genre");
         }
 
     }
@@ -86,13 +88,17 @@ public class GenreClientImpl implements GenreClient {
     @Override
     public GenreDTO getGenreById(Long genreId) {
         ServiceInstance serviceInstance = loadBalancer.choose(lbGenre);
-        String uri = "/genre/"+genreId;
+        String uri = "/api/v1/genre/"+genreId;
         try {
+
             return restClient.get()
                     .uri(serviceInstance.getUri()+uri)
                     .retrieve()
                     .body(GenreDTO.class);
-        }catch (Exception e){
+
+        }catch (RestClientResponseException e){
+            throw new CallFailException("Genre", uri, String.format(e.getMessage(), e));
+        }catch (ResourceAccessException e){
             throw new RestClientException("Edufy Pod", "Edufy Genre");
         }
     }
