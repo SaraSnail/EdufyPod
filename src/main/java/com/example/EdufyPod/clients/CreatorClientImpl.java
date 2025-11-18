@@ -14,6 +14,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientResponseException;
 import java.util.List;
@@ -53,6 +54,8 @@ public class CreatorClientImpl implements CreatorClient {
 
         } catch (RestClientResponseException e) {
             throw new CallFailException("Creator", uri, String.format(e.getMessage(), e));
+        }catch (RestClientException e){
+            throw new RestClientException("Edufy Pod", "Edufy Creator");
         }
 
     }
@@ -78,6 +81,8 @@ public class CreatorClientImpl implements CreatorClient {
 
         } catch (RestClientResponseException e) {
             throw new CallFailException("Creator", uri, String.format(e.getMessage(), e));
+        }catch (RestClientException e){
+            throw new RestClientException("Edufy Pod", "Edufy Creator");
         }
     }
 
@@ -101,6 +106,8 @@ public class CreatorClientImpl implements CreatorClient {
 
         } catch (RestClientResponseException e) {
             throw new CallFailException("Creator", uri, String.format(e.getMessage(), e));
+        }catch (RestClientException e){
+            throw new RestClientException("Edufy Pod", "Edufy Creator");
         }
     }
 
@@ -124,6 +131,8 @@ public class CreatorClientImpl implements CreatorClient {
 
         } catch (RestClientResponseException e) {
             throw new CallFailException("Creator", uri, String.format(e.getMessage(), e));
+        }catch (RestClientException e){
+            throw new RestClientException("Edufy Pod", "Edufy Creator");
         }
     }
 
@@ -163,7 +172,9 @@ public class CreatorClientImpl implements CreatorClient {
                     .uri(serviceInstance.getUri()+uri)
                     .retrieve()
                     .body(CreatorDTO.class);
-        }catch (Exception e){
+        }catch (RestClientResponseException e){
+            throw new CallFailException("Creator", uri, String.format(e.getMessage(), e));
+        }catch (ResourceAccessException e){
             throw new RestClientException("Edufy Pod", "Edufy Creator");
         }
     }
