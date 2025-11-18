@@ -3,6 +3,7 @@ package com.example.EdufyPod.services;
 import com.example.EdufyPod.clients.CreatorClient;
 import com.example.EdufyPod.clients.GenreClient;
 import com.example.EdufyPod.clients.ThumbClient;
+import com.example.EdufyPod.clients.UserClient;
 import com.example.EdufyPod.converters.DurationConverter;
 import com.example.EdufyPod.converters.Roles;
 import com.example.EdufyPod.exceptions.*;
@@ -34,15 +35,17 @@ public class PodcastServiceImpl implements PodcastService {
     private final CreatorClient creatorClient;//ED-276-SA
     private final GenreClient genreClient;//ED-267-SA
     private final ThumbClient thumbClient;
+    private final UserClient userClient;//ED-283-SA
     private final PodcastSeasonRepository podcastSeasonRepository;//ED-232-SA
 
     //ED-76-SA
     @Autowired
-    public PodcastServiceImpl(PodcastRepository podcastRepository, CreatorClient creatorClient, GenreClient genreClient, ThumbClient thumbClient, PodcastSeasonRepository podcastSeasonRepository) {
+    public PodcastServiceImpl(PodcastRepository podcastRepository, CreatorClient creatorClient, GenreClient genreClient, ThumbClient thumbClient, UserClient userClient, PodcastSeasonRepository podcastSeasonRepository) {
         this.podcastRepository = podcastRepository;
         this.creatorClient = creatorClient;
         this.genreClient = genreClient;
         this.thumbClient = thumbClient;
+        this.userClient = userClient;
         this.podcastSeasonRepository = podcastSeasonRepository;
     }
 
@@ -140,6 +143,28 @@ public class PodcastServiceImpl implements PodcastService {
         thumbClient.createRecordOfMedia(podId, MediaType.PODCAST_EPISODE, incomingPodcastDTO.getTitle());
 
         return PodcastMapper.toDTOAdmin(newPodcast,creatorClient, genreClient);
+    }
+
+    //ED-283-SA
+    @Override
+    public List<PodcastDTO> getUserHistory(Long userId) {
+        userClient.validateUserById(userId);
+
+        List<Long> podcastIds = podcastRepository.findPodcastIdsPlayedByUser(userId);
+        if(podcastIds.isEmpty()){
+            throw new ResourceNotFoundException("Podcast ids", "userId", userId);
+        }
+
+        List<Podcast> podcasts = new ArrayList<>();
+        for(Long id : podcastIds){
+            Optional<Podcast> podcast = podcastRepository.findById(id);
+            if(podcast.isEmpty()){
+                throw new ResourceNotFoundException("Podcast", "id", id);
+            }
+            podcasts.add(podcast.get());
+        }
+
+        return PodcastMapper.toDTOOnlyId(podcasts);
     }
 
     //ED-82-SA

@@ -20,4 +20,14 @@ public interface PodcastRepository extends JpaRepository<Podcast, Long> {
     //ED-232-SA
     @Query("SELECT p FROM Podcast p WHERE p.season.id = :seasonId ORDER BY p.nrInSeason ASC")
     List<Podcast> findAllBySeasonOrdered(@Param("seasonId") Long seasonId);
+
+
+    //ED-283-SA
+    @Query(value = """
+        SELECT p.podcast_episode_id
+        FROM podcast_episode_user_history uh
+        JOIN podcast_episode p ON p.podcast_episode_id = uh.podcast_episode_id
+        WHERE uh.user_id = :userId
+        """, nativeQuery = true)
+    List<Long> findPodcastIdsPlayedByUser(@Param("userId") Long userId);
 }

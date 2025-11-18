@@ -1,0 +1,48 @@
+package com.example.EdufyPod.clients;
+
+import com.example.EdufyPod.exceptions.CallFailException;
+import com.example.EdufyPod.exceptions.RestClientException;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientResponseException;
+
+//ED-283-SA
+@Service
+public class UserClientImpl implements UserClient {
+
+    //ED-283-SA
+    private final RestClient restClient;
+    private final LoadBalancerClient loadBalancerClient;
+    private final String lbUser = "EDUFYUSER";
+
+    public UserClientImpl(RestClient.Builder restClientBuilder, LoadBalancerClient loadBalancerClient) {
+        this.restClient = restClientBuilder.build();
+        this.loadBalancerClient = loadBalancerClient;
+    }
+
+    //ED-283-SA
+    @Override
+    public void validateUserById(Long userId) {
+        ServiceInstance serviceInstance = loadBalancerClient.choose(lbUser);
+        String uri = "/api/v1/user/user-id/" + userId;
+        try {
+            ResponseEntity<Void> response = restClient.get()
+                    .uri(serviceInstance.getUri()+uri)
+                    .retrieve()
+                    .toBodilessEntity();
+
+            if (!response.getStatusCode().is2xxSuccessful()) {
+                throw new IllegalStateException("Unexpected response status code: " + response.getStatusCode());
+            }
+        }catch (RestClientResponseException e){
+            throw new CallFailException("User", uri, String.format(e.getMessage(), e));
+        }catch (ResourceAccessException e){
+            throw new RestClientException("Edufy Pod", "Edufy User");
+        }
+
+    }
+}

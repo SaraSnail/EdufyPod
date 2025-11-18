@@ -7,7 +7,9 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //ED-40-SA
 //ED-112-SA
@@ -52,6 +54,17 @@ public class Podcast {
     @Column(name = "podcast_episode_is_active")
     private boolean isActive;
 
+
+    //ED-283-SA
+    @ElementCollection
+    @CollectionTable(
+            name = "podcast_episode_user_history",
+            joinColumns = @JoinColumn(name = "podcast_episode_id")
+    )
+    @MapKeyColumn(name = "user_id")//Key column
+    @Column(name = "times_played")//Value column
+    private Map<Long, Long> userHistory = new HashMap<>();
+
     public Podcast() {
     }
 
@@ -66,9 +79,10 @@ public class Podcast {
         this.season = podcast.getSeason();
         this.timesListened = podcast.getTimesListened();
         this.isActive = podcast.isActive();
+        this.userHistory = podcast.getUserHistory();
     }
 
-    public Podcast(Long id, String title, String url, String description, LocalDate releaseDate, Duration length, int nrInSeason, PodcastSeason season, Integer timesListened, boolean isActive) {
+    public Podcast(Long id, String title, String url, String description, LocalDate releaseDate, Duration length, int nrInSeason, PodcastSeason season, Integer timesListened, boolean isActive, Map<Long, Long> userHistory) {
         this.id = id;
         this.title = title;
         this.url = url;
@@ -79,6 +93,7 @@ public class Podcast {
         this.season = season;
         this.timesListened = timesListened;
         this.isActive = isActive;
+        this.userHistory = userHistory;
     }
 
     public Long getId() {
@@ -161,6 +176,29 @@ public class Podcast {
         isActive = active;
     }
 
+    public Map<Long, Long> getUserHistory() {
+        return userHistory;
+    }
+
+    public void setUserHistory(Map<Long, Long> userHistory) {
+        this.userHistory = userHistory;
+    }
+
+    //ED-283-SA
+    public void incrementTimesPlayed(Long userId) {
+        userHistory.merge(userId, 1L, Long::sum);
+    }
+
+    //ED-283-SA
+    public Long getTimesPlayed(Long userId) {
+        return userHistory.getOrDefault(userId, 0L);
+    }
+
+    //ED-283-SA
+    public void setTimesPlayed(Long userId, Long timesPlayed) {
+        userHistory.put(userId, timesPlayed);
+    }
+
     @Override
     public String toString() {
         return "Podcast{" +
@@ -174,6 +212,7 @@ public class Podcast {
                 ", season=" + season +
                 ", timesListened=" + timesListened +
                 ", isActive=" + isActive +
+                ", userHistory=" + userHistory +
                 '}';
     }
 }

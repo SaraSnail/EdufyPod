@@ -84,4 +84,15 @@ public class PodcastMapper {
         }
         return podcastDTOS;
     }
+
+    //ED-283-SA
+    public static List<PodcastDTO> toDTOOnlyId(List<Podcast> podcasts){
+        List<PodcastDTO> podcastDTOS = new ArrayList<>();
+        for (Podcast podcast : podcasts) {
+            PodcastDTO podcastDTO = new PodcastDTO();
+            podcastDTO.setId(podcast.getId());
+            podcastDTOS.add(podcastDTO);
+        }
+        return podcastDTOS;
+    }
 }
