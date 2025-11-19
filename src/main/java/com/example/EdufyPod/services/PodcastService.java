@@ -1,6 +1,6 @@
 package com.example.EdufyPod.services;
 
-import com.example.EdufyPod.models.DTO.callDTOs.IncomingPodcastDTO;
+import com.example.EdufyPod.models.DTO.IncomingPodcastDTO;
 import com.example.EdufyPod.models.DTO.PodcastDTO;
 import org.springframework.security.core.Authentication;
 
