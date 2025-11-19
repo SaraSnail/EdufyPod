@@ -10,19 +10,21 @@ import com.example.EdufyPod.exceptions.*;
 import com.example.EdufyPod.models.DTO.*;
 import com.example.EdufyPod.models.DTO.callDTOs.CreatorDTO;
 import com.example.EdufyPod.models.DTO.callDTOs.GenreDTO;
-import com.example.EdufyPod.models.DTO.callDTOs.IncomingPodcastDTO;
+import com.example.EdufyPod.models.DTO.IncomingPodcastDTO;
 import com.example.EdufyPod.models.DTO.mappers.PodcastMapper;
 import com.example.EdufyPod.models.entities.Podcast;
 import com.example.EdufyPod.models.entities.PodcastSeason;
 import com.example.EdufyPod.models.enums.MediaType;
 import com.example.EdufyPod.repositories.PodcastRepository;
 import com.example.EdufyPod.repositories.PodcastSeasonRepository;
+import com.example.EdufyPod.services.Utility.Validate;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientResponseException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -93,16 +95,20 @@ public class PodcastServiceImpl implements PodcastService {
     @Override
     @Transactional
     public PodcastDTO createPodcast(IncomingPodcastDTO incomingPodcastDTO) {
-        validateGenres(incomingPodcastDTO.getGenreIds());
-        validateCreators(incomingPodcastDTO.getCreatorIds());
-
         notNull(incomingPodcastDTO);
+
+        Validate.validateGenres(incomingPodcastDTO.getGenreIds(), genreClient);
+        Validate.validateCreators(incomingPodcastDTO.getCreatorIds(), creatorClient);
 
         Podcast newPodcast = new Podcast();
         newPodcast.setTitle(incomingPodcastDTO.getTitle());
         newPodcast.setUrl(incomingPodcastDTO.getUrl());
         newPodcast.setDescription(incomingPodcastDTO.getDescription());
         newPodcast.setReleaseDate(incomingPodcastDTO.getReleaseDate());
+
+        //TODO:Should it be set to active false if release date is after now? Then it can later be manually set to active = true
+        boolean isActive = !newPodcast.getReleaseDate().isAfter(LocalDate.now());
+        newPodcast.setActive(isActive);
 
         newPodcast.setLength(DurationConverter.parsePodcastDuration(incomingPodcastDTO.getLength()));
 
@@ -218,7 +224,10 @@ public class PodcastServiceImpl implements PodcastService {
             throw new NullValueException("URL", podcast.getUrl());
         }
 
-        validateUniqueUrl(podcast.getUrl());
+        //ED-242-SA : moved it here instead of a separate method
+        if(podcastRepository.existsByUrl(podcast.getUrl())){
+            throw new UniqueConflictException("URL", podcast.getUrl());
+        }
 
         if(!podcast.getUrl().contains("http://") || !podcast.getUrl().contains("https://")){
             throw new ValidFieldsException("URL", "needs to contain either http:// or https://", podcast.getUrl());
@@ -236,37 +245,4 @@ public class PodcastServiceImpl implements PodcastService {
         }
     }
 
-    //ED-232-SA
-    private void validateCreators(List<Long> creatorIds){
-        for(Long creatorId : creatorIds){
-            try{
-                CreatorDTO creator = creatorClient.getCreatorById(creatorId);
-                Long id = creator.getId();
-            }catch (RestClientResponseException e){
-                throw new ResourceNotFoundException("Creator", "id", creatorId);
-            }
-        }
-
-    }
-
-    //ED-232-SA
-    private void validateGenres(List<Long> genreIds){
-
-        for(Long genreId : genreIds){
-            try{
-                GenreDTO genreDTO = genreClient.getGenreById(genreId);
-                Long id = genreDTO.getGenre_id();
-            }catch (RestClientResponseException e){
-                throw new ResourceNotFoundException("Genre", "id", genreId);
-            }
-        }
-
-    }
-
-    //ED-232-SA
-    private void validateUniqueUrl(String url){
-        if(podcastRepository.existsByUrl(url)){
-            throw new UniqueConflictException("URL", url);
-        }
-    }
 }
