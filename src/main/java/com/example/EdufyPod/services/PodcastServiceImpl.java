@@ -11,6 +11,7 @@ import com.example.EdufyPod.models.DTO.*;
 import com.example.EdufyPod.models.DTO.callDTOs.CreatorDTO;
 import com.example.EdufyPod.models.DTO.callDTOs.GenreDTO;
 import com.example.EdufyPod.models.DTO.callDTOs.IncomingPodcastDTO;
+import com.example.EdufyPod.models.DTO.callDTOs.MediaByGenreDTO;
 import com.example.EdufyPod.models.DTO.mappers.PodcastMapper;
 import com.example.EdufyPod.models.entities.Podcast;
 import com.example.EdufyPod.models.entities.PodcastSeason;
@@ -165,6 +166,22 @@ public class PodcastServiceImpl implements PodcastService {
         }
 
         return PodcastMapper.toDTOOnlyId(podcasts);
+    }
+
+    //ED-271-SA
+    @Override
+    public List<PodcastDTO> getPodcastsByGenre(Long genreId) {
+        MediaByGenreDTO mediaByGenreDTO = genreClient.getMediaByGenreId(genreId,MediaType.PODCAST_EPISODE);
+
+        List<Podcast> podcasts = new ArrayList<>();
+        for(Long id: mediaByGenreDTO.getMediaIds()){
+            Optional<Podcast> podcast = podcastRepository.findById(id);
+            if(podcast.isEmpty()){
+                throw new ResourceNotFoundException("Podcast", "id", id);
+            }
+            podcasts.add(podcast.get());
+        }
+        return PodcastMapper.toDTOUserList(podcasts,creatorClient, genreClient);
     }
 
     //ED-82-SA
