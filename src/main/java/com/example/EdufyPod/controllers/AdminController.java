@@ -1,6 +1,7 @@
 package com.example.EdufyPod.controllers;
 
-import com.example.EdufyPod.models.DTO.callDTOs.IncomingPodcastDTO;
+import com.example.EdufyPod.models.DTO.IncomingPodcastDTO;
+import com.example.EdufyPod.models.DTO.IncomingPodcastSeasonDTO;
 import com.example.EdufyPod.models.DTO.PodcastDTO;
 import com.example.EdufyPod.models.DTO.PodcastSeasonDTO;
 import com.example.EdufyPod.services.PodcastSeasonService;
@@ -43,6 +44,12 @@ public class AdminController {
     @PostMapping("/new-episode")
     public ResponseEntity<PodcastDTO> createPodcast(@RequestBody IncomingPodcastDTO incomingPodcastDTO) {
         return new ResponseEntity<>(podcastService.createPodcast(incomingPodcastDTO), HttpStatus.CREATED);
+    }
+
+    //ED-242-SA
+    @PostMapping("/new-season")
+    public ResponseEntity<PodcastSeasonDTO> createPodcastSeason(@RequestBody IncomingPodcastSeasonDTO incomingPodcastSeasonDTO) {
+        return new ResponseEntity<>(podcastSeasonService.createPodcastSeason(incomingPodcastSeasonDTO), HttpStatus.CREATED);
     }
 
 }

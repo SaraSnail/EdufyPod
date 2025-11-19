@@ -34,16 +34,6 @@ public class PodcastSeason {
     @OneToMany(mappedBy = "season")
     private List<Podcast> podcasts = new ArrayList<>();
 
-    //ED-118-SA
-    //ED-119-SA: had connected it wrong
-    @ElementCollection
-    @CollectionTable(
-            name = "podcast_season_creator",
-            joinColumns = @JoinColumn(name = "podcast_season_id")
-    )
-    @Column(name = "creator_id", nullable = false)
-    private List<Long> creatorsIds = new ArrayList<>();
-
     //ED-117-SA
     @JsonProperty("isActive")//ED-76-SA
     @Column(name = "podcast_season_is_active")
