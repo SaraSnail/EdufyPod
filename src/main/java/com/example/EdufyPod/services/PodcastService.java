@@ -16,4 +16,5 @@ public interface PodcastService {
 
     //ED-283-SA
     List<PodcastDTO> getUserHistory(Long userId);
+    List<PodcastDTO> getPodcastsByGenre(Long genreId);//ED-271-SA
 }
