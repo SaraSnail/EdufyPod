@@ -184,7 +184,12 @@ public class Podcast {
         this.userHistory = userHistory;
     }
 
-    //ED-283-SA
+    //ED-254-SA
+    public Long getTotalTimesPlayed(){
+        return userHistory.values().stream().mapToLong(Long::longValue).sum();
+    }
+
+    //ED-283-SA //ED-254-SA if user listens for the first time it saves the userId and sets times played to 1L. If key exists it adds to the sum of times played so 3L->4L
     public void incrementTimesPlayed(Long userId) {
         userHistory.merge(userId, 1L, Long::sum);
     }

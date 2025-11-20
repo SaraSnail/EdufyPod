@@ -30,4 +30,8 @@ public interface PodcastRepository extends JpaRepository<Podcast, Long> {
         WHERE uh.user_id = :userId
         """, nativeQuery = true)
     List<Long> findPodcastIdsPlayedByUser(@Param("userId") Long userId);
+
+
+    //ED-254-SA
+    Podcast findByIdAndIsActiveTrue(Long id);
 }

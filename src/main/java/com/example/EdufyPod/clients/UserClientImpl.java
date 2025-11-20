@@ -2,6 +2,7 @@ package com.example.EdufyPod.clients;
 
 import com.example.EdufyPod.exceptions.CallFailException;
 import com.example.EdufyPod.exceptions.RestClientException;
+import com.example.EdufyPod.models.DTO.callDTOs.UserDTO;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +45,22 @@ public class UserClientImpl implements UserClient {
             throw new RestClientException("Edufy Pod", "Edufy User");
         }
 
+    }
+
+    @Override
+    public UserDTO getUserBySUB(String sub) {
+        ServiceInstance serviceInstance = loadBalancerClient.choose(lbUser);
+        String uri = "/user/user-sub-small/" + sub;
+        try {
+            return restClient.get()
+                    .uri(serviceInstance.getUri()+uri)
+                    .retrieve()
+                    .body(UserDTO.class);
+
+        }catch (RestClientResponseException e){
+            throw new CallFailException("User", uri, String.format(e.getMessage(), e));
+        }catch (ResourceAccessException e){
+            throw new RestClientException("Edufy Pod", "Edufy User");
+        }
     }
 }
