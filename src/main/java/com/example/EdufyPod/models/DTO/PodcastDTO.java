@@ -20,13 +20,13 @@ public class PodcastDTO {
     private String length;
     private Integer nrInSeason;
     private PodcastSeasonDTO season;
-    private Integer timesListened;
+    private Long timesListened;//ED-254-SA - switched to Long from Integer
     private Boolean active;//ED-82-SA - ED-263-SA:changed to Boolean
 
     public PodcastDTO() {
     }
 
-    public PodcastDTO(Long id, String title, String url, String description, List<CreatorDTO> creators, LocalDate releaseDate, List<GenreDTO> genres, String length, Integer nrInSeason, PodcastSeasonDTO season, Integer timesListened, Boolean active) {
+    public PodcastDTO(Long id, String title, String url, String description, List<CreatorDTO> creators, LocalDate releaseDate, List<GenreDTO> genres, String length, Integer nrInSeason, PodcastSeasonDTO season, Long timesListened, Boolean active) {
         this.id = id;
         this.title = title;
         this.url = url;
@@ -121,11 +121,11 @@ public class PodcastDTO {
         this.season = season;
     }
 
-    public Integer getTimesListened() {
+    public Long getTimesListened() {
         return timesListened;
     }
 
-    public void setTimesListened(Integer timesListened) {
+    public void setTimesListened(Long timesListened) {
         this.timesListened = timesListened;
     }
 
