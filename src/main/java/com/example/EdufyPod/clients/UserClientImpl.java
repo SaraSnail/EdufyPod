@@ -5,7 +5,6 @@ import com.example.EdufyPod.exceptions.RestClientException;
 import com.example.EdufyPod.models.DTO.callDTOs.UserDTO;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
@@ -26,19 +25,15 @@ public class UserClientImpl implements UserClient {
     }
 
     //ED-283-SA
-    @Override
-    public void validateUserById(Long userId) {
+    public UserDTO getUserById(Long userId) {
         ServiceInstance serviceInstance = loadBalancerClient.choose(lbUser);
-        String uri = "/user/user-id/" + userId;
+        String uri = "/user/user-id/" + userId + "/clientcall";
         try {
-            ResponseEntity<Void> response = restClient.get()
+            return restClient.get()
                     .uri(serviceInstance.getUri()+uri)
                     .retrieve()
-                    .toBodilessEntity();
+                    .body(UserDTO.class);
 
-            if (!response.getStatusCode().is2xxSuccessful()) {
-                throw new IllegalStateException("Unexpected response status code: " + response.getStatusCode());
-            }
         }catch (RestClientResponseException e){
             throw new CallFailException("User", uri, String.format(e.getMessage(), e));
         }catch (ResourceAccessException e){
