@@ -1,6 +1,7 @@
 package com.example.EdufyPod.clients;
 
 import com.example.EdufyPod.models.DTO.callDTOs.GenreDTO;
+import com.example.EdufyPod.models.DTO.callDTOs.MediaByGenreDTO;
 import com.example.EdufyPod.models.enums.MediaType;
 
 import java.util.List;
@@ -11,4 +12,6 @@ public interface GenreClient {
     void createRecordOfMedia(Long mediaId, MediaType mediaType, List<Long> genreIds);
 
     GenreDTO getGenreById(Long genreId);
+
+    MediaByGenreDTO getMediaByGenreId(Long genreId, MediaType mediaType);//ED-271-SA
 }

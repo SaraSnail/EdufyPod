@@ -3,6 +3,7 @@ package com.example.EdufyPod.clients;
 import com.example.EdufyPod.exceptions.CallFailException;
 import com.example.EdufyPod.exceptions.InvalidInputException;
 import com.example.EdufyPod.exceptions.RestClientException;
+import com.example.EdufyPod.models.DTO.callDTOs.MediaByGenreDTO;
 import com.example.EdufyPod.models.DTO.recordOfMedia.RecordOfCreatorDTO;
 import com.example.EdufyPod.models.DTO.callDTOs.GenreDTO;
 import com.example.EdufyPod.models.DTO.recordOfMedia.RecordOfGenreDTO;
@@ -101,6 +102,23 @@ public class GenreClientImpl implements GenreClient {
             throw new CallFailException("Genre", uri, String.format(e.getMessage(), e));
         }catch (ResourceAccessException e){
             throw new RestClientException("Edufy Pod", "Edufy Genre");
+        }
+    }
+
+    //ED-271-SA
+    @Override
+    public MediaByGenreDTO getMediaByGenreId(Long genreId, MediaType mediaType) {
+        ServiceInstance serviceInstance = loadBalancer.choose(lbGenre);
+        String uri = "/genre/"+genreId+"/media/by-type/"+mediaType;
+        try{
+            return restClient.get()
+                    .uri(serviceInstance.getUri()+uri)
+                    .retrieve()
+                    .body(MediaByGenreDTO.class);
+        }catch (ResourceAccessException e){
+            throw new RestClientException("Edufy Pod", "Edufy Genre");
+        }catch (RestClientResponseException e){
+            throw new CallFailException("Genre", uri, String.format(e.getMessage(), e));
         }
     }
 
