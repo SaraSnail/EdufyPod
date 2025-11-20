@@ -10,6 +10,7 @@ import com.example.EdufyPod.exceptions.*;
 import com.example.EdufyPod.models.DTO.*;
 import com.example.EdufyPod.models.DTO.IncomingPodcastDTO;
 import com.example.EdufyPod.models.DTO.callDTOs.MediaByGenreDTO;
+import com.example.EdufyPod.models.DTO.callDTOs.UserDTO;
 import com.example.EdufyPod.models.DTO.mappers.PodcastMapper;
 import com.example.EdufyPod.models.entities.Podcast;
 import com.example.EdufyPod.models.entities.PodcastSeason;
@@ -187,6 +188,26 @@ public class PodcastServiceImpl implements PodcastService {
             podcasts.add(podcast.get());
         }
         return PodcastMapper.toDTOUserList(podcasts,creatorClient, genreClient);
+    }
+
+    //ED-254-SA
+    @Override
+    public PlayedDTO playPodcast(Long episodeId, Authentication authentication) {
+        UserDTO userDTO = userClient.getUserBySUB(authentication.getName());
+        if(userDTO == null){
+            throw new ResourceNotFoundException("User", "id", authentication.getName());
+        }
+
+        Podcast podcast = podcastRepository.findByIdAndIsActiveTrue(episodeId);
+        if(podcast == null){
+            throw new ResourceNotFoundException("Podcast", "id", episodeId);
+        }
+
+        podcast.incrementTimesPlayed(userDTO.getId());
+
+        podcastRepository.save(podcast);
+
+        return new PlayedDTO(podcast.getUrl());
     }
 
     //ED-82-SA

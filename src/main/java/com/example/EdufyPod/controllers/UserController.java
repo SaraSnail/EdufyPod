@@ -1,5 +1,6 @@
 package com.example.EdufyPod.controllers;
 
+import com.example.EdufyPod.models.DTO.PlayedDTO;
 import com.example.EdufyPod.models.DTO.PodcastDTO;
 import com.example.EdufyPod.models.DTO.PodcastSeasonDTO;
 import com.example.EdufyPod.repositories.PodcastRepository;
@@ -8,6 +9,8 @@ import com.example.EdufyPod.services.PodcastSeasonService;
 import com.example.EdufyPod.services.PodcastService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,5 +46,11 @@ public class UserController {
     @GetMapping("/episodes-genre/{genreId}")
     public ResponseEntity<List<PodcastDTO>> getPodcastByGenre(@PathVariable Long genreId) {
         return ResponseEntity.ok(podcastService.getPodcastsByGenre(genreId));
+    }
+
+    //ED-254-SA
+    @GetMapping("/play/{episodeId}")
+    public ResponseEntity<PlayedDTO> playPodcast(@PathVariable Long episodeId, Authentication auth) {
+        return ResponseEntity.ok(podcastService.playPodcast(episodeId, auth));
     }
 }

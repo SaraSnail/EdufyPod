@@ -1,6 +1,7 @@
 package com.example.EdufyPod.services;
 
 import com.example.EdufyPod.models.DTO.IncomingPodcastDTO;
+import com.example.EdufyPod.models.DTO.PlayedDTO;
 import com.example.EdufyPod.models.DTO.PodcastDTO;
 import org.springframework.security.core.Authentication;
 
@@ -17,4 +18,5 @@ public interface PodcastService {
     //ED-283-SA
     List<PodcastDTO> getUserHistory(Long userId);
     List<PodcastDTO> getPodcastsByGenre(Long genreId);//ED-271-SA
+    PlayedDTO playPodcast(Long episodeId, Authentication authentication);//ED-254-SA
 }
