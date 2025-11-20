@@ -166,7 +166,7 @@ public class CreatorClientImpl implements CreatorClient {
     @Override
     public CreatorDTO getCreatorById(Long creatorId) {
         ServiceInstance serviceInstance = loadBalancer.choose(lbCreator);
-        String uri = "/creator/creator/"+creatorId;
+        String uri = "/creator/creator/"+creatorId+"/clientcall";
         try {
             return restClient.get()
                     .uri(serviceInstance.getUri()+uri)
