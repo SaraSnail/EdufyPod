@@ -37,7 +37,7 @@ public class CreatorClientImpl implements CreatorClient {
     @Override
     public List<TransferPodcastDTO> transferPodcastDTOs(Long creatorId) {
         ServiceInstance serviceInstance = loadBalancer.choose(lbCreator);//ED-276-SA
-        String uri = "/creator/media-creator/" + creatorId + "/"+MediaType.PODCAST_EPISODE;
+        String uri = "/creator/mediabycreator/" + creatorId + "/"+MediaType.PODCAST_EPISODE;
 
         try{
             List<TransferPodcastDTO> response = restClient
@@ -64,7 +64,7 @@ public class CreatorClientImpl implements CreatorClient {
     @Override
     public List<TransferPodcastSeasonDTO> transferPodcastSeasonDTOs(Long creatorId) {
         ServiceInstance serviceInstance = loadBalancer.choose(lbCreator);//ED-276-SA
-        String uri = "/creator/media-creator/" + creatorId + "/"+MediaType.PODCAST_SEASON;
+        String uri = "/creator/mediabycreator/" + creatorId + "/"+MediaType.PODCAST_SEASON;
 
         try{
             List<TransferPodcastSeasonDTO> response = restClient
@@ -90,7 +90,7 @@ public class CreatorClientImpl implements CreatorClient {
     @Override
     public List<CreatorDTO> getCreatorsEpisode(Long mediaId) {
         ServiceInstance serviceInstance = loadBalancer.choose(lbCreator);//ED-276-SA
-        String uri = "/creator/creators-media/"+MediaType.PODCAST_EPISODE+"/" + mediaId;
+        String uri = "/creator/creators-mediaid?mediaType="+MediaType.PODCAST_EPISODE+"&id=" + mediaId;
         try{
             List<CreatorDTO> response = restClient
                     .get()
@@ -115,7 +115,7 @@ public class CreatorClientImpl implements CreatorClient {
     @Override
     public List<CreatorDTO> getCreatorsSeason(Long mediaId) {
         ServiceInstance serviceInstance = loadBalancer.choose(lbCreator);//ED-276-SA
-        String uri = "/creator/creators-media/"+MediaType.PODCAST_SEASON+"/" + mediaId;
+        String uri = "/creator/creators-mediaid?mediaType="+MediaType.PODCAST_SEASON+"&id=" + mediaId;
         try{
             List<CreatorDTO> response = restClient
                     .get()

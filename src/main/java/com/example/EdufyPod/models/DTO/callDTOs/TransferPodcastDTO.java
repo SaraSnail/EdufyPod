@@ -3,14 +3,12 @@ package com.example.EdufyPod.models.DTO.callDTOs;
 //ED-303-SA
 public class TransferPodcastDTO {
     private Long id;
-    private String title;
 
     public TransferPodcastDTO() {
     }
 
-    public TransferPodcastDTO(Long id, String title) {
+    public TransferPodcastDTO(Long id) {
         this.id = id;
-        this.title = title;
     }
 
     public Long getId() {
@@ -21,19 +19,11 @@ public class TransferPodcastDTO {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     @Override
     public String toString() {
         return "TransferPodcastDTO{" +
                 "id=" + id +
-                ", title='" + title + '\'' +
                 '}';
     }
 }

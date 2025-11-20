@@ -28,7 +28,7 @@ public class UserClientImpl implements UserClient {
     @Override
     public void validateUserById(Long userId) {
         ServiceInstance serviceInstance = loadBalancerClient.choose(lbUser);
-        String uri = "/api/v1/user/user-id/" + userId;
+        String uri = "/user/user-id/" + userId;
         try {
             ResponseEntity<Void> response = restClient.get()
                     .uri(serviceInstance.getUri()+uri)
