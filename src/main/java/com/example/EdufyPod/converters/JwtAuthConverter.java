@@ -23,7 +23,7 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
 
     private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
 
-    @Value("${pod.client.id}")
+    @Value("${keycloak.client-id}")
     private String podClientId;
 
     //ED-166-SA
