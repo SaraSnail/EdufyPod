@@ -27,10 +27,12 @@ public class CreatorClientImpl implements CreatorClient {
     private final LoadBalancerClient loadBalancer;//ED-276-SA
 
     private final String lbCreator = "EDUFYCREATOR";//ED-232-SA
+    private final KeycloakImpl keycloakImpl;
 
-    public CreatorClientImpl(RestClient.Builder restClientBuilder, LoadBalancerClient loadBalancerClient) {
+    public CreatorClientImpl(RestClient.Builder restClientBuilder, LoadBalancerClient loadBalancerClient, KeycloakImpl keycloakImpl) {
         this.restClient = restClientBuilder.build();
         this.loadBalancer = loadBalancerClient;
+        this.keycloakImpl = keycloakImpl;
     }
 
     //ED-303-SA
@@ -38,11 +40,13 @@ public class CreatorClientImpl implements CreatorClient {
     public List<TransferPodcastDTO> transferPodcastDTOs(Long creatorId) {
         ServiceInstance serviceInstance = loadBalancer.choose(lbCreator);//ED-276-SA
         String uri = "/creator/mediabycreator/" + creatorId + "/"+MediaType.PODCAST_EPISODE;
+        String token = keycloakImpl.getAccessToken();//ED-348-SA
 
         try{
             List<TransferPodcastDTO> response = restClient
                     .get()
                     .uri(serviceInstance.getUri()+uri)
+                    .header("Authorization", "Bearer "+token)//ED-384-SA
                     .retrieve()
                     .body(new ParameterizedTypeReference<List<TransferPodcastDTO>>() {});
 
@@ -65,11 +69,13 @@ public class CreatorClientImpl implements CreatorClient {
     public List<TransferPodcastSeasonDTO> transferPodcastSeasonDTOs(Long creatorId) {
         ServiceInstance serviceInstance = loadBalancer.choose(lbCreator);//ED-276-SA
         String uri = "/creator/mediabycreator/" + creatorId + "/"+MediaType.PODCAST_SEASON;
+        String token = keycloakImpl.getAccessToken();//ED-348-SA
 
         try{
             List<TransferPodcastSeasonDTO> response = restClient
                     .get()
                     .uri(serviceInstance.getUri()+uri)
+                    .header("Authorization", "Bearer "+token)//ED-348-SA
                     .retrieve()
                     .body(new ParameterizedTypeReference<List<TransferPodcastSeasonDTO>>() {});
 
@@ -91,10 +97,12 @@ public class CreatorClientImpl implements CreatorClient {
     public List<CreatorDTO> getCreatorsEpisode(Long mediaId) {
         ServiceInstance serviceInstance = loadBalancer.choose(lbCreator);//ED-276-SA
         String uri = "/creator/creators-mediaid?mediaType="+MediaType.PODCAST_EPISODE+"&id=" + mediaId;
+        String token = keycloakImpl.getAccessToken();//ED-348-SA
         try{
             List<CreatorDTO> response = restClient
                     .get()
                     .uri(serviceInstance.getUri()+uri)
+                    .header("Authorization", "Bearer "+token)//ED-348-SA
                     .retrieve()
                     .body(new ParameterizedTypeReference<List<CreatorDTO>>() {});
 
@@ -116,10 +124,12 @@ public class CreatorClientImpl implements CreatorClient {
     public List<CreatorDTO> getCreatorsSeason(Long mediaId) {
         ServiceInstance serviceInstance = loadBalancer.choose(lbCreator);//ED-276-SA
         String uri = "/creator/creators-mediaid?mediaType="+MediaType.PODCAST_SEASON+"&id=" + mediaId;
+        String token = keycloakImpl.getAccessToken();//ED-348-SA
         try{
             List<CreatorDTO> response = restClient
                     .get()
                     .uri(serviceInstance.getUri()+uri)
+                    .header("Authorization", "Bearer "+token)//ED-348-SA
                     .retrieve()
                     .body(new ParameterizedTypeReference<List<CreatorDTO>>() {});
 
@@ -141,10 +151,12 @@ public class CreatorClientImpl implements CreatorClient {
     public void createRecordOfMedia(Long mediaId, MediaType mediaType, List<Long> creatorIds) {
         ServiceInstance serviceInstance = loadBalancer.choose(lbCreator);
         String uri = "/creator/media/record";
+        String token = keycloakImpl.getAccessToken();//ED-348-SA
 
         try {
             ResponseEntity<Void> response = restClient.post()
                     .uri(serviceInstance.getUri()+uri)
+                    .header("Authorization", "Bearer "+token)//ED-348-SA
                     .body(new RecordOfCreatorDTO(mediaId, mediaType, creatorIds))
                     .retrieve()
                     .toBodilessEntity();
@@ -167,9 +179,11 @@ public class CreatorClientImpl implements CreatorClient {
     public CreatorDTO getCreatorById(Long creatorId) {
         ServiceInstance serviceInstance = loadBalancer.choose(lbCreator);
         String uri = "/creator/creator/"+creatorId+"/clientcall";
+        String token = keycloakImpl.getAccessToken();//ED-348-SA
         try {
             return restClient.get()
                     .uri(serviceInstance.getUri()+uri)
+                    .header("Authorization", "Bearer "+token)//ED-348-SA
                     .retrieve()
                     .body(CreatorDTO.class);
         }catch (RestClientResponseException e){
