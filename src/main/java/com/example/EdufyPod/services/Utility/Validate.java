@@ -3,7 +3,6 @@ package com.example.EdufyPod.services.Utility;
 import com.example.EdufyPod.clients.CreatorClient;
 import com.example.EdufyPod.clients.GenreClient;
 import com.example.EdufyPod.exceptions.ResourceNotFoundException;
-import com.example.EdufyPod.exceptions.UniqueConflictException;
 import com.example.EdufyPod.models.DTO.callDTOs.CreatorDTO;
 import com.example.EdufyPod.models.DTO.callDTOs.GenreDTO;
 import org.springframework.web.client.RestClientResponseException;
@@ -32,7 +31,7 @@ public class Validate {
         for(Long genreId : genreIds){
             try{
                 GenreDTO genreDTO = genreClient.getGenreById(genreId);
-                Long id = genreDTO.getGenre_id();
+                Long id = genreDTO.getId();
             }catch (RestClientResponseException e){
                 throw new ResourceNotFoundException("Genre", "id", genreId);
             }

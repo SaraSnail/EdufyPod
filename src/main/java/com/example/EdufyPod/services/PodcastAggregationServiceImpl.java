@@ -42,6 +42,8 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
 
     //ED-60-SA : gets podcast episodes and seasons based on id. Will ignore not found id one some if the list still contains some with valid ids
     public PodcastResponse getPodcastsAndSeasonsByIds(Long creatorId, Authentication authentication) {
+        //ED-310-SA
+        creatorClient.getCreatorById(creatorId);
 
         List<PodcastSeasonDTO> seasonsDTOS = List.of();
         List<Long> missingSeasonIds = List.of();
@@ -115,6 +117,9 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
     public SeasonResponse getSeasonsByIds(Long creatorId, Authentication authentication) {
         List<PodcastSeasonDTO> seasonsDTOS = List.of();
         List<Long> missingSeasonIds = List.of();
+
+        //ED-310-SA
+        creatorClient.getCreatorById(creatorId);
 
         //ED-303-SA
         List<TransferPodcastSeasonDTO> seasonDTOs = creatorClient.transferPodcastSeasonDTOs(creatorId);

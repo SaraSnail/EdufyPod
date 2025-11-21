@@ -6,6 +6,7 @@ import com.example.EdufyPod.exceptions.RestClientException;
 import com.example.EdufyPod.models.DTO.callDTOs.MediaByGenreDTO;
 import com.example.EdufyPod.models.DTO.recordOfMedia.RecordOfCreatorDTO;
 import com.example.EdufyPod.models.DTO.callDTOs.GenreDTO;
+import com.example.EdufyPod.models.DTO.recordOfMedia.RecordOfGenreDTO;
 import com.example.EdufyPod.models.enums.MediaType;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
@@ -38,7 +39,7 @@ public class GenreClientImpl implements GenreClient {
     @Override
     public List<GenreDTO> getGenreEpisode(Long mediaId) {
         ServiceInstance serviceInstance = loadBalancer.choose(lbGenre);
-        String uri = "/genre/by/media-id/PODCAST_EPISODE/" + mediaId;
+        String uri = "/genre/by/media-id/"+MediaType.PODCAST_EPISODE+"/" + mediaId;
         try {
             List<GenreDTO> response = restClient
                     .get()
@@ -70,7 +71,7 @@ public class GenreClientImpl implements GenreClient {
         try{
             ResponseEntity<Void> response = restClient.post()
                     .uri(serviceInstance.getUri()+uri)
-                    .body(new RecordOfCreatorDTO(mediaId, mediaType, genreIds))
+                    .body(new RecordOfGenreDTO(mediaId, mediaType, genreIds))
                     .retrieve()
                     .toBodilessEntity();
 
@@ -89,7 +90,7 @@ public class GenreClientImpl implements GenreClient {
     @Override
     public GenreDTO getGenreById(Long genreId) {
         ServiceInstance serviceInstance = loadBalancer.choose(lbGenre);
-        String uri = "/api/v1/genre/"+genreId;
+        String uri = "/genre/"+genreId;
         try {
 
             return restClient.get()

@@ -22,7 +22,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientResponseException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -155,11 +154,11 @@ public class PodcastServiceImpl implements PodcastService {
     //ED-283-SA
     @Override
     public List<PodcastDTO> getUserHistory(Long userId) {
-        userClient.validateUserById(userId);
+        UserDTO userDTO = userClient.getUserById(userId);
 
-        List<Long> podcastIds = podcastRepository.findPodcastIdsPlayedByUser(userId);
+        List<Long> podcastIds = podcastRepository.findPodcastIdsPlayedByUser(userDTO.getId());
         if(podcastIds.isEmpty()){
-            throw new ResourceNotFoundException("Podcast ids", "userId", userId);
+            throw new ResourceNotFoundException("Podcast ids", "userId", userDTO.getId());
         }
 
         List<Podcast> podcasts = new ArrayList<>();
