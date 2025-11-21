@@ -265,9 +265,10 @@ public class PodcastServiceImpl implements PodcastService {
             throw new UniqueConflictException("URL", podcast.getUrl());
         }
 
+        /*
         if(!podcast.getUrl().contains("http://") || !podcast.getUrl().contains("https://")){
             throw new ValidFieldsException("URL", "needs to contain either http:// or https://", podcast.getUrl());
-        }
+        }*/
 
         if(podcast.getUrl().length() < 10){
             throw new ValidFieldsException("URL", "more than 10 characters", podcast.getUrl());

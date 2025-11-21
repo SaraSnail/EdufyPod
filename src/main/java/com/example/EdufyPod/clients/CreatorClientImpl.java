@@ -154,14 +154,14 @@ public class CreatorClientImpl implements CreatorClient {
         String token = keycloakImpl.getAccessToken();//ED-348-SA
 
         try {
-            ResponseEntity<Void> response = restClient.post()
+            ResponseEntity<Void> response = restClient.put()//ED-348-SA TODO:change to Post if changed in Creator
                     .uri(serviceInstance.getUri()+uri)
                     .header("Authorization", "Bearer "+token)//ED-348-SA
                     .body(new RecordOfCreatorDTO(mediaId, mediaType, creatorIds))
                     .retrieve()
                     .toBodilessEntity();
 
-            if(!response.getStatusCode().equals(HttpStatus.CREATED)){
+            if(!response.getStatusCode().equals(HttpStatus.OK)){//ED-348-SA TODO:change to CREATED if changed in Creator
                 throw new IllegalStateException("Unexpected response status code: " + response.getStatusCode());
             }
 

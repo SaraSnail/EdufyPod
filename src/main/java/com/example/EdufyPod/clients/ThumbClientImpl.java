@@ -31,8 +31,10 @@ public class ThumbClientImpl implements ThumbClient {
     public void createRecordOfMedia(Long mediaId, MediaType mediaType, String mediaName) {
         ServiceInstance serviceInstance = loadBalancer.choose(lbThumb);
         String uri = "/thumb/media/record";
+        RecordOfThumbDTO recordOfThumbDTO = new RecordOfThumbDTO(mediaId, mediaType, mediaName);//ED-348-SA
+        ResponseEntity<Void> response;//ED-348-SA
         try{
-            ResponseEntity<Void> response = restClient.post()
+            response = restClient.post()
                     .uri(serviceInstance.getUri()+uri)
                     .body(new RecordOfThumbDTO(mediaId, mediaType, mediaName))
                     .retrieve()
@@ -44,7 +46,12 @@ public class ThumbClientImpl implements ThumbClient {
 
         }catch (RestClientResponseException ex){
             String error = ex.getResponseBodyAsString();
-            throw new InvalidInputException("Edufy Thumb service error: "+error);
+            throw new InvalidInputException("Edufy Thumb service error: "+ex.getMessage() +//ED-348-SA
+                    "\n recordOfThumbBody: mediaId["+recordOfThumbDTO.getMediaId()+"]. " +
+                    "MediaType["+recordOfThumbDTO.getMediaType()+"]. " +
+                    "MediaName["+recordOfThumbDTO.getMediaName()+"].  " +
+                    "\nerror:"+error +
+                    "stauscode:"+ex.getStatusCode());
 
         } catch (ResourceAccessException ex){
             throw new RestClientException("Edufy Pod","Edufy Thumb");

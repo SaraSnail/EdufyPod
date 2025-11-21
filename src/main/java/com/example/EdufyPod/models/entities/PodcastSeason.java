@@ -32,6 +32,7 @@ public class PodcastSeason {
 
     @JsonIgnore
     @OneToMany(mappedBy = "season")
+    @OrderBy("nrInSeason ASC")//ED-348-SA
     private List<Podcast> podcasts = new ArrayList<>();
 
     //ED-117-SA
