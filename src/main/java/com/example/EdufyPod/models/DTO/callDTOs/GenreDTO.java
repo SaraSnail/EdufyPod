@@ -7,23 +7,23 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GenreDTO {
 
-    private Long genre_id;
+    private Long id;
     private String name;
 
     public GenreDTO() {
     }
 
     public GenreDTO(Long id, String name) {
-        this.genre_id = id;
+        this.id = id;
         this.name = name;
     }
 
-    public Long getGenre_id() {
-        return genre_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setGenre_id(Long genre_id) {
-        this.genre_id = genre_id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -37,7 +37,7 @@ public class GenreDTO {
     @Override
     public String toString() {
         return "GenreDTO{" +
-                "id=" + genre_id +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
     }

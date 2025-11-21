@@ -45,7 +45,7 @@ public class UserClientImpl implements UserClient {
     @Override
     public UserDTO getUserBySUB(String sub) {
         ServiceInstance serviceInstance = loadBalancerClient.choose(lbUser);
-        String uri = "/user/user-sub-small/" + sub;
+        String uri = "/user/user-sub/" + sub + "/clientcall";
         try {
             return restClient.get()
                     .uri(serviceInstance.getUri()+uri)
