@@ -30,7 +30,7 @@ public class UserClientImpl implements UserClient {
         String uri = "/user/user-id/" + userId + "/clientcall";
         try {
             return restClient.get()
-                    .uri(serviceInstance.getUri()+uri)
+                    .uri(serviceInstance.getUri()+"/user/user-id/" + userId + "/clientcall")
                     .retrieve()
                     .body(UserDTO.class);
 
@@ -48,7 +48,7 @@ public class UserClientImpl implements UserClient {
         String uri = "/user/user-sub/" + sub + "/clientcall";
         try {
             return restClient.get()
-                    .uri(serviceInstance.getUri()+uri)
+                    .uri(serviceInstance.getUri()+"/user/user-sub/" + sub + "/clientcall")
                     .retrieve()
                     .body(UserDTO.class);
 

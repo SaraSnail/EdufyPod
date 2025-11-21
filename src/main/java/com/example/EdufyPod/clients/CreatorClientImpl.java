@@ -45,7 +45,7 @@ public class CreatorClientImpl implements CreatorClient {
         try{
             List<TransferPodcastDTO> response = restClient
                     .get()
-                    .uri(serviceInstance.getUri()+uri)
+                    .uri(serviceInstance.getUri()+"/creator/mediabycreator/" + creatorId + "/"+MediaType.PODCAST_EPISODE)
                     .header("Authorization", "Bearer "+token)//ED-384-SA
                     .retrieve()
                     .body(new ParameterizedTypeReference<List<TransferPodcastDTO>>() {});
@@ -74,7 +74,7 @@ public class CreatorClientImpl implements CreatorClient {
         try{
             List<TransferPodcastSeasonDTO> response = restClient
                     .get()
-                    .uri(serviceInstance.getUri()+uri)
+                    .uri(serviceInstance.getUri()+"/creator/mediabycreator/" + creatorId + "/"+MediaType.PODCAST_SEASON)
                     .header("Authorization", "Bearer "+token)//ED-348-SA
                     .retrieve()
                     .body(new ParameterizedTypeReference<List<TransferPodcastSeasonDTO>>() {});
@@ -101,7 +101,7 @@ public class CreatorClientImpl implements CreatorClient {
         try{
             List<CreatorDTO> response = restClient
                     .get()
-                    .uri(serviceInstance.getUri()+uri)
+                    .uri(serviceInstance.getUri()+ "/creator/creators-mediaid?mediaType="+MediaType.PODCAST_EPISODE+"&id=" + mediaId)
                     .header("Authorization", "Bearer "+token)//ED-348-SA
                     .retrieve()
                     .body(new ParameterizedTypeReference<List<CreatorDTO>>() {});
@@ -128,7 +128,7 @@ public class CreatorClientImpl implements CreatorClient {
         try{
             List<CreatorDTO> response = restClient
                     .get()
-                    .uri(serviceInstance.getUri()+uri)
+                    .uri(serviceInstance.getUri()+ "/creator/creators-mediaid?mediaType="+MediaType.PODCAST_SEASON+"&id=" + mediaId)
                     .header("Authorization", "Bearer "+token)//ED-348-SA
                     .retrieve()
                     .body(new ParameterizedTypeReference<List<CreatorDTO>>() {});
@@ -182,7 +182,7 @@ public class CreatorClientImpl implements CreatorClient {
         String token = keycloakImpl.getAccessToken();//ED-348-SA
         try {
             return restClient.get()
-                    .uri(serviceInstance.getUri()+uri)
+                    .uri(serviceInstance.getUri()+"/creator/creator/"+creatorId+"/clientcall")
                     .header("Authorization", "Bearer "+token)//ED-348-SA
                     .retrieve()
                     .body(CreatorDTO.class);

@@ -43,7 +43,7 @@ public class GenreClientImpl implements GenreClient {
         try {
             List<GenreDTO> response = restClient
                     .get()
-                    .uri(serviceInstance.getUri()+uri)
+                    .uri(serviceInstance.getUri()+"/genre/by/media-id/"+MediaType.PODCAST_EPISODE+"/" + mediaId)
                     .retrieve()
                     .body(new ParameterizedTypeReference<List<GenreDTO>>() {});
 
@@ -94,7 +94,7 @@ public class GenreClientImpl implements GenreClient {
         try {
 
             return restClient.get()
-                    .uri(serviceInstance.getUri()+uri)
+                    .uri(serviceInstance.getUri()+"/genre/"+genreId)
                     .retrieve()
                     .body(GenreDTO.class);
 
@@ -112,7 +112,7 @@ public class GenreClientImpl implements GenreClient {
         String uri = "/genre/"+genreId+"/media/by-type/"+mediaType;
         try{
             return restClient.get()
-                    .uri(serviceInstance.getUri()+uri)
+                    .uri(serviceInstance.getUri()+"/genre/"+genreId+"/media/by-type/"+mediaType)
                     .retrieve()
                     .body(MediaByGenreDTO.class);
         }catch (ResourceAccessException e){
