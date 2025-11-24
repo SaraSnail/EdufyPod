@@ -20,10 +20,12 @@ public class ThumbClientImpl implements ThumbClient {
     private final String lbThumb = "EDUFYTHUMB";
     private final RestClient restClient;
     private final LoadBalancerClient loadBalancer;//ED-232-SA
+    private final Keycloak keycloak;//ED-348-SA
 
-    public ThumbClientImpl(RestClient.Builder restClientBuilder, LoadBalancerClient loadBalancerClient) {
+    public ThumbClientImpl(RestClient.Builder restClientBuilder, LoadBalancerClient loadBalancerClient, Keycloak keycloak) {
         this.restClient = restClientBuilder.build();
         this.loadBalancer = loadBalancerClient;
+        this.keycloak = keycloak;
     }
 
     //ED-232-SA
@@ -31,12 +33,12 @@ public class ThumbClientImpl implements ThumbClient {
     public void createRecordOfMedia(Long mediaId, MediaType mediaType, String mediaName) {
         ServiceInstance serviceInstance = loadBalancer.choose(lbThumb);
         String uri = "/thumb/media/record";
-        RecordOfThumbDTO recordOfThumbDTO = new RecordOfThumbDTO(mediaId, mediaType, mediaName);//ED-348-SA
-        ResponseEntity<Void> response;//ED-348-SA
+        String token = keycloak.getAccessToken();//ED-348-SA
         try{
-            response = restClient.post()
+            ResponseEntity<Void> response = restClient.post()
                     .uri(serviceInstance.getUri()+uri)
                     .body(new RecordOfThumbDTO(mediaId, mediaType, mediaName))
+                    .header("Authorization", "Bearer " + token)//ED-348-SA
                     .retrieve()
                     .toBodilessEntity();
 

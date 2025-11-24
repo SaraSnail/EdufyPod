@@ -18,19 +18,23 @@ public class UserClientImpl implements UserClient {
     private final RestClient restClient;
     private final LoadBalancerClient loadBalancerClient;
     private final String lbUser = "EDUFYUSER";
+    private final Keycloak keycloak;//ED-348-SA
 
-    public UserClientImpl(RestClient.Builder restClientBuilder, LoadBalancerClient loadBalancerClient) {
+    public UserClientImpl(RestClient.Builder restClientBuilder, LoadBalancerClient loadBalancerClient, Keycloak keycloak) {
         this.restClient = restClientBuilder.build();
         this.loadBalancerClient = loadBalancerClient;
+        this.keycloak = keycloak;
     }
 
     //ED-283-SA
     public UserDTO getUserById(Long userId) {
         ServiceInstance serviceInstance = loadBalancerClient.choose(lbUser);
         String uri = "/user/user-id/" + userId + "/clientcall";
+        String token = keycloak.getAccessToken();//ED-348-SA
         try {
             return restClient.get()
                     .uri(serviceInstance.getUri()+"/user/user-id/" + userId + "/clientcall")
+                    .header("Authorization", "Bearer " + token)//ED-348-SA
                     .retrieve()
                     .body(UserDTO.class);
 
@@ -46,9 +50,11 @@ public class UserClientImpl implements UserClient {
     public UserDTO getUserBySUB(String sub) {
         ServiceInstance serviceInstance = loadBalancerClient.choose(lbUser);
         String uri = "/user/user-sub/" + sub + "/clientcall";
+        String token = keycloak.getAccessToken();//ED-348-SA
         try {
             return restClient.get()
                     .uri(serviceInstance.getUri()+"/user/user-sub/" + sub + "/clientcall")
+                    .header("Authorization", "Bearer " + token)//ED-348-SA
                     .retrieve()
                     .body(UserDTO.class);
 

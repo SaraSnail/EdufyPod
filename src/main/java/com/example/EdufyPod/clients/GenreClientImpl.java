@@ -28,11 +28,13 @@ public class GenreClientImpl implements GenreClient {
     private final LoadBalancerClient loadBalancer;
 
     private final String lbGenre = "EDUFYGENRE";//ED-232-SA
+    private final Keycloak keycloak;//ED-348-SA
 
 
-    public GenreClientImpl(RestClient.Builder restClientBuilder, LoadBalancerClient loadBalancer) {
+    public GenreClientImpl(RestClient.Builder restClientBuilder, LoadBalancerClient loadBalancer, Keycloak keycloak) {
         this.restClient = restClientBuilder.build();
         this.loadBalancer = loadBalancer;
+        this.keycloak = keycloak;
     }
 
     //ED-267-SA
@@ -40,10 +42,12 @@ public class GenreClientImpl implements GenreClient {
     public List<GenreDTO> getGenreEpisode(Long mediaId) {
         ServiceInstance serviceInstance = loadBalancer.choose(lbGenre);
         String uri = "/genre/by/media-id/"+MediaType.PODCAST_EPISODE+"/" + mediaId;
+        String token = keycloak.getAccessToken();//ED-348-SA
         try {
             List<GenreDTO> response = restClient
                     .get()
                     .uri(serviceInstance.getUri()+"/genre/by/media-id/"+MediaType.PODCAST_EPISODE+"/" + mediaId)
+                    .header("Authorization", "Bearer "+token)//ED-348-SA
                     .retrieve()
                     .body(new ParameterizedTypeReference<List<GenreDTO>>() {});
 
@@ -67,11 +71,13 @@ public class GenreClientImpl implements GenreClient {
     public void createRecordOfMedia(Long mediaId, MediaType mediaType, List<Long> genreIds) {
         ServiceInstance serviceInstance = loadBalancer.choose(lbGenre);
         String uri = "/genre/media/record";
+        String token = keycloak.getAccessToken();//ED-348-SA
 
         try{
             ResponseEntity<Void> response = restClient.post()
                     .uri(serviceInstance.getUri()+uri)
                     .body(new RecordOfGenreDTO(mediaId, mediaType, genreIds))
+                    .header("Authorization", "Bearer "+token)//ED-348-SA
                     .retrieve()
                     .toBodilessEntity();
 
@@ -80,7 +86,7 @@ public class GenreClientImpl implements GenreClient {
             }
         }catch (RestClientResponseException e){
             String error = e.getResponseBodyAsString();
-            throw new InvalidInputException("Edufy Genre service error: " + e.getMessage() + "\nerror: " + error + "\nstatuscode: " + e.getStatusCode());
+            throw new InvalidInputException("Edufy Genre service error: " + e.getMessage() + "\nerror: " + error + "\nstatuscode: " + e.getStatusCode());//ED-348-SA
         }catch (ResourceAccessException e){
             throw new RestClientException("Edufy Pod", "Edufy Genre");
         }
@@ -91,10 +97,12 @@ public class GenreClientImpl implements GenreClient {
     public GenreDTO getGenreById(Long genreId) {
         ServiceInstance serviceInstance = loadBalancer.choose(lbGenre);
         String uri = "/genre/"+genreId;
+        String token = keycloak.getAccessToken();//ED-348-SA
         try {
 
             return restClient.get()
                     .uri(serviceInstance.getUri()+"/genre/"+genreId)
+                    .header("Authorization", "Bearer "+token)//ED-348-SA
                     .retrieve()
                     .body(GenreDTO.class);
 
@@ -110,9 +118,11 @@ public class GenreClientImpl implements GenreClient {
     public MediaByGenreDTO getMediaByGenreId(Long genreId, MediaType mediaType) {
         ServiceInstance serviceInstance = loadBalancer.choose(lbGenre);
         String uri = "/genre/"+genreId+"/media/by-type/"+mediaType;
+        String token = keycloak.getAccessToken();//ED-348-SA
         try{
             return restClient.get()
                     .uri(serviceInstance.getUri()+"/genre/"+genreId+"/media/by-type/"+mediaType)
+                    .header("Authorization", "Bearer "+token)//ED-348-SA
                     .retrieve()
                     .body(MediaByGenreDTO.class);
         }catch (ResourceAccessException e){
