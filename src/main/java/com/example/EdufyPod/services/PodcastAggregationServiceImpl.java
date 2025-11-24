@@ -15,8 +15,10 @@ import com.example.EdufyPod.repositories.PodcastRepository;
 import com.example.EdufyPod.repositories.PodcastSeasonRepository;
 import com.example.EdufyPod.clients.CreatorClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Comparator;
 import java.util.List;
@@ -52,22 +54,30 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
         List<Long> missingEpisodeIds = List.of();
 
         //ED-303-SA
-        List<TransferPodcastDTO> podcastDTOs = creatorClient.transferPodcastDTOs(creatorId);
-        List<TransferPodcastSeasonDTO> seasonDTOs = creatorClient.transferPodcastSeasonDTOs(creatorId);
+        List<TransferPodcastDTO> creatorPodcasts = creatorClient.transferPodcastDTOs(creatorId);
+        List<TransferPodcastSeasonDTO> creatorPodcastSeason = creatorClient.transferPodcastSeasonDTOs(creatorId);
+
+        if(creatorPodcasts.isEmpty() || creatorPodcastSeason.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Podcasts and Seasons not found from Creator. PodcastDTO size:"+creatorPodcasts.size()+". SeasonDTO size:"+creatorPodcastSeason.size());
+        }
 
         //ED-303-SA
-        List<Long> seasonIds = seasonDTOs.stream()
-                .map(TransferPodcastSeasonDTO::getId)
+        List<Long> seasonIds = creatorPodcastSeason.stream()
+                .map(TransferPodcastSeasonDTO::getMediaId)
                 .filter(Objects::nonNull)
                 .toList();
 
-        List<Long> podcastIds = podcastDTOs.stream()
-                .map(TransferPodcastDTO::getId)
+        List<Long> podcastIds = creatorPodcasts.stream()
+                .map(TransferPodcastDTO::getMediaId)
                 .filter(Objects::nonNull)
                 .toList();
 
         //ED-303-SA
         List<String> roles = Roles.getRoles(authentication);
+
+        if(seasonIds.isEmpty() || podcastIds.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Season id or epsiode id is empty. SeasonId size:"+seasonIds.size()+". episodeId size:"+podcastIds.size()+". PodccastDTO 1:"+creatorPodcasts.get(1).toString() + ". SeasonDTO 1:"+creatorPodcastSeason.get(1).toString());
+        }
 
         //ED-60-SA
         if(!seasonIds.isEmpty()){
@@ -107,7 +117,8 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
         }
 
         if(podcastDTOS.isEmpty() && seasonsDTOS.isEmpty()){
-            throw new ContentNotFoundException("No podcasts or seasons");
+            //throw new ContentNotFoundException("No podcasts or seasons");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No podcasts or seasons");
         }
 
         return new PodcastResponse(seasonsDTOS, podcastDTOS, missingEpisodeIds, missingSeasonIds);
@@ -126,7 +137,7 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
 
         //ED-303-SA
         List<Long> seasonIds = seasonDTOs.stream()
-                .map(TransferPodcastSeasonDTO::getId)
+                .map(TransferPodcastSeasonDTO::getMediaId)
                 .filter(Objects::nonNull)
                 .toList();
 

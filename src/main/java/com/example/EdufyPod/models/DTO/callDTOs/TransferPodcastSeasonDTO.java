@@ -2,27 +2,27 @@ package com.example.EdufyPod.models.DTO.callDTOs;
 
 //ED-303-SA
 public class TransferPodcastSeasonDTO {
-    private Long id;
+    private Long mediaId;
 
     public TransferPodcastSeasonDTO() {
     }
 
-    public TransferPodcastSeasonDTO(Long id) {
-        this.id = id;
+    public TransferPodcastSeasonDTO(Long mediaId) {
+        this.mediaId = mediaId;
     }
 
-    public Long getId() {
-        return id;
+    public Long getMediaId() {
+        return mediaId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setMediaId(Long mediaId) {
+        this.mediaId = mediaId;
     }
 
     @Override
     public String toString() {
         return "TransferPodcastSeasonDTO{" +
-                "id=" + id +
+                "mediaId=" + mediaId +
                 '}';
     }
 }
