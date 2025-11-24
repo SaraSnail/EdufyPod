@@ -106,9 +106,7 @@ public class PodcastServiceImpl implements PodcastService {
         newPodcast.setDescription(incomingPodcastDTO.getDescription());
         newPodcast.setReleaseDate(incomingPodcastDTO.getReleaseDate());
 
-        //TODO:Should it be set to active false if release date is after now? Then it can later be manually set to active = true
-        boolean isActive = !newPodcast.getReleaseDate().isAfter(LocalDate.now());
-        newPodcast.setActive(isActive);
+        newPodcast.setActive(true);
 
         newPodcast.setLength(DurationConverter.parsePodcastDuration(incomingPodcastDTO.getLength()));
 
@@ -265,10 +263,10 @@ public class PodcastServiceImpl implements PodcastService {
             throw new UniqueConflictException("URL", podcast.getUrl());
         }
 
-        /*
-        if(!podcast.getUrl().contains("http://") || !podcast.getUrl().contains("https://")){
+
+        if(!podcast.getUrl().contains("http://") && !podcast.getUrl().contains("https://")){
             throw new ValidFieldsException("URL", "needs to contain either http:// or https://", podcast.getUrl());
-        }*/
+        }
 
         if(podcast.getUrl().length() < 10){
             throw new ValidFieldsException("URL", "more than 10 characters", podcast.getUrl());

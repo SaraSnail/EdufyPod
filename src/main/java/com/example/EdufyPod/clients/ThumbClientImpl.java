@@ -47,9 +47,6 @@ public class ThumbClientImpl implements ThumbClient {
         }catch (RestClientResponseException ex){
             String error = ex.getResponseBodyAsString();
             throw new InvalidInputException("Edufy Thumb service error: "+ex.getMessage() +//ED-348-SA
-                    "\n recordOfThumbBody: mediaId["+recordOfThumbDTO.getMediaId()+"]. " +
-                    "MediaType["+recordOfThumbDTO.getMediaType()+"]. " +
-                    "MediaName["+recordOfThumbDTO.getMediaName()+"].  " +
                     "\nerror:"+error +
                     "stauscode:"+ex.getStatusCode());
 

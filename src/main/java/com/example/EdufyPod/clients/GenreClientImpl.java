@@ -80,7 +80,7 @@ public class GenreClientImpl implements GenreClient {
             }
         }catch (RestClientResponseException e){
             String error = e.getResponseBodyAsString();
-            throw new InvalidInputException("Edufy Genre service error: " + error);
+            throw new InvalidInputException("Edufy Genre service error: " + e.getMessage() + "\nerror: " + error + "\nstatuscode: " + e.getStatusCode());
         }catch (ResourceAccessException e){
             throw new RestClientException("Edufy Pod", "Edufy Genre");
         }

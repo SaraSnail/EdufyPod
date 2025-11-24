@@ -167,7 +167,7 @@ public class CreatorClientImpl implements CreatorClient {
 
         }catch (RestClientResponseException e){
             String error = e.getResponseBodyAsString();
-            throw new InvalidInputException("Edufy Creator service error: "+error);
+            throw new InvalidInputException("Edufy Creator service error: "+e.getMessage() + "\nerror:"+error+"\nstatus:"+e.getStatusCode());
         }catch (RestClientException e){
             throw new RestClientException("Edufy Pod", "Edufy Creator");
         }
