@@ -43,23 +43,17 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
     }
 
     //ED-60-SA : gets podcast episodes and seasons based on id. Will ignore not found id one some if the list still contains some with valid ids
+    //ED-348-SA - removed missing ids
     public PodcastResponse getPodcastsAndSeasonsByIds(Long creatorId, Authentication authentication) {
         //ED-310-SA
         creatorClient.getCreatorById(creatorId);
 
         List<PodcastSeasonDTO> seasonsDTOS = List.of();
-        List<Long> missingSeasonIds = List.of();
-
         List<PodcastDTO> podcastDTOS = List.of();
-        List<Long> missingEpisodeIds = List.of();
 
         //ED-303-SA
         List<TransferPodcastDTO> creatorPodcasts = creatorClient.transferPodcastDTOs(creatorId);
         List<TransferPodcastSeasonDTO> creatorPodcastSeason = creatorClient.transferPodcastSeasonDTOs(creatorId);
-
-        if(creatorPodcasts.isEmpty() || creatorPodcastSeason.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Podcasts and Seasons not found from Creator. PodcastDTO size:"+creatorPodcasts.size()+". SeasonDTO size:"+creatorPodcastSeason.size());
-        }
 
         //ED-303-SA
         List<Long> seasonIds = creatorPodcastSeason.stream()
@@ -75,10 +69,6 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
         //ED-303-SA
         List<String> roles = Roles.getRoles(authentication);
 
-        if(seasonIds.isEmpty() || podcastIds.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Season id or epsiode id is empty. SeasonId size:"+seasonIds.size()+". episodeId size:"+podcastIds.size()+". PodccastDTO 1:"+creatorPodcasts.get(1).toString() + ". SeasonDTO 1:"+creatorPodcastSeason.get(1).toString());
-        }
-
         //ED-60-SA
         if(!seasonIds.isEmpty()){
             List<PodcastSeason> seasons;
@@ -93,9 +83,6 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
                 seasonsDTOS = PodcastSeasonMapper.toDTONoEpisodeListUser(seasons, creatorClient);
             }
 
-            missingSeasonIds = seasonIds.stream()
-                    .filter(id -> seasons.stream().noneMatch(s -> s.getId().equals(id)))
-                    .toList();
         }
 
         if(!podcastIds.isEmpty()){
@@ -111,23 +98,19 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
                 podcastDTOS = PodcastMapper.toDTOUserList(sortList(podcasts),creatorClient, genreClient);
             }
 
-            missingEpisodeIds = podcastIds.stream()
-                    .filter(id -> podcasts.stream().noneMatch(p -> p.getId().equals(id)))
-                    .toList();
         }
 
         if(podcastDTOS.isEmpty() && seasonsDTOS.isEmpty()){
-            //throw new ContentNotFoundException("No podcasts or seasons");
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No podcasts or seasons");
+            throw new ContentNotFoundException("No podcasts or seasons");
         }
 
-        return new PodcastResponse(seasonsDTOS, podcastDTOS, missingEpisodeIds, missingSeasonIds);
+        return new PodcastResponse(seasonsDTOS, podcastDTOS);
     }
 
     //ED-231-SA : this one only shows seasons, but the seasons also contains all their episodes
+    //ED-348-SA - removed missing Ids
     public SeasonResponse getSeasonsByIds(Long creatorId, Authentication authentication) {
         List<PodcastSeasonDTO> seasonsDTOS = List.of();
-        List<Long> missingSeasonIds = List.of();
 
         //ED-310-SA
         creatorClient.getCreatorById(creatorId);
@@ -158,16 +141,13 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
                 seasonsDTOS = PodcastSeasonMapper.toDTOUserList(seasons,creatorClient, genreClient);
             }
 
-            missingSeasonIds = seasonIds.stream()
-                    .filter(id -> seasons.stream().noneMatch(s -> s.getId().equals(id)))
-                    .toList();
         }
 
         if(seasonsDTOS.isEmpty()){
             throw new ContentNotFoundException("No seasons");
         }
 
-        return new SeasonResponse( missingSeasonIds, seasonsDTOS);
+        return new SeasonResponse(seasonsDTOS);
     }
 
     //ED-60-SA

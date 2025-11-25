@@ -49,29 +49,17 @@ public class CommonController {
     //ED-348-SA - moved from ClientController
     //ED-60-SA
     //ED-303
+    //ED-348-SA - removed missing Ids
     @GetMapping("/pod-creator/{creatorId}")//ED-303-SA - GET mapping to POST mapping
     public ResponseEntity<PodcastResponse> getPodByCreator(@PathVariable Long creatorId, Authentication auth) {
-        PodcastResponse response = podcastAggregationService.getPodcastsAndSeasonsByIds(creatorId, auth);
-
-        //Checks if there were any missing ids on podcast episodes or season, if so the status is changed to Partial content
-        //(it won't throw, just inform that it could not find everything)
-        boolean hasMissingIds = !response.missingEpisodeIds().isEmpty() || !response.missingSeasonIds().isEmpty();
-        HttpStatus status = hasMissingIds ? HttpStatus.PARTIAL_CONTENT : HttpStatus.OK;
-
-        return ResponseEntity.status(status).body(response);
+        return ResponseEntity.ok(podcastAggregationService.getPodcastsAndSeasonsByIds(creatorId, auth));
     }
 
     //ED-348-SA - moved from ClientController
     //ED-231-SA: gets seasons, they also contains the seasons episodes
+    //ED-348-SA - removed missing Ids
     @GetMapping("/season-creator/{creatorId}")//ED-303-SA - GET mapping to POST mapping
-    public ResponseEntity<SeasonResponse> getSeasonByCreator(@PathVariable Long creatorId, Authentication authentication) {//makes so if withId is not given just set value to false
-        SeasonResponse response = podcastAggregationService.getSeasonsByIds(creatorId, authentication);
-
-        //Checks if there were any missing ids on podcast season, if so the status is changed to Partial content
-        //(it won't throw, just inform that it could not find everything)
-        boolean hasMissingIds = !response.missingSeasonIds().isEmpty();
-        HttpStatus status = hasMissingIds ? HttpStatus.PARTIAL_CONTENT : HttpStatus.OK;
-
-        return ResponseEntity.status(status).body(response);
+    public ResponseEntity<SeasonResponse> getSeasonByCreator(@PathVariable Long creatorId, Authentication authentication) {
+        return ResponseEntity.ok(podcastAggregationService.getSeasonsByIds(creatorId, authentication));
     }
 }
