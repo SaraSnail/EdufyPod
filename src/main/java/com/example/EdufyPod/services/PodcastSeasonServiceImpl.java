@@ -92,11 +92,7 @@ public class PodcastSeasonServiceImpl implements PodcastSeasonService {
         season.setUrl(incomingPodcastSeasonDTO.getUrl());
         season.setReleaseDate(incomingPodcastSeasonDTO.getReleaseDate());
 
-        //TODO:Should it be set to active false if release date is after now? Then it can later be manually set to active = true
-        //If the release date is after the current date, it will set the season to isActive=false
-        boolean isActive = !season.getReleaseDate().isAfter(LocalDate.now());
-        season.setActive(isActive);
-
+        season.setActive(true);
 
         checkValues(season);
 
@@ -150,7 +146,7 @@ public class PodcastSeasonServiceImpl implements PodcastSeasonService {
         if(podcastSeason.getUrl().isEmpty()){
             throw new NullValueException("Url", podcastSeason.getUrl());
         }
-        if(!podcastSeason.getUrl().contains("http://") || !podcastSeason.getUrl().contains("https://")){
+        if(!podcastSeason.getUrl().contains("http://") && !podcastSeason.getUrl().contains("https://")){
             throw new ValidFieldsException("URL", "needs to contain either http:// or https://", podcastSeason.getUrl());
         }
         if(podcastSeasonRepository.existsByUrl(podcastSeason.getUrl())){

@@ -48,7 +48,7 @@ public class Podcast {
 
 
     @Column(name = "podcast_episode_times_listened")
-    private Long timesListened;//ED-254-SA - switched to Long from Integer
+    private Long timesListened = 0L;//ED-254-SA - switched to Long from Integer //ED-348-SA set to 0L as start
 
     @JsonProperty("isActive")//ED-76-SA
     @Column(name = "podcast_episode_is_active")
@@ -161,7 +161,7 @@ public class Podcast {
     }
 
     public Long getTimesListened() {
-        return userHistory.values().stream().mapToLong(Long::longValue).sum();//ED-254-SA
+        return timesListened;
     }
 
     public void setTimesListened(Long timesListened) {
@@ -182,11 +182,13 @@ public class Podcast {
 
     public void setUserHistory(Map<Long, Long> userHistory) {
         this.userHistory = userHistory;
+        recalculateTimesPlayed();
     }
 
     //ED-283-SA //ED-254-SA if user listens for the first time it saves the userId and sets times played to 1L. If key exists it adds to the sum of times played so 3L->4L
     public void incrementTimesPlayed(Long userId) {
         userHistory.merge(userId, 1L, Long::sum);
+        recalculateTimesPlayed();
     }
 
     //ED-283-SA
@@ -197,6 +199,16 @@ public class Podcast {
     //ED-283-SA
     public void setTimesPlayed(Long userId, Long timesPlayed) {
         userHistory.put(userId, timesPlayed);
+        recalculateTimesPlayed();
+    }
+
+    //ED-348-SA
+    private void recalculateTimesPlayed() {
+        this.timesListened = userHistory
+                .values()
+                .stream()
+                .mapToLong(Long::longValue)
+                .sum();
     }
 
     @Override

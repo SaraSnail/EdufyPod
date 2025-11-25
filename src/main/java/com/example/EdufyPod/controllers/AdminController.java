@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 //ED-76-SA
 @RestController
 @RequestMapping("/pod")
-@PreAuthorize("hasAnyAuthority('pod_admin','edufy_realm_admin')")
+@PreAuthorize("hasAnyRole('pod_admin','edufy_realm_admin')")//ED-348-SA
 public class AdminController {
 
     private final PodcastService podcastService;

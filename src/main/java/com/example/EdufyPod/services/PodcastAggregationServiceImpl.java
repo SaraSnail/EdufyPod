@@ -15,8 +15,10 @@ import com.example.EdufyPod.repositories.PodcastRepository;
 import com.example.EdufyPod.repositories.PodcastSeasonRepository;
 import com.example.EdufyPod.clients.CreatorClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Comparator;
 import java.util.List;
@@ -41,28 +43,26 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
     }
 
     //ED-60-SA : gets podcast episodes and seasons based on id. Will ignore not found id one some if the list still contains some with valid ids
+    //ED-348-SA - removed missing ids
     public PodcastResponse getPodcastsAndSeasonsByIds(Long creatorId, Authentication authentication) {
         //ED-310-SA
         creatorClient.getCreatorById(creatorId);
 
         List<PodcastSeasonDTO> seasonsDTOS = List.of();
-        List<Long> missingSeasonIds = List.of();
-
         List<PodcastDTO> podcastDTOS = List.of();
-        List<Long> missingEpisodeIds = List.of();
 
         //ED-303-SA
-        List<TransferPodcastDTO> podcastDTOs = creatorClient.transferPodcastDTOs(creatorId);
-        List<TransferPodcastSeasonDTO> seasonDTOs = creatorClient.transferPodcastSeasonDTOs(creatorId);
+        List<TransferPodcastDTO> creatorPodcasts = creatorClient.transferPodcastDTOs(creatorId);
+        List<TransferPodcastSeasonDTO> creatorPodcastSeason = creatorClient.transferPodcastSeasonDTOs(creatorId);
 
         //ED-303-SA
-        List<Long> seasonIds = seasonDTOs.stream()
-                .map(TransferPodcastSeasonDTO::getId)
+        List<Long> seasonIds = creatorPodcastSeason.stream()
+                .map(TransferPodcastSeasonDTO::getMediaId)
                 .filter(Objects::nonNull)
                 .toList();
 
-        List<Long> podcastIds = podcastDTOs.stream()
-                .map(TransferPodcastDTO::getId)
+        List<Long> podcastIds = creatorPodcasts.stream()
+                .map(TransferPodcastDTO::getMediaId)
                 .filter(Objects::nonNull)
                 .toList();
 
@@ -83,9 +83,6 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
                 seasonsDTOS = PodcastSeasonMapper.toDTONoEpisodeListUser(seasons, creatorClient);
             }
 
-            missingSeasonIds = seasonIds.stream()
-                    .filter(id -> seasons.stream().noneMatch(s -> s.getId().equals(id)))
-                    .toList();
         }
 
         if(!podcastIds.isEmpty()){
@@ -101,22 +98,19 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
                 podcastDTOS = PodcastMapper.toDTOUserList(sortList(podcasts),creatorClient, genreClient);
             }
 
-            missingEpisodeIds = podcastIds.stream()
-                    .filter(id -> podcasts.stream().noneMatch(p -> p.getId().equals(id)))
-                    .toList();
         }
 
         if(podcastDTOS.isEmpty() && seasonsDTOS.isEmpty()){
             throw new ContentNotFoundException("No podcasts or seasons");
         }
 
-        return new PodcastResponse(seasonsDTOS, podcastDTOS, missingEpisodeIds, missingSeasonIds);
+        return new PodcastResponse(seasonsDTOS, podcastDTOS);
     }
 
     //ED-231-SA : this one only shows seasons, but the seasons also contains all their episodes
+    //ED-348-SA - removed missing Ids
     public SeasonResponse getSeasonsByIds(Long creatorId, Authentication authentication) {
         List<PodcastSeasonDTO> seasonsDTOS = List.of();
-        List<Long> missingSeasonIds = List.of();
 
         //ED-310-SA
         creatorClient.getCreatorById(creatorId);
@@ -126,7 +120,7 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
 
         //ED-303-SA
         List<Long> seasonIds = seasonDTOs.stream()
-                .map(TransferPodcastSeasonDTO::getId)
+                .map(TransferPodcastSeasonDTO::getMediaId)
                 .filter(Objects::nonNull)
                 .toList();
 
@@ -147,16 +141,13 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
                 seasonsDTOS = PodcastSeasonMapper.toDTOUserList(seasons,creatorClient, genreClient);
             }
 
-            missingSeasonIds = seasonIds.stream()
-                    .filter(id -> seasons.stream().noneMatch(s -> s.getId().equals(id)))
-                    .toList();
         }
 
         if(seasonsDTOS.isEmpty()){
             throw new ContentNotFoundException("No seasons");
         }
 
-        return new SeasonResponse( missingSeasonIds, seasonsDTOS);
+        return new SeasonResponse(seasonsDTOS);
     }
 
     //ED-60-SA
