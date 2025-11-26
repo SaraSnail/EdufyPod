@@ -9,8 +9,9 @@ public class NullValueException extends RuntimeException {
     private String field;
     private Object value;
 
+    //ED-343-SA: added [] to make it more visible if value was empty
     public NullValueException(String field, Object value) {
-        super(String.format("The field %s cannot have the value %s", field, value));
+        super(String.format("The field %s cannot have the value [%s]", field, value));
         this.field = field;
         this.value = value;
     }

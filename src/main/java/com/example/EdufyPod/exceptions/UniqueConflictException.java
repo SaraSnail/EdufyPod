@@ -9,8 +9,9 @@ public class UniqueConflictException extends RuntimeException {
     private String object;
     private Object value;
 
-    public UniqueConflictException(String Object, Object value) {
-        super(String.format("%s: [%s] already exists, duplicates is not allowed"));
+    //ED-343-SA: had missed object and value in the String.format
+    public UniqueConflictException(String object, Object value) {
+        super(String.format("%s: [%s] already exists, duplicates is not allowed", object,value));
         this.object = object;
         this.value = value;
     }

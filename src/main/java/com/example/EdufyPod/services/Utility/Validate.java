@@ -17,7 +17,9 @@ public class Validate {
         for(Long creatorId : creatorIds){
             try{
                 CreatorDTO creator = creatorClient.getCreatorById(creatorId);
-                Long id = creator.getId();
+                if(creator == null){//ED-343-SA
+                    throw new ResourceNotFoundException("Creator", "id", creatorId);
+                }
             }catch (RestClientResponseException e){
                 throw new ResourceNotFoundException("Creator", "id", creatorId);
             }
@@ -31,7 +33,9 @@ public class Validate {
         for(Long genreId : genreIds){
             try{
                 GenreDTO genreDTO = genreClient.getGenreById(genreId);
-                Long id = genreDTO.getId();
+                if(genreDTO == null){//ED-343-SA
+                    throw new ResourceNotFoundException("Genre", "id", genreId);
+                }
             }catch (RestClientResponseException e){
                 throw new ResourceNotFoundException("Genre", "id", genreId);
             }
