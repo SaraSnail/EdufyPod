@@ -54,6 +54,7 @@ docker compose. Other projects will be liked below
 - Maven
 - Docker 
 - Postman
+- Keycloak
 ---
 
 ### 🔌 Ports
@@ -79,11 +80,12 @@ docker compose. Other projects will be liked below
 
 ## 🔒 Authentication & Roles
 
-This service uses **OAuth2** for authentication and authorization.
+This service uses **OAuth2** and **Keycloak** for authentication and authorization.
 
 - **User Roles:**
-    - **Admin:** Can show podcasts with id, create new podcasts
-    - **User:** Can view podcasts, get by title or genre, play podcast episode
+        - **edufy_realm_admin** Can reach all admin endpoints in all microservices
+        - **pod_admin:** Can show podcasts with id, create new podcasts
+        - **pod_user:** Can view podcasts, get by title or genre, play podcast episode
 
 > _Note: These are not "real" users/admin. They are placeholders for production and used under development._
 >
