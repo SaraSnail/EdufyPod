@@ -192,7 +192,7 @@ public class PodcastServiceImpl implements PodcastService {
     public PlayedDTO playPodcast(Long episodeId, Authentication authentication) {
         UserDTO userDTO = userClient.getUserBySUB(authentication.getName());
         if(userDTO == null){
-            throw new ResourceNotFoundException("User", "id", authentication.getName());
+            throw new ResourceNotFoundException("User", "sub", authentication.getName());
         }
 
         Podcast podcast = podcastRepository.findByIdAndIsActiveTrue(episodeId);
@@ -266,10 +266,6 @@ public class PodcastServiceImpl implements PodcastService {
 
         if(!podcast.getUrl().contains("http://") && !podcast.getUrl().contains("https://")){
             throw new ValidFieldsException("URL", "needs to contain either http:// or https://", podcast.getUrl());
-        }
-
-        if(podcast.getUrl().length() < 10){
-            throw new ValidFieldsException("URL", "more than 10 characters", podcast.getUrl());
         }
 
         if(podcast.getDescription().isEmpty()){
