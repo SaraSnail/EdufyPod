@@ -192,7 +192,7 @@ public class PodcastServiceImpl implements PodcastService {
     public PlayedDTO playPodcast(Long episodeId, Authentication authentication) {
         UserDTO userDTO = userClient.getUserBySUB(authentication.getName());
         if(userDTO == null){
-            throw new ResourceNotFoundException("User", "id", authentication.getName());
+            throw new ResourceNotFoundException("User", "sub", authentication.getName());
         }
 
         Podcast podcast = podcastRepository.findByIdAndIsActiveTrue(episodeId);

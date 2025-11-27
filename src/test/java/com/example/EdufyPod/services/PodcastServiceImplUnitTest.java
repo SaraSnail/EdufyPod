@@ -6,6 +6,7 @@ import com.example.EdufyPod.clients.ThumbClient;
 import com.example.EdufyPod.clients.UserClient;
 import com.example.EdufyPod.exceptions.*;
 import com.example.EdufyPod.models.DTO.IncomingPodcastDTO;
+import com.example.EdufyPod.models.DTO.PlayedDTO;
 import com.example.EdufyPod.models.DTO.PodcastDTO;
 import com.example.EdufyPod.models.DTO.callDTOs.CreatorDTO;
 import com.example.EdufyPod.models.DTO.callDTOs.GenreDTO;
@@ -1105,6 +1106,53 @@ class PodcastServiceImplUnitTest {
     ///Play Podcast
     //ED-343-SA
     @Test
-    void playPodcast() {
+    void playPodcast_ShouldReturnPlayedDTO() {
+        //Arrange
+        Long episodeId = 1L;
+        when(mockAuthentication.getName()).thenReturn("test-sub-01");
+        when(userClient.getUserBySUB("test-sub-01")).thenReturn(new UserDTO(1L));
+        when(podcastRepository.findByIdAndIsActiveTrue(episodeId)).thenReturn(podcast);
+
+        //Act
+        PlayedDTO playedDTO = podcastService.playPodcast(episodeId,mockAuthentication);
+
+        //Assert
+        assertNotNull(playedDTO);
+        assertEquals("http://podcast.url",playedDTO.getUrl());
+    }
+
+    //ED-343-SA
+    @Test
+    void playPodcast_ShouldThrowIfUserNotFound() {
+        //Arrange
+        Long episodeId = 1L;
+        when(mockAuthentication.getName()).thenReturn("test-sub-01");
+
+        //Act
+        ResourceNotFoundException exception = assertThrows(
+                ResourceNotFoundException.class,
+                () -> podcastService.playPodcast(episodeId,mockAuthentication)
+        );
+
+        //Assert
+        assertEquals("No User with sub [test-sub-01] found", exception.getMessage());
+    }
+
+    //ED-343-SA
+    @Test
+    void playPodcast_ShouldThrowIfPodcastNotFound() {
+        //Arrange
+        Long episodeId = 1L;
+        when(mockAuthentication.getName()).thenReturn("test-sub-01");
+        when(userClient.getUserBySUB("test-sub-01")).thenReturn(new UserDTO(1L));
+
+        //Act
+        ResourceNotFoundException exception = assertThrows(
+                ResourceNotFoundException.class,
+                () -> podcastService.playPodcast(episodeId,mockAuthentication)
+        );
+
+        //Assert
+        assertEquals("No Podcast with id [1] found", exception.getMessage());
     }
 }
