@@ -70,7 +70,7 @@ docker compose. Other projects will be liked below
 - **Genre :** `8585`
 - **Thumb :** `8484`
 - **Utility :** `8888`
-- 
+
 #### Media services
 - **Pod :** `8282`
 - **Video :** `8383`
@@ -162,7 +162,7 @@ This service uses **OAuth2** and **Keycloak** for authentication and authorizati
     spring.jpa.hibernate.ddl-auto=update
   ```
 
-
+> _README made by [SaraSnail](https://github.com/SaraSnail)_
 
 
 
