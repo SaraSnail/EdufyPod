@@ -13,7 +13,7 @@ public class KeycloakImpl implements Keycloak {
 
     private final RestClient restClient;
     private final String keycloakUrl;
-    private final String podClientSecret;// ED-357-SA : Changed name on client-secret på specify which secret
+    private final String podClientSecret;// ED-357-SA: Changed name on client-secret på specify which secret
     private final String clientId;
 
     public KeycloakImpl(RestClient.Builder restClientBuilder,
@@ -23,7 +23,7 @@ public class KeycloakImpl implements Keycloak {
         this.restClient = restClientBuilder.build();
         this.keycloakUrl = keycloakUrl;
         this.clientId = clientId;
-        this.podClientSecret = podClientSecret;// ED-357-SA : Changed name on client-secret på specify which secret
+        this.podClientSecret = podClientSecret;// ED-357-SA: Changed name on client-secret på specify which secret
     }
 
     @Override
