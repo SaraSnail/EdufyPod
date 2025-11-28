@@ -1,6 +1,5 @@
 package com.example.EdufyPod.exceptions;
 
-import org.hibernate.query.sql.internal.ParameterRecognizerImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 

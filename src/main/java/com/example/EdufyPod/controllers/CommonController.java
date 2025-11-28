@@ -3,12 +3,10 @@ package com.example.EdufyPod.controllers;
 import com.example.EdufyPod.models.DTO.PodcastDTO;
 import com.example.EdufyPod.models.DTO.PodcastResponse;
 import com.example.EdufyPod.models.DTO.PodcastSeasonDTO;
-import com.example.EdufyPod.models.DTO.SeasonResponse;
 import com.example.EdufyPod.services.PodcastAggregationService;
 import com.example.EdufyPod.services.PodcastSeasonService;
 import com.example.EdufyPod.services.PodcastService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,7 +57,7 @@ public class CommonController {
     //ED-231-SA: gets seasons, they also contains the seasons episodes
     //ED-348-SA - removed missing Ids
     @GetMapping("/season-creator/{creatorId}")//ED-303-SA - GET mapping to POST mapping
-    public ResponseEntity<SeasonResponse> getSeasonByCreator(@PathVariable Long creatorId, Authentication authentication) {
+    public ResponseEntity<List<PodcastSeasonDTO>> getSeasonByCreator(@PathVariable Long creatorId, Authentication authentication) {
         return ResponseEntity.ok(podcastAggregationService.getSeasonsByIds(creatorId, authentication));
     }
 }

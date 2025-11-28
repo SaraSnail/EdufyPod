@@ -9,9 +9,9 @@ import java.util.List;
 //ED-267-SA
 public interface GenreClient {
     List<GenreDTO> getGenreEpisode(Long mediaId);//ED-267-SA
-    void createRecordOfMedia(Long mediaId, MediaType mediaType, List<Long> genreIds);
+    void createRecordOfMedia(Long mediaId, MediaType mediaType, List<Long> genreIds);//SA
 
-    GenreDTO getGenreById(Long genreId);
+    GenreDTO getGenreById(Long genreId);//SA
 
     MediaByGenreDTO getMediaByGenreId(Long genreId, MediaType mediaType);//ED-271-SA
 }

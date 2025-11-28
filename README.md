@@ -150,7 +150,7 @@ This service uses **OAuth2** and **Keycloak** for authentication and authorizati
 - **Version :** 8.0 
 - **SQL file :** 
     - There is a sql file that `docker-compose.yml` uses to create the databases and grant access to `assa`. Can be found in [Edufy-infra](https://github.com/EudfyProjects/Edufy-infra)
-    - Pod has 2 sql file, `data.sql` for development and `import.sql` for production. Both are filled with placeholder data to test with in development and production
+    - Pod has 2 sql file, `data-dev.sql` for development and `data-prod.sql` for production. Both are filled with placeholder data to test with in development and production
 - **Default Port :** `3306`
     - In this example port is `3307:3306`. If MySQL workbench server is not installed the port can be changed to `3306:3306`
 - **Configuration :** To connect to the database, write in `application-prod.properties`

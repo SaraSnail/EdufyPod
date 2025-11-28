@@ -4,5 +4,5 @@ import com.example.EdufyPod.models.enums.MediaType;
 
 //ED-232-SA
 public interface ThumbClient {
-    void createRecordOfMedia(Long mediaId, MediaType mediaType, String mediaName);
+    void createRecordOfMedia(Long mediaId, MediaType mediaType, String mediaName);//ED-232-SA
 }

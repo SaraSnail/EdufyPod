@@ -31,15 +31,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
 
-                .csrf(csrf->csrf.disable())//ED-120-SA
-                //.csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))//ED-120-SA
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))//ED-120-SA
                 .authorizeHttpRequests(auth->
                         auth
                                 .requestMatchers("/h2-console/**").permitAll()//ED-120-SA
-                                //.requestMatchers("/h2-console/**").hasRole("edufy_realm_admin")//ED-120-SA
-                                //.requestMatchers("/api/v1/pod/getpodcastbyid/**").permitAll()//ED-76-SA
                                 .anyRequest().authenticated()
-                                //.anyRequest().permitAll()
 
                 )
                 .oauth2ResourceServer(oauth->

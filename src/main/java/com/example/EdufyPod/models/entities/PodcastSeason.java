@@ -112,6 +112,7 @@ public class PodcastSeason {
         this.podcasts = podcasts;
     }
 
+    //SA
     public int getEpisodeCount() {
         return (int) podcasts.stream()
                 .filter(Podcast::isActive)

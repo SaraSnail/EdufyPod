@@ -3,16 +3,12 @@ package com.example.EdufyPod.controllers;
 import com.example.EdufyPod.models.DTO.PlayedDTO;
 import com.example.EdufyPod.models.DTO.PodcastDTO;
 import com.example.EdufyPod.models.DTO.PodcastSeasonDTO;
-import com.example.EdufyPod.repositories.PodcastRepository;
-import com.example.EdufyPod.repositories.PodcastSeasonRepository;
 import com.example.EdufyPod.services.PodcastSeasonService;
 import com.example.EdufyPod.services.PodcastService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 

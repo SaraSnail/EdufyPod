@@ -2,7 +2,7 @@ package com.example.EdufyPod.clients;
 
 import com.example.EdufyPod.exceptions.InvalidInputException;
 import com.example.EdufyPod.exceptions.RestClientException;
-import com.example.EdufyPod.models.DTO.recordOfMedia.RecordOfThumbDTO;
+import com.example.EdufyPod.models.DTO.callDTOs.recordOfMedia.RecordOfThumbDTO;
 import com.example.EdufyPod.models.enums.MediaType;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;

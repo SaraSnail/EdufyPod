@@ -1,20 +1,23 @@
-package com.example.EdufyPod.models.DTO.recordOfMedia;
+package com.example.EdufyPod.models.DTO.callDTOs.recordOfMedia;
 
 import com.example.EdufyPod.models.enums.MediaType;
 
+import java.util.List;
+
 //ED-232-SA
-public class RecordOfThumbDTO {
+public class RecordOfCreatorDTO {
+
     private Long mediaId;
     private MediaType mediaType;
-    private String mediaName;
+    private List<Long> creatorIds;
 
-    public RecordOfThumbDTO() {
+    public RecordOfCreatorDTO() {
     }
 
-    public RecordOfThumbDTO(Long mediaId, MediaType mediaType, String mediaName) {
+    public RecordOfCreatorDTO(Long mediaId, MediaType mediaType, List<Long> creatorIds) {
         this.mediaId = mediaId;
         this.mediaType = mediaType;
-        this.mediaName = mediaName;
+        this.creatorIds = creatorIds;
     }
 
     public Long getMediaId() {
@@ -33,11 +36,11 @@ public class RecordOfThumbDTO {
         this.mediaType = mediaType;
     }
 
-    public String getMediaName() {
-        return mediaName;
+    public List<Long> getCreatorIds() {
+        return creatorIds;
     }
 
-    public void setMediaName(String mediaName) {
-        this.mediaName = mediaName;
+    public void setCreatorIds(List<Long> creatorIds) {
+        this.creatorIds = creatorIds;
     }
 }
