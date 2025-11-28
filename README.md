@@ -44,6 +44,7 @@ docker compose. Other projects will be liked below
 - **Testing :** 
     - Spring Boot Testing
     - Mockito
+    - JUnit 5
 
 ---
 
@@ -98,7 +99,7 @@ This service uses **OAuth2** and **Keycloak** for authentication and authorizati
 
 > Note: Unauthenticated requests will receive a `401 Unauthorized` response.
 
-> `microservice_access` is a role that clients uses between each other to authorize access
+> Note: `microservice_access` is a role that clients uses between each other to authorize access
 
 ---
 
@@ -139,13 +140,7 @@ This service uses **OAuth2** and **Keycloak** for authentication and authorizati
 | Name               | Username | Password |   Database    |
 |--------------------|:--------:|:--------:|:-------------:|
 | edufy_mysql        |   assa   |   assa   | main database |
-| edufy_edufyuser_db |   assa   |   assa   |     user      |
-| edufy_creator_db   |   assa   |   assa   |    creator    |
-| edufy_genre_db     |   assa   |   assa   |     genre     |
-| edufy_music_db     |   assa   |   assa   |     music     |
 | edufy_pod_db       |   assa   |   assa   |      pod      |
-| edufy_thumb_db     |   assa   |   assa   |     thumb     |
-| edufy_video_db     |   assa   |   assa   |     video     |
 
 - **Version :** 8.0 
 - **SQL file :** 
