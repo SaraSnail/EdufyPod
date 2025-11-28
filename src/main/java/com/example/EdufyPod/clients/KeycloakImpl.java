@@ -13,17 +13,17 @@ public class KeycloakImpl implements Keycloak {
 
     private final RestClient restClient;
     private final String keycloakUrl;
-    private final String podClientSecret;// ED-357-SA: Changed name on client-secret på specify which secret
+    private final String clientSecret;
     private final String clientId;
 
     public KeycloakImpl(RestClient.Builder restClientBuilder,
                         @Value("${keycloak.url}") String keycloakUrl,
                         @Value("${keycloak.client-id}") String clientId,
-                        @Value("${keycloak.pod-client-secret}") String podClientSecret) {
+                        @Value("${keycloak.client-secret}") String clientSecret) {
         this.restClient = restClientBuilder.build();
         this.keycloakUrl = keycloakUrl;
         this.clientId = clientId;
-        this.podClientSecret = podClientSecret;// ED-357-SA: Changed name on client-secret på specify which secret
+        this.clientSecret = clientSecret;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class KeycloakImpl implements Keycloak {
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("grant_type", "client_credentials");
         formData.add("client_id", clientId);
-        formData.add("client_secret", podClientSecret);
+        formData.add("client_secret", clientSecret);
 
         TokenResponse tokenResponse = restClient
                 .post()
