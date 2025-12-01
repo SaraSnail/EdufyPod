@@ -32,7 +32,7 @@ public class PodcastMapper {
     public static PodcastDTO toDTOUser(Podcast podcast, CreatorClient creatorClient, GenreClient genreClient) {
         PodcastDTO podcastDTO = toDTO(podcast);
 
-        podcastDTO.setCreators(CreatorMapper.getCreatorsPodcastUser(podcast, creatorClient));//TODO: fix later
+        podcastDTO.setCreators(CreatorMapper.getCreatorsPodcastUser(podcast, creatorClient));
         podcastDTO.setGenres(GenreMapper.getGenresUser(podcast, genreClient));
 
         PodcastSeasonDTO seasonDTO = new PodcastSeasonDTO();
@@ -51,7 +51,7 @@ public class PodcastMapper {
         podcastDTO.setId(podcast.getId());
         podcastDTO.setActive(podcast.isActive());//ED-82-SA
 
-        podcastDTO.setCreators(CreatorMapper.getCreatorsPodcastAdmin(podcast, creatorClient));//TODO: fix later
+        podcastDTO.setCreators(CreatorMapper.getCreatorsPodcastAdmin(podcast, creatorClient));
         podcastDTO.setGenres(GenreMapper.getGenresAdmin(podcast, genreClient));
 
 

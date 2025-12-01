@@ -8,6 +8,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 
+//SA
 @Component
 public class KeycloakImpl implements Keycloak {
 
@@ -16,6 +17,7 @@ public class KeycloakImpl implements Keycloak {
     private final String clientSecret;
     private final String clientId;
 
+    //SA
     public KeycloakImpl(RestClient.Builder restClientBuilder,
                         @Value("${keycloak.url}") String keycloakUrl,
                         @Value("${keycloak.client-id}") String clientId,
@@ -26,6 +28,7 @@ public class KeycloakImpl implements Keycloak {
         this.clientSecret = clientSecret;
     }
 
+    //SA
     @Override
     public String getAccessToken() {
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();

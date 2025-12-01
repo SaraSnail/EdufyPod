@@ -5,10 +5,7 @@ import jakarta.persistence.*;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 //ED-40-SA
@@ -38,12 +35,12 @@ public class Podcast {
     @Column(name = "podcast_episode_length", nullable = false)
     private Duration length;//ED-232-SA
 
-    @Column(name = "podcast_episode_nr_in_season")
+    @Column(name = "podcast_episode_nr_in_season", nullable = false)//ED-377-SA: added nullable=false
     private int nrInSeason;
 
 
     @ManyToOne
-    @JoinColumn(name = "podcast_episode_podcast_season")
+    @JoinColumn(name = "podcast_episode_podcast_season", nullable = false)//ED-377-SA: added nullable=false
     private PodcastSeason season;
 
 

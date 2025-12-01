@@ -26,8 +26,7 @@ public class PodcastSeasonMapper {
 
     //ED-77-SA
     public static PodcastSeasonDTO toDTOUser(PodcastSeason podcastSeason, CreatorClient creatorClient, GenreClient genreClient) {
-        PodcastSeasonDTO podcastSeasonDTO = toDTO(podcastSeason);
-        podcastSeasonDTO.setCreators(CreatorMapper.getCreatorsSeasonUser(podcastSeason, creatorClient));//TODO: fix later
+        PodcastSeasonDTO podcastSeasonDTO = toDTONoEpisodeUser(podcastSeason, creatorClient);
         podcastSeasonDTO.setEpisodes(PodcastMapper.toDTOUserList(podcastSeason.getPodcasts(), creatorClient, genreClient));
 
         List<PodcastDTO> activeEpisodes = new ArrayList<>();
@@ -44,10 +43,7 @@ public class PodcastSeasonMapper {
 
     //ED-77-SA
     public static PodcastSeasonDTO toDTOAdmin(PodcastSeason podcastSeason, CreatorClient creatorClient, GenreClient genreClient) {
-        PodcastSeasonDTO podcastSeasonDTO = toDTO(podcastSeason);
-        podcastSeasonDTO.setId(podcastSeason.getId());
-        podcastSeasonDTO.setActive(podcastSeason.isActive());
-        podcastSeasonDTO.setCreators(CreatorMapper.getCreatorsSeasonAdmin(podcastSeason, creatorClient));//TODO: fix later
+        PodcastSeasonDTO podcastSeasonDTO = toDTONoEpisodeAdmin(podcastSeason, creatorClient);
 
         podcastSeasonDTO.setEpisodes(PodcastMapper.toDTOAdminList(podcastSeason.getPodcasts(), creatorClient, genreClient));
         return podcastSeasonDTO;

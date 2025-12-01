@@ -3,7 +3,7 @@ package com.example.EdufyPod.clients;
 import com.example.EdufyPod.exceptions.CallFailException;
 import com.example.EdufyPod.exceptions.InvalidInputException;
 import com.example.EdufyPod.exceptions.RestClientException;
-import com.example.EdufyPod.models.DTO.recordOfMedia.RecordOfCreatorDTO;
+import com.example.EdufyPod.models.DTO.callDTOs.recordOfMedia.RecordOfCreatorDTO;
 import com.example.EdufyPod.models.DTO.callDTOs.CreatorDTO;
 import com.example.EdufyPod.models.DTO.callDTOs.TransferPodcastDTO;
 import com.example.EdufyPod.models.DTO.callDTOs.TransferPodcastSeasonDTO;

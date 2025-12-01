@@ -1004,6 +1004,44 @@ class PodcastServiceImplUnitTest {
         assertEquals("The field Description has the condition to be 'more than 10 characters', while the value given is [O]", exception.getMessage());
     }
 
+    //ED-377-SA
+    @Test
+    void createPodcast_CheckValuesShouldThrowIfNrInSeasonIsLessThanOne() {
+        List<Long> creatorsIds = List.of(1L);
+        List<Long> genreIds = List.of(1L);
+        IncomingPodcastDTO incoming = new IncomingPodcastDTO(
+                "New Podcast",
+                "http://newpodcast.url",
+                "new podcast description",
+                creatorsIds,
+                LocalDate.of(2025,12,30),
+                genreIds,
+                "0:34:20",
+                -1,
+                1L);
+
+
+        CreatorDTO creatorDTO = new CreatorDTO(1L,"username");
+        GenreDTO genreDTO = new GenreDTO(1L,"genrename");
+
+        when(genreClient.getGenreById(1L)).thenReturn(genreDTO);
+        when(creatorClient.getCreatorById(1L)).thenReturn(creatorDTO);
+
+        when(podcastSeasonRepository.findById(1L)).thenReturn(Optional.of(season));
+        when(podcastRepository.findAllBySeasonOrdered(1L)).thenReturn(List.of(podcast));
+
+        when(podcastRepository.existsByUrl(incoming.getUrl())).thenReturn(false);
+
+
+        ValidFieldsException exception = assertThrows(
+                ValidFieldsException.class,
+                () -> podcastService.createPodcast(incoming)
+        );
+
+
+        assertEquals("The field NrInSeason has the condition to be 'nr in season must be 1 or more', while the value given is [-1]", exception.getMessage());
+    }
+
 
     ///User history
     //ED-343-SA

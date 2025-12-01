@@ -6,7 +6,6 @@ import com.example.EdufyPod.converters.Roles;
 import com.example.EdufyPod.exceptions.*;
 import com.example.EdufyPod.models.DTO.IncomingPodcastSeasonDTO;
 import com.example.EdufyPod.models.DTO.PodcastSeasonDTO;
-import com.example.EdufyPod.models.DTO.callDTOs.CreatorDTO;
 import com.example.EdufyPod.models.DTO.mappers.PodcastSeasonMapper;
 import com.example.EdufyPod.models.entities.PodcastSeason;
 import com.example.EdufyPod.models.enums.MediaType;
@@ -15,9 +14,7 @@ import com.example.EdufyPod.services.Utility.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientResponseException;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 

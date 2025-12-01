@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 //ED-303-SA
-@ResponseStatus(HttpStatus.EXPECTATION_FAILED)
+@ResponseStatus(HttpStatus.FAILED_DEPENDENCY)//ED-377-SA: switched http status to 424 FAILED_DEPENDENCY
 public class CallFailException extends RuntimeException {
     private String service;
     private String originalURL;

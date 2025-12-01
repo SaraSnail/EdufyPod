@@ -1,4 +1,4 @@
-package com.example.EdufyPod.models.DTO.recordOfMedia;
+package com.example.EdufyPod.models.DTO.callDTOs.recordOfMedia;
 
 import com.example.EdufyPod.models.enums.MediaType;
 

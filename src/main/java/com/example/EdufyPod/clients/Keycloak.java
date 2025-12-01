@@ -1,5 +1,6 @@
 package com.example.EdufyPod.clients;
 
+//SA
 public interface Keycloak {
-    public String getAccessToken();
+    String getAccessToken();//SA
 }

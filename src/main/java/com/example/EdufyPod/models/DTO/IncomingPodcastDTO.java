@@ -1,7 +1,6 @@
 package com.example.EdufyPod.models.DTO;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 //ED-232-SA
@@ -9,9 +8,9 @@ public class IncomingPodcastDTO {
     private String title;
     private String url;
     private String description;
-    private List<Long> creatorIds = new ArrayList<>();
+    private List<Long> creatorIds;
     private LocalDate releaseDate;
-    private List<Long> genreIds = new ArrayList<>();
+    private List<Long> genreIds;
     private String length;
     private Integer nrInSeason;
     private Long seasonId;

@@ -15,10 +15,8 @@ import com.example.EdufyPod.repositories.PodcastRepository;
 import com.example.EdufyPod.repositories.PodcastSeasonRepository;
 import com.example.EdufyPod.clients.CreatorClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Comparator;
 import java.util.List;
@@ -109,7 +107,8 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
 
     //ED-231-SA : this one only shows seasons, but the seasons also contains all their episodes
     //ED-348-SA - removed missing Ids
-    public SeasonResponse getSeasonsByIds(Long creatorId, Authentication authentication) {
+    //ED-377-SA: switched to List<PodcastSeasonDTO>
+    public List<PodcastSeasonDTO> getSeasonsByIds(Long creatorId, Authentication authentication) {
         List<PodcastSeasonDTO> seasonsDTOS = List.of();
 
         //ED-310-SA
@@ -147,7 +146,7 @@ public class PodcastAggregationServiceImpl implements PodcastAggregationService 
             throw new ContentNotFoundException("No seasons");
         }
 
-        return new SeasonResponse(seasonsDTOS);
+        return seasonsDTOS;
     }
 
     //ED-60-SA

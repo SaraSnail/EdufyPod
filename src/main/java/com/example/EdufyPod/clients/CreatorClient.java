@@ -7,13 +7,14 @@ import com.example.EdufyPod.models.enums.MediaType;
 
 import java.util.List;
 
+//SA
 public interface CreatorClient {
-    List<TransferPodcastDTO> transferPodcastDTOs(Long creatorId);
-    List<TransferPodcastSeasonDTO> transferPodcastSeasonDTOs(Long creatorId);
-    List<CreatorDTO> getCreatorsEpisode(Long mediaId);
-    List<CreatorDTO> getCreatorsSeason(Long mediaId);
+    List<TransferPodcastDTO> transferPodcastDTOs(Long creatorId);//SA
+    List<TransferPodcastSeasonDTO> transferPodcastSeasonDTOs(Long creatorId);//SA
+    List<CreatorDTO> getCreatorsEpisode(Long mediaId);//SA
+    List<CreatorDTO> getCreatorsSeason(Long mediaId);//SA
 
-    void createRecordOfMedia(Long mediaId, MediaType mediaType, List<Long> creatorId);
+    void createRecordOfMedia(Long mediaId, MediaType mediaType, List<Long> creatorId);//SA
 
-    CreatorDTO getCreatorById(Long creatorId);
+    CreatorDTO getCreatorById(Long creatorId);//SA
 }
