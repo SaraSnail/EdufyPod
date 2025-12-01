@@ -274,6 +274,11 @@ public class PodcastServiceImpl implements PodcastService {
         if(podcast.getDescription().length() < 10){
             throw new ValidFieldsException("Description", "more than 10 characters", podcast.getDescription());
         }
+
+        //ED-377-SA
+        if(podcast.getNrInSeason() < 1){
+            throw new ValidFieldsException("NrInSeason","nr in season must be 1 or more", podcast.getNrInSeason());
+        }
     }
 
 }
