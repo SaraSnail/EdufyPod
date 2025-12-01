@@ -1004,6 +1004,7 @@ class PodcastServiceImplUnitTest {
         assertEquals("The field Description has the condition to be 'more than 10 characters', while the value given is [O]", exception.getMessage());
     }
 
+    //ED-377-SA
     @Test
     void createPodcast_CheckValuesShouldThrowIfNrInSeasonIsLessThanOne() {
         List<Long> creatorsIds = List.of(1L);
