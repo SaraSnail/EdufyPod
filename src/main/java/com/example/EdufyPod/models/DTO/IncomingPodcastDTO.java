@@ -1,7 +1,6 @@
 package com.example.EdufyPod.models.DTO;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 //ED-232-SA
